@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "trustworthy-rag-assistant"
+version = "0.1.0"
+description = "A trustworthy RAG assistant for GitHub Issues"
+requires-python = ">=3.10"
+dependencies = [
+    "boto3>=1.35,<2",
+    "fastapi>=0.115,<1",
+    "openai>=1.50,<3",
+    "psycopg[binary]>=3.2,<4",
+    "pgvector>=0.3,<1",
+    "python-dotenv>=1.0,<2",
+    "requests>=2.32,<3",
+    "tiktoken>=0.7,<1",
+    "uvicorn[standard]>=0.30,<1",
+]
+
+[project.optional-dependencies]
+deploy = ["mangum>=0.19,<1"]
+ui = ["streamlit>=1.40,<2"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
