@@ -7,6 +7,7 @@
 # Python
 __pycache__/
 .question_embeddings.json
+.heldout_question_embeddings.json
 archives/
 *.py[cod]
 *.egg-info/
