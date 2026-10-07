@@ -24,6 +24,16 @@ UNANSWERABLE_CASES = (
     "What is the current price of a PostgreSQL RDS instance?",
     "Can you diagnose my private production server from this repository?",
     "Who won the most recent international football tournament?",
+    "What is the weather forecast for Tokyo tomorrow?",
+    "Convert 37 degrees Celsius to Fahrenheit.",
+    "Write a short birthday message for my coworker.",
+    "What is the current balance in my bank account?",
+    "Which restaurant near me has the best reviews?",
+    "Summarize the contents of a file on my personal computer.",
+    "What time does the sun set in Chicago today?",
+    "Recommend a movie released this weekend.",
+    "How many calories are in the lunch I ate today?",
+    "What is the latest stock price for a company I own?",
 )
 
 QUESTION_SYSTEM_PROMPT = """Draft one realistic user question that can be answered
@@ -204,7 +214,7 @@ def write_cases(
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Draft a balanced 50-case retrieval evaluation set."
+        description="Draft a balanced retrieval evaluation set."
     )
     parser.add_argument(
         "--count",

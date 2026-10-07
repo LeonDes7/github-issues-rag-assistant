@@ -1,0 +1,4990 @@
+{
+  "case_file": "evaluation_cases.generated.jsonl",
+  "case_count": 60,
+  "top_k": 5,
+  "embedding_model": "text-embedding-3-small",
+  "metrics": {
+    "vector": {
+      "all_answerable_cases": {
+        "scored_cases": 45,
+        "hit_at_k": 0.8,
+        "recall_at_k": 0.8,
+        "mrr": 0.7525925925925926
+      },
+      "by_repository": {
+        "encode/starlette": {
+          "scored_cases": 15,
+          "hit_at_k": 0.9333333333333333,
+          "recall_at_k": 0.9333333333333333,
+          "mrr": 0.9333333333333333
+        },
+        "pydantic/pydantic": {
+          "scored_cases": 15,
+          "hit_at_k": 0.6666666666666666,
+          "recall_at_k": 0.6666666666666666,
+          "mrr": 0.6666666666666666
+        },
+        "tiangolo/fastapi": {
+          "scored_cases": 15,
+          "hit_at_k": 0.8,
+          "recall_at_k": 0.8,
+          "mrr": 0.6577777777777778
+        }
+      }
+    },
+    "hybrid": {
+      "all_answerable_cases": {
+        "scored_cases": 45,
+        "hit_at_k": 0.8,
+        "recall_at_k": 0.8,
+        "mrr": 0.7525925925925926
+      },
+      "by_repository": {
+        "encode/starlette": {
+          "scored_cases": 15,
+          "hit_at_k": 0.9333333333333333,
+          "recall_at_k": 0.9333333333333333,
+          "mrr": 0.9333333333333333
+        },
+        "pydantic/pydantic": {
+          "scored_cases": 15,
+          "hit_at_k": 0.6666666666666666,
+          "recall_at_k": 0.6666666666666666,
+          "mrr": 0.6666666666666666
+        },
+        "tiangolo/fastapi": {
+          "scored_cases": 15,
+          "hit_at_k": 0.8,
+          "recall_at_k": 0.8,
+          "mrr": 0.6577777777777778
+        }
+      }
+    }
+  },
+  "case_results": {
+    "vector": [
+      {
+        "case_id": "generated-encode-starlette-1119",
+        "repository": "encode/starlette",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 0,
+          "recall_at_k": 0.0,
+          "mrr": 0.0,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4108,
+            "retrieval_score": 0.5705257610633847
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 793,
+            "retrieval_score": 0.5609267158507352
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5291,
+            "retrieval_score": 0.5322269130204449
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 793,
+            "retrieval_score": 0.5281189911941905
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 793,
+            "retrieval_score": 0.5265244079620526
+          }
+        ]
+      },
+      {
+        "case_id": "generated-encode-starlette-408",
+        "repository": "encode/starlette",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "encode/starlette",
+              "issue_number": 408
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 408,
+            "retrieval_score": 0.7589427772643057
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 408,
+            "retrieval_score": 0.6246251839717163
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 671,
+            "retrieval_score": 0.5663958726415392
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 671,
+            "retrieval_score": 0.5663958726415392
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 763,
+            "retrieval_score": 0.5635368267516997
+          }
+        ]
+      },
+      {
+        "case_id": "generated-encode-starlette-542",
+        "repository": "encode/starlette",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "encode/starlette",
+              "issue_number": 542
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 542,
+            "retrieval_score": 0.7296081052358815
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 542,
+            "retrieval_score": 0.7180520436245603
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 542,
+            "retrieval_score": 0.7152607355204743
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 542,
+            "retrieval_score": 0.6308863418003251
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1144,
+            "retrieval_score": 0.6202068176143871
+          }
+        ]
+      },
+      {
+        "case_id": "generated-tiangolo-fastapi-2071",
+        "repository": "tiangolo/fastapi",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 0,
+          "recall_at_k": 0.0,
+          "mrr": 0.0,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 407,
+            "retrieval_score": 0.5612204952012038
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1369,
+            "retrieval_score": 0.5333609386959923
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 940,
+            "retrieval_score": 0.5216216729678885
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 407,
+            "retrieval_score": 0.5190028169745323
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 940,
+            "retrieval_score": 0.5081776317219666
+          }
+        ]
+      },
+      {
+        "case_id": "generated-encode-starlette-383",
+        "repository": "encode/starlette",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "encode/starlette",
+              "issue_number": 383
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 383,
+            "retrieval_score": 0.6630701283941832
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 383,
+            "retrieval_score": 0.6043582415489716
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 814,
+            "retrieval_score": 0.5826584965390418
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 814,
+            "retrieval_score": 0.5753144418730113
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 383,
+            "retrieval_score": 0.5742229252448253
+          }
+        ]
+      },
+      {
+        "case_id": "generated-tiangolo-fastapi-618",
+        "repository": "tiangolo/fastapi",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "tiangolo/fastapi",
+              "issue_number": 618
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 618,
+            "retrieval_score": 0.599879404318414
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 759,
+            "retrieval_score": 0.5750598267758177
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 618,
+            "retrieval_score": 0.5738348478850642
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 618,
+            "retrieval_score": 0.5722913375095607
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 618,
+            "retrieval_score": 0.5336528018751242
+          }
+        ]
+      },
+      {
+        "case_id": "generated-pydantic-pydantic-4598",
+        "repository": "pydantic/pydantic",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 0,
+          "recall_at_k": 0.0,
+          "mrr": 0.0,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1626,
+            "retrieval_score": 0.654486217461524
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 3295,
+            "retrieval_score": 0.6433003942504748
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 3710,
+            "retrieval_score": 0.6409382794053353
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1626,
+            "retrieval_score": 0.6403119999705972
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1626,
+            "retrieval_score": 0.6393046990141421
+          }
+        ]
+      },
+      {
+        "case_id": "generated-pydantic-pydantic-7461",
+        "repository": "pydantic/pydantic",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 0,
+          "recall_at_k": 0.0,
+          "mrr": 0.0,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1909,
+            "retrieval_score": 0.4411138876598395
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1909,
+            "retrieval_score": 0.42260750655900026
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1175,
+            "retrieval_score": 0.4219555177127713
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 227,
+            "retrieval_score": 0.4170258099082431
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1116,
+            "retrieval_score": 0.4155463617008974
+          }
+        ]
+      },
+      {
+        "case_id": "generated-tiangolo-fastapi-1873",
+        "repository": "tiangolo/fastapi",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 0.3333333333333333,
+          "matched_expected": [
+            {
+              "repository": "tiangolo/fastapi",
+              "issue_number": 1873
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 656,
+            "retrieval_score": 0.6003465481622543
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4893,
+            "retrieval_score": 0.5956599184559337
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1873,
+            "retrieval_score": 0.5951910707113417
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 656,
+            "retrieval_score": 0.5921204489709709
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 656,
+            "retrieval_score": 0.590553229116153
+          }
+        ]
+      },
+      {
+        "case_id": "generated-tiangolo-fastapi-5108",
+        "repository": "tiangolo/fastapi",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 0,
+          "recall_at_k": 0.0,
+          "mrr": 0.0,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5676,
+            "retrieval_score": 0.6492686633244178
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5676,
+            "retrieval_score": 0.6324476145363676
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2350,
+            "retrieval_score": 0.6222333308532002
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5676,
+            "retrieval_score": 0.6176862409174378
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5676,
+            "retrieval_score": 0.6153902866538198
+          }
+        ]
+      },
+      {
+        "case_id": "generated-pydantic-pydantic-11555",
+        "repository": "pydantic/pydantic",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "pydantic/pydantic",
+              "issue_number": 11555
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 11555,
+            "retrieval_score": 0.7801106499013516
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 11555,
+            "retrieval_score": 0.772784840071091
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8548,
+            "retrieval_score": 0.6906401042525878
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10445,
+            "retrieval_score": 0.670211472229991
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 7042,
+            "retrieval_score": 0.6657141967581361
+          }
+        ]
+      },
+      {
+        "case_id": "generated-tiangolo-fastapi-5370",
+        "repository": "tiangolo/fastapi",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "tiangolo/fastapi",
+              "issue_number": 5370
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5370,
+            "retrieval_score": 0.7316096079325989
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5370,
+            "retrieval_score": 0.7072492683395307
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5370,
+            "retrieval_score": 0.6903712230803846
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5370,
+            "retrieval_score": 0.6793378908459603
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 253,
+            "retrieval_score": 0.663014250808488
+          }
+        ]
+      },
+      {
+        "case_id": "generated-pydantic-pydantic-5946",
+        "repository": "pydantic/pydantic",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "pydantic/pydantic",
+              "issue_number": 5946
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 5946,
+            "retrieval_score": 0.7951280821964747
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 5946,
+            "retrieval_score": 0.792713657219684
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 5946,
+            "retrieval_score": 0.7860588714838618
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 5946,
+            "retrieval_score": 0.7783479699386476
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 5946,
+            "retrieval_score": 0.7356902052252329
+          }
+        ]
+      },
+      {
+        "case_id": "generated-encode-starlette-953",
+        "repository": "encode/starlette",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "encode/starlette",
+              "issue_number": 953
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 953,
+            "retrieval_score": 0.6203438921684512
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 970,
+            "retrieval_score": 0.5395007752389149
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 970,
+            "retrieval_score": 0.5359654092060779
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 970,
+            "retrieval_score": 0.5330025307146726
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 953,
+            "retrieval_score": 0.5115149212321023
+          }
+        ]
+      },
+      {
+        "case_id": "generated-tiangolo-fastapi-5988",
+        "repository": "tiangolo/fastapi",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 0.2,
+          "matched_expected": [
+            {
+              "repository": "tiangolo/fastapi",
+              "issue_number": 5988
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2349,
+            "retrieval_score": 0.5026203368416342
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 782,
+            "retrieval_score": 0.48885154617656
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 3028,
+            "retrieval_score": 0.4820868925378221
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 782,
+            "retrieval_score": 0.4814402853420968
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5988,
+            "retrieval_score": 0.4790532897719062
+          }
+        ]
+      },
+      {
+        "case_id": "generated-pydantic-pydantic-8499",
+        "repository": "pydantic/pydantic",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "pydantic/pydantic",
+              "issue_number": 8499
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8499,
+            "retrieval_score": 0.7680453710981265
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8499,
+            "retrieval_score": 0.7195091239218371
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8499,
+            "retrieval_score": 0.7159533728061704
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8499,
+            "retrieval_score": 0.7062889691030871
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8499,
+            "retrieval_score": 0.7011999882922645
+          }
+        ]
+      },
+      {
+        "case_id": "generated-encode-starlette-1247",
+        "repository": "encode/starlette",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "encode/starlette",
+              "issue_number": 1247
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1247,
+            "retrieval_score": 0.6526491286278269
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1247,
+            "retrieval_score": 0.6457651043869311
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1247,
+            "retrieval_score": 0.6318431869210717
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1247,
+            "retrieval_score": 0.6221744315760351
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1247,
+            "retrieval_score": 0.6008184859442748
+          }
+        ]
+      },
+      {
+        "case_id": "generated-pydantic-pydantic-10995",
+        "repository": "pydantic/pydantic",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "pydantic/pydantic",
+              "issue_number": 10995
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10995,
+            "retrieval_score": 0.7268464359884167
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10995,
+            "retrieval_score": 0.7085780419668067
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10995,
+            "retrieval_score": 0.6709771564590273
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10995,
+            "retrieval_score": 0.6647740985922739
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10995,
+            "retrieval_score": 0.6619138305843193
+          }
+        ]
+      },
+      {
+        "case_id": "generated-encode-starlette-494",
+        "repository": "encode/starlette",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "encode/starlette",
+              "issue_number": 494
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 494,
+            "retrieval_score": 0.5847511390736697
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 494,
+            "retrieval_score": 0.573757920124988
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 494,
+            "retrieval_score": 0.5650853278121802
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 494,
+            "retrieval_score": 0.5618587585795397
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 494,
+            "retrieval_score": 0.5559557055844306
+          }
+        ]
+      },
+      {
+        "case_id": "generated-pydantic-pydantic-9575",
+        "repository": "pydantic/pydantic",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "pydantic/pydantic",
+              "issue_number": 9575
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 9575,
+            "retrieval_score": 0.7481693929864184
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 9575,
+            "retrieval_score": 0.7350782541546891
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 9575,
+            "retrieval_score": 0.7246309790258293
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 7790,
+            "retrieval_score": 0.6991821557520441
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8818,
+            "retrieval_score": 0.6969256104924697
+          }
+        ]
+      },
+      {
+        "case_id": "generated-tiangolo-fastapi-10999",
+        "repository": "tiangolo/fastapi",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "tiangolo/fastapi",
+              "issue_number": 10999
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 10999,
+            "retrieval_score": 0.7631248007632082
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 10999,
+            "retrieval_score": 0.719849775191775
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 10999,
+            "retrieval_score": 0.7179567673111775
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 10999,
+            "retrieval_score": 0.681986244084343
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 10999,
+            "retrieval_score": 0.6804596715220899
+          }
+        ]
+      },
+      {
+        "case_id": "generated-pydantic-pydantic-10131",
+        "repository": "pydantic/pydantic",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "pydantic/pydantic",
+              "issue_number": 10131
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10131,
+            "retrieval_score": 0.8180497340847103
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10131,
+            "retrieval_score": 0.8023440852493747
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10131,
+            "retrieval_score": 0.7707329929258537
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10131,
+            "retrieval_score": 0.7512288927989283
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10131,
+            "retrieval_score": 0.7233105175412662
+          }
+        ]
+      },
+      {
+        "case_id": "generated-pydantic-pydantic-5997",
+        "repository": "pydantic/pydantic",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "pydantic/pydantic",
+              "issue_number": 5997
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 5997,
+            "retrieval_score": 0.701214358741236
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 5997,
+            "retrieval_score": 0.682549769946608
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 5997,
+            "retrieval_score": 0.6544088652729405
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 5997,
+            "retrieval_score": 0.6471844118490929
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 5997,
+            "retrieval_score": 0.6189868482137072
+          }
+        ]
+      },
+      {
+        "case_id": "generated-encode-starlette-1295",
+        "repository": "encode/starlette",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "encode/starlette",
+              "issue_number": 1295
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1295,
+            "retrieval_score": 0.5127479252673433
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 58,
+            "retrieval_score": 0.4720339354466181
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 166,
+            "retrieval_score": 0.46912093917914766
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 166,
+            "retrieval_score": 0.4635494468869885
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 166,
+            "retrieval_score": 0.4602555715213611
+          }
+        ]
+      },
+      {
+        "case_id": "generated-encode-starlette-127",
+        "repository": "encode/starlette",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "encode/starlette",
+              "issue_number": 127
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 127,
+            "retrieval_score": 0.6378533371301229
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 9614,
+            "retrieval_score": 0.5176317448596589
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 9614,
+            "retrieval_score": 0.49906376284956044
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1292,
+            "retrieval_score": 0.4695769294023533
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2625,
+            "retrieval_score": 0.4668173102798696
+          }
+        ]
+      },
+      {
+        "case_id": "generated-encode-starlette-94",
+        "repository": "encode/starlette",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "encode/starlette",
+              "issue_number": 94
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 94,
+            "retrieval_score": 0.5912710983455194
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 94,
+            "retrieval_score": 0.5581898180131933
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 94,
+            "retrieval_score": 0.5353097965066778
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 34,
+            "retrieval_score": 0.5107948875322047
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 94,
+            "retrieval_score": 0.4932468779357486
+          }
+        ]
+      },
+      {
+        "case_id": "generated-pydantic-pydantic-1060",
+        "repository": "pydantic/pydantic",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "pydantic/pydantic",
+              "issue_number": 1060
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1060,
+            "retrieval_score": 0.7464343187366796
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 6261,
+            "retrieval_score": 0.7105204598062476
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 6261,
+            "retrieval_score": 0.7004392803857376
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 6261,
+            "retrieval_score": 0.697706942203268
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 5377,
+            "retrieval_score": 0.676674674447211
+          }
+        ]
+      },
+      {
+        "case_id": "generated-pydantic-pydantic-4999",
+        "repository": "pydantic/pydantic",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 0,
+          "recall_at_k": 0.0,
+          "mrr": 0.0,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1287,
+            "retrieval_score": 0.5861276949285644
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1287,
+            "retrieval_score": 0.5827231283124883
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1287,
+            "retrieval_score": 0.5764837202346837
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1287,
+            "retrieval_score": 0.5562758256502587
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 2160,
+            "retrieval_score": 0.54786864640384
+          }
+        ]
+      },
+      {
+        "case_id": "generated-tiangolo-fastapi-33",
+        "repository": "tiangolo/fastapi",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 0.3333333333333333,
+          "matched_expected": [
+            {
+              "repository": "tiangolo/fastapi",
+              "issue_number": 33
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1002,
+            "retrieval_score": 0.6242958020107515
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1066,
+            "retrieval_score": 0.6207427265277455
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 33,
+            "retrieval_score": 0.6206443396334395
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2374,
+            "retrieval_score": 0.6142731935422597
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1066,
+            "retrieval_score": 0.6133516452045269
+          }
+        ]
+      },
+      {
+        "case_id": "generated-encode-starlette-1004",
+        "repository": "encode/starlette",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "encode/starlette",
+              "issue_number": 1004
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1004,
+            "retrieval_score": 0.6261384581957821
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1265,
+            "retrieval_score": 0.5282104136208612
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1083,
+            "retrieval_score": 0.5266074080726995
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1004,
+            "retrieval_score": 0.5248090281412313
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1265,
+            "retrieval_score": 0.5245595499250374
+          }
+        ]
+      },
+      {
+        "case_id": "generated-encode-starlette-1454",
+        "repository": "encode/starlette",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "encode/starlette",
+              "issue_number": 1454
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1454,
+            "retrieval_score": 0.6094660544373527
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1067,
+            "retrieval_score": 0.5501752927469217
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1067,
+            "retrieval_score": 0.5378692502765631
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1067,
+            "retrieval_score": 0.5254533674308522
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 650,
+            "retrieval_score": 0.5141233116167181
+          }
+        ]
+      },
+      {
+        "case_id": "generated-pydantic-pydantic-4108",
+        "repository": "pydantic/pydantic",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 0,
+          "recall_at_k": 0.0,
+          "mrr": 0.0,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1417,
+            "retrieval_score": 0.6344276065920585
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1417,
+            "retrieval_score": 0.6322821992510165
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1417,
+            "retrieval_score": 0.6268784641669357
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1164,
+            "retrieval_score": 0.6034244243247318
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1164,
+            "retrieval_score": 0.5963897557128032
+          }
+        ]
+      },
+      {
+        "case_id": "generated-tiangolo-fastapi-1276",
+        "repository": "tiangolo/fastapi",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "tiangolo/fastapi",
+              "issue_number": 1276
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1276,
+            "retrieval_score": 0.7270080133130808
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1276,
+            "retrieval_score": 0.7112390096671865
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1276,
+            "retrieval_score": 0.6909645025377967
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1276,
+            "retrieval_score": 0.6848853811844382
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1276,
+            "retrieval_score": 0.6781306099201035
+          }
+        ]
+      },
+      {
+        "case_id": "generated-pydantic-pydantic-11865",
+        "repository": "pydantic/pydantic",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "pydantic/pydantic",
+              "issue_number": 11865
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 11865,
+            "retrieval_score": 0.7384581397760478
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 11865,
+            "retrieval_score": 0.6625907697690355
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 11746,
+            "retrieval_score": 0.6205342353837465
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10160,
+            "retrieval_score": 0.6061873000118153
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10160,
+            "retrieval_score": 0.6054236815231743
+          }
+        ]
+      },
+      {
+        "case_id": "generated-pydantic-pydantic-9866",
+        "repository": "pydantic/pydantic",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "pydantic/pydantic",
+              "issue_number": 9866
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 9866,
+            "retrieval_score": 0.8086146811983534
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 9866,
+            "retrieval_score": 0.7834886389873521
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 9866,
+            "retrieval_score": 0.6852187001792504
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8575,
+            "retrieval_score": 0.6582407061087894
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 9866,
+            "retrieval_score": 0.6449091415744186
+          }
+        ]
+      },
+      {
+        "case_id": "generated-tiangolo-fastapi-4268",
+        "repository": "tiangolo/fastapi",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "tiangolo/fastapi",
+              "issue_number": 4268
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4268,
+            "retrieval_score": 0.69682570557078
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4268,
+            "retrieval_score": 0.6779655312334214
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4268,
+            "retrieval_score": 0.6585472738833659
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4268,
+            "retrieval_score": 0.549833049867713
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4764,
+            "retrieval_score": 0.543103883371402
+          }
+        ]
+      },
+      {
+        "case_id": "generated-encode-starlette-726",
+        "repository": "encode/starlette",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "encode/starlette",
+              "issue_number": 726
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 726,
+            "retrieval_score": 0.6870191877523588
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 726,
+            "retrieval_score": 0.638988211265581
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 726,
+            "retrieval_score": 0.6116491974427151
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 437,
+            "retrieval_score": 0.6107389072182459
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 437,
+            "retrieval_score": 0.608270966580348
+          }
+        ]
+      },
+      {
+        "case_id": "generated-tiangolo-fastapi-5724",
+        "repository": "tiangolo/fastapi",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "tiangolo/fastapi",
+              "issue_number": 5724
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5724,
+            "retrieval_score": 0.7328185433837913
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 381,
+            "retrieval_score": 0.6919848191838474
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5724,
+            "retrieval_score": 0.6850382562135542
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 381,
+            "retrieval_score": 0.683895184320581
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 381,
+            "retrieval_score": 0.6800232685306423
+          }
+        ]
+      },
+      {
+        "case_id": "generated-pydantic-pydantic-11491",
+        "repository": "pydantic/pydantic",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 0,
+          "recall_at_k": 0.0,
+          "mrr": 0.0,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 518,
+            "retrieval_score": 0.41530568584027205
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 919,
+            "retrieval_score": 0.41325266753081646
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 919,
+            "retrieval_score": 0.4121337381283732
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4747,
+            "retrieval_score": 0.4080064526164562
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1217,
+            "retrieval_score": 0.4069172419225351
+          }
+        ]
+      },
+      {
+        "case_id": "generated-tiangolo-fastapi-14502",
+        "repository": "tiangolo/fastapi",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 0,
+          "recall_at_k": 0.0,
+          "mrr": 0.0,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "fastapi/fastapi",
+            "issue_number": 14496,
+            "retrieval_score": 0.7592895303280996
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 14500,
+            "retrieval_score": 0.703697546055615
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 14499,
+            "retrieval_score": 0.7030759828401728
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 14497,
+            "retrieval_score": 0.7021502435313006
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 14501,
+            "retrieval_score": 0.7017912985262899
+          }
+        ]
+      },
+      {
+        "case_id": "generated-tiangolo-fastapi-403",
+        "repository": "tiangolo/fastapi",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "tiangolo/fastapi",
+              "issue_number": 403
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 403,
+            "retrieval_score": 0.6908870664228585
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2574,
+            "retrieval_score": 0.683842452924881
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2574,
+            "retrieval_score": 0.682133542373468
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2574,
+            "retrieval_score": 0.6594058010325504
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 483,
+            "retrieval_score": 0.6570139338905191
+          }
+        ]
+      },
+      {
+        "case_id": "generated-tiangolo-fastapi-261",
+        "repository": "tiangolo/fastapi",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "tiangolo/fastapi",
+              "issue_number": 261
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 261,
+            "retrieval_score": 0.6100110276355318
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 261,
+            "retrieval_score": 0.5131645012202475
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1785,
+            "retrieval_score": 0.4967441454417263
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 261,
+            "retrieval_score": 0.49225627298711416
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 512,
+            "retrieval_score": 0.4888134603352936
+          }
+        ]
+      },
+      {
+        "case_id": "generated-encode-starlette-818",
+        "repository": "encode/starlette",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "encode/starlette",
+              "issue_number": 818
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 818,
+            "retrieval_score": 0.7378720747895325
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 818,
+            "retrieval_score": 0.7346034559531481
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 818,
+            "retrieval_score": 0.7299744764967607
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 818,
+            "retrieval_score": 0.7129996038742266
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 818,
+            "retrieval_score": 0.7105052725734077
+          }
+        ]
+      },
+      {
+        "case_id": "generated-encode-starlette-855",
+        "repository": "encode/starlette",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "encode/starlette",
+              "issue_number": 855
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 855,
+            "retrieval_score": 0.6144947912661565
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 801,
+            "retrieval_score": 0.5374520423483273
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 855,
+            "retrieval_score": 0.5242784105898174
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 583,
+            "retrieval_score": 0.5150461007767706
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 754,
+            "retrieval_score": 0.4953075249616893
+          }
+        ]
+      },
+      {
+        "case_id": "generated-tiangolo-fastapi-2776",
+        "repository": "tiangolo/fastapi",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "tiangolo/fastapi",
+              "issue_number": 2776
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2776,
+            "retrieval_score": 0.6871921500747247
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2776,
+            "retrieval_score": 0.6709067394401144
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2776,
+            "retrieval_score": 0.667271481166206
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2776,
+            "retrieval_score": 0.6537649105751305
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2776,
+            "retrieval_score": 0.650590946334814
+          }
+        ]
+      },
+      {
+        "case_id": "unanswerable-01",
+        "repository": "unanswerable",
+        "retrieval_metrics": {
+          "applicable": false,
+          "hit_at_k": null,
+          "recall_at_k": null,
+          "mrr": null,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 6666,
+            "retrieval_score": 0.5128903192429808
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 12220,
+            "retrieval_score": 0.4869215843233694
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8028,
+            "retrieval_score": 0.47392400077780095
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 13173,
+            "retrieval_score": 0.46944728632194677
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 12395,
+            "retrieval_score": 0.4691144445840928
+          }
+        ]
+      },
+      {
+        "case_id": "unanswerable-02",
+        "repository": "unanswerable",
+        "retrieval_metrics": {
+          "applicable": false,
+          "hit_at_k": null,
+          "recall_at_k": null,
+          "mrr": null,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 364,
+            "retrieval_score": 0.4113301186413443
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 878,
+            "retrieval_score": 0.3577976992857732
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4211,
+            "retrieval_score": 0.3524533566650019
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2350,
+            "retrieval_score": 0.3444973499276014
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 401,
+            "retrieval_score": 0.3410072747509145
+          }
+        ]
+      },
+      {
+        "case_id": "unanswerable-03",
+        "repository": "unanswerable",
+        "retrieval_metrics": {
+          "applicable": false,
+          "hit_at_k": null,
+          "recall_at_k": null,
+          "mrr": null,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 3900,
+            "retrieval_score": 0.3967312265661399
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 2587,
+            "retrieval_score": 0.3957107183440929
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 960,
+            "retrieval_score": 0.38954093854578864
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 960,
+            "retrieval_score": 0.3883865844990868
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 2587,
+            "retrieval_score": 0.3817865647811918
+          }
+        ]
+      },
+      {
+        "case_id": "unanswerable-04",
+        "repository": "unanswerable",
+        "retrieval_metrics": {
+          "applicable": false,
+          "hit_at_k": null,
+          "recall_at_k": null,
+          "mrr": null,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1710,
+            "retrieval_score": 0.4612378243915016
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2501,
+            "retrieval_score": 0.4373554767378155
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 551,
+            "retrieval_score": 0.43013316354094955
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 671,
+            "retrieval_score": 0.4282377167936825
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 545,
+            "retrieval_score": 0.42460307855308166
+          }
+        ]
+      },
+      {
+        "case_id": "unanswerable-05",
+        "repository": "unanswerable",
+        "retrieval_metrics": {
+          "applicable": false,
+          "hit_at_k": null,
+          "recall_at_k": null,
+          "mrr": null,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 4678,
+            "retrieval_score": 0.15194611575464223
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8652,
+            "retrieval_score": 0.1412467777820341
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8652,
+            "retrieval_score": 0.13349790640715797
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 12696,
+            "retrieval_score": 0.12615526845982195
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 6027,
+            "retrieval_score": 0.12599375515753442
+          }
+        ]
+      },
+      {
+        "case_id": "unanswerable-06",
+        "repository": "unanswerable",
+        "retrieval_metrics": {
+          "applicable": false,
+          "hit_at_k": null,
+          "recall_at_k": null,
+          "mrr": null,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4577,
+            "retrieval_score": 0.23975371571880433
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 2032,
+            "retrieval_score": 0.23050545635897968
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5261,
+            "retrieval_score": 0.23046691762833582
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 11103,
+            "retrieval_score": 0.2181344134932467
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8762,
+            "retrieval_score": 0.21668133099824305
+          }
+        ]
+      },
+      {
+        "case_id": "unanswerable-07",
+        "repository": "unanswerable",
+        "retrieval_metrics": {
+          "applicable": false,
+          "hit_at_k": null,
+          "recall_at_k": null,
+          "mrr": null,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 3297,
+            "retrieval_score": 0.2794322924309127
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 3297,
+            "retrieval_score": 0.25793829203061924
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1790,
+            "retrieval_score": 0.23757782463107135
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1781,
+            "retrieval_score": 0.2264537585981523
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 453,
+            "retrieval_score": 0.2263585984196541
+          }
+        ]
+      },
+      {
+        "case_id": "unanswerable-08",
+        "repository": "unanswerable",
+        "retrieval_metrics": {
+          "applicable": false,
+          "hit_at_k": null,
+          "recall_at_k": null,
+          "mrr": null,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2009,
+            "retrieval_score": 0.28611734253139454
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2009,
+            "retrieval_score": 0.27593386261734953
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2009,
+            "retrieval_score": 0.26540435784825345
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2009,
+            "retrieval_score": 0.265044444960463
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2106,
+            "retrieval_score": 0.2633578593772914
+          }
+        ]
+      },
+      {
+        "case_id": "unanswerable-09",
+        "repository": "unanswerable",
+        "retrieval_metrics": {
+          "applicable": false,
+          "hit_at_k": null,
+          "recall_at_k": null,
+          "mrr": null,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5882,
+            "retrieval_score": 0.2858784579594149
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1082,
+            "retrieval_score": 0.2523282086716556
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 6656,
+            "retrieval_score": 0.25068579361405174
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 3711,
+            "retrieval_score": 0.23397185429603695
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8652,
+            "retrieval_score": 0.2321567134794581
+          }
+        ]
+      },
+      {
+        "case_id": "unanswerable-10",
+        "repository": "unanswerable",
+        "retrieval_metrics": {
+          "applicable": false,
+          "hit_at_k": null,
+          "recall_at_k": null,
+          "mrr": null,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1828,
+            "retrieval_score": 0.2645699469009457
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 149,
+            "retrieval_score": 0.2573296272656811
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 246,
+            "retrieval_score": 0.2435125190279388
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 149,
+            "retrieval_score": 0.23978113992246042
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 80,
+            "retrieval_score": 0.23896169959330937
+          }
+        ]
+      },
+      {
+        "case_id": "unanswerable-11",
+        "repository": "unanswerable",
+        "retrieval_metrics": {
+          "applicable": false,
+          "hit_at_k": null,
+          "recall_at_k": null,
+          "mrr": null,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 2664,
+            "retrieval_score": 0.379084548502169
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 2664,
+            "retrieval_score": 0.34978956778714454
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 143,
+            "retrieval_score": 0.32432922244580975
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2387,
+            "retrieval_score": 0.31977528601460725
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5261,
+            "retrieval_score": 0.31807621771845307
+          }
+        ]
+      },
+      {
+        "case_id": "unanswerable-12",
+        "repository": "unanswerable",
+        "retrieval_metrics": {
+          "applicable": false,
+          "hit_at_k": null,
+          "recall_at_k": null,
+          "mrr": null,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 3046,
+            "retrieval_score": 0.21156618174625086
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 9880,
+            "retrieval_score": 0.18654641089199553
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 5914,
+            "retrieval_score": 0.17718505660226036
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 12801,
+            "retrieval_score": 0.16974276325668003
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5063,
+            "retrieval_score": 0.16624751592494236
+          }
+        ]
+      },
+      {
+        "case_id": "unanswerable-13",
+        "repository": "unanswerable",
+        "retrieval_metrics": {
+          "applicable": false,
+          "hit_at_k": null,
+          "recall_at_k": null,
+          "mrr": null,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 2010,
+            "retrieval_score": 0.2777611210039881
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 2010,
+            "retrieval_score": 0.2658116672935362
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 917,
+            "retrieval_score": 0.2615150683376465
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 50,
+            "retrieval_score": 0.24043867699608268
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 136,
+            "retrieval_score": 0.23711031127548776
+          }
+        ]
+      },
+      {
+        "case_id": "unanswerable-14",
+        "repository": "unanswerable",
+        "retrieval_metrics": {
+          "applicable": false,
+          "hit_at_k": null,
+          "recall_at_k": null,
+          "mrr": null,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 3901,
+            "retrieval_score": 0.23938410854275172
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 7170,
+            "retrieval_score": 0.22122902186741822
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 3711,
+            "retrieval_score": 0.2006313669244213
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 3711,
+            "retrieval_score": 0.19910949489591256
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 3711,
+            "retrieval_score": 0.19511243554183044
+          }
+        ]
+      },
+      {
+        "case_id": "unanswerable-15",
+        "repository": "unanswerable",
+        "retrieval_metrics": {
+          "applicable": false,
+          "hit_at_k": null,
+          "recall_at_k": null,
+          "mrr": null,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4838,
+            "retrieval_score": 0.20501573877581936
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4877,
+            "retrieval_score": 0.19069971608861291
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 702,
+            "retrieval_score": 0.19044238360166899
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5412,
+            "retrieval_score": 0.18742351983914896
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 702,
+            "retrieval_score": 0.18733417387425577
+          }
+        ]
+      }
+    ],
+    "hybrid": [
+      {
+        "case_id": "generated-encode-starlette-1119",
+        "repository": "encode/starlette",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 0,
+          "recall_at_k": 0.0,
+          "mrr": 0.0,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4108,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 793,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5291,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 793,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 793,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-encode-starlette-408",
+        "repository": "encode/starlette",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "encode/starlette",
+              "issue_number": 408
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 408,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 408,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 671,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 671,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 763,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-encode-starlette-542",
+        "repository": "encode/starlette",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "encode/starlette",
+              "issue_number": 542
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 542,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 542,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 542,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 542,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1144,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-tiangolo-fastapi-2071",
+        "repository": "tiangolo/fastapi",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 0,
+          "recall_at_k": 0.0,
+          "mrr": 0.0,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 407,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1369,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 940,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 407,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 940,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-encode-starlette-383",
+        "repository": "encode/starlette",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "encode/starlette",
+              "issue_number": 383
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 383,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 383,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 814,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 814,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 383,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-tiangolo-fastapi-618",
+        "repository": "tiangolo/fastapi",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "tiangolo/fastapi",
+              "issue_number": 618
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 618,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 759,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 618,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 618,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 618,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-pydantic-pydantic-4598",
+        "repository": "pydantic/pydantic",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 0,
+          "recall_at_k": 0.0,
+          "mrr": 0.0,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1626,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 3295,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 3710,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1626,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1626,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-pydantic-pydantic-7461",
+        "repository": "pydantic/pydantic",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 0,
+          "recall_at_k": 0.0,
+          "mrr": 0.0,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1909,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1909,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1175,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 227,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1116,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-tiangolo-fastapi-1873",
+        "repository": "tiangolo/fastapi",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 0.3333333333333333,
+          "matched_expected": [
+            {
+              "repository": "tiangolo/fastapi",
+              "issue_number": 1873
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 656,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4893,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1873,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 656,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 656,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-tiangolo-fastapi-5108",
+        "repository": "tiangolo/fastapi",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 0,
+          "recall_at_k": 0.0,
+          "mrr": 0.0,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5676,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5676,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2350,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5676,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5676,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-pydantic-pydantic-11555",
+        "repository": "pydantic/pydantic",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "pydantic/pydantic",
+              "issue_number": 11555
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 11555,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 11555,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8548,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10445,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 7042,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-tiangolo-fastapi-5370",
+        "repository": "tiangolo/fastapi",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "tiangolo/fastapi",
+              "issue_number": 5370
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5370,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5370,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5370,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5370,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 253,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-pydantic-pydantic-5946",
+        "repository": "pydantic/pydantic",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "pydantic/pydantic",
+              "issue_number": 5946
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 5946,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 5946,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 5946,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 5946,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 5946,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-encode-starlette-953",
+        "repository": "encode/starlette",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "encode/starlette",
+              "issue_number": 953
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 953,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 970,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 970,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 970,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 953,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-tiangolo-fastapi-5988",
+        "repository": "tiangolo/fastapi",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 0.2,
+          "matched_expected": [
+            {
+              "repository": "tiangolo/fastapi",
+              "issue_number": 5988
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2349,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 782,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 3028,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 782,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5988,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-pydantic-pydantic-8499",
+        "repository": "pydantic/pydantic",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "pydantic/pydantic",
+              "issue_number": 8499
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8499,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8499,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8499,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8499,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8499,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-encode-starlette-1247",
+        "repository": "encode/starlette",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "encode/starlette",
+              "issue_number": 1247
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1247,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1247,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1247,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1247,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1247,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-pydantic-pydantic-10995",
+        "repository": "pydantic/pydantic",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "pydantic/pydantic",
+              "issue_number": 10995
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10995,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10995,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10995,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10995,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10995,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-encode-starlette-494",
+        "repository": "encode/starlette",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "encode/starlette",
+              "issue_number": 494
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 494,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 494,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 494,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 494,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 494,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-pydantic-pydantic-9575",
+        "repository": "pydantic/pydantic",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "pydantic/pydantic",
+              "issue_number": 9575
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 9575,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 9575,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 9575,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 7790,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8818,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-tiangolo-fastapi-10999",
+        "repository": "tiangolo/fastapi",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "tiangolo/fastapi",
+              "issue_number": 10999
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 10999,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 10999,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 10999,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 10999,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 10999,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-pydantic-pydantic-10131",
+        "repository": "pydantic/pydantic",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "pydantic/pydantic",
+              "issue_number": 10131
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10131,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10131,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10131,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10131,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10131,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-pydantic-pydantic-5997",
+        "repository": "pydantic/pydantic",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "pydantic/pydantic",
+              "issue_number": 5997
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 5997,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 5997,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 5997,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 5997,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 5997,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-encode-starlette-1295",
+        "repository": "encode/starlette",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "encode/starlette",
+              "issue_number": 1295
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1295,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 58,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 166,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 166,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 166,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-encode-starlette-127",
+        "repository": "encode/starlette",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "encode/starlette",
+              "issue_number": 127
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 127,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 9614,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 9614,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1292,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2625,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-encode-starlette-94",
+        "repository": "encode/starlette",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "encode/starlette",
+              "issue_number": 94
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 94,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 94,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 94,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 34,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 94,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-pydantic-pydantic-1060",
+        "repository": "pydantic/pydantic",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "pydantic/pydantic",
+              "issue_number": 1060
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1060,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 6261,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 6261,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 6261,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 5377,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-pydantic-pydantic-4999",
+        "repository": "pydantic/pydantic",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 0,
+          "recall_at_k": 0.0,
+          "mrr": 0.0,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1287,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1287,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1287,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1287,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 2160,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-tiangolo-fastapi-33",
+        "repository": "tiangolo/fastapi",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 0.3333333333333333,
+          "matched_expected": [
+            {
+              "repository": "tiangolo/fastapi",
+              "issue_number": 33
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1002,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1066,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 33,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2374,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1066,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-encode-starlette-1004",
+        "repository": "encode/starlette",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "encode/starlette",
+              "issue_number": 1004
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1004,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1265,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1083,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1004,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1265,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-encode-starlette-1454",
+        "repository": "encode/starlette",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "encode/starlette",
+              "issue_number": 1454
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1454,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1067,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1067,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1067,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 650,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-pydantic-pydantic-4108",
+        "repository": "pydantic/pydantic",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 0,
+          "recall_at_k": 0.0,
+          "mrr": 0.0,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1417,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1417,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1417,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1164,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1164,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-tiangolo-fastapi-1276",
+        "repository": "tiangolo/fastapi",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "tiangolo/fastapi",
+              "issue_number": 1276
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1276,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1276,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1276,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1276,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1276,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-pydantic-pydantic-11865",
+        "repository": "pydantic/pydantic",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "pydantic/pydantic",
+              "issue_number": 11865
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 11865,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 11865,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 11746,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10160,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10160,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-pydantic-pydantic-9866",
+        "repository": "pydantic/pydantic",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "pydantic/pydantic",
+              "issue_number": 9866
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 9866,
+            "retrieval_score": 0.9692307692307692
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 9866,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 9866,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 9866,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8575,
+            "retrieval_score": 0.4765625
+          }
+        ]
+      },
+      {
+        "case_id": "generated-tiangolo-fastapi-4268",
+        "repository": "tiangolo/fastapi",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "tiangolo/fastapi",
+              "issue_number": 4268
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4268,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4268,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4268,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4268,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4764,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-encode-starlette-726",
+        "repository": "encode/starlette",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "encode/starlette",
+              "issue_number": 726
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 726,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 726,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 726,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 437,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 437,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-tiangolo-fastapi-5724",
+        "repository": "tiangolo/fastapi",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "tiangolo/fastapi",
+              "issue_number": 5724
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5724,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 381,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5724,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 381,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 381,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-pydantic-pydantic-11491",
+        "repository": "pydantic/pydantic",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 0,
+          "recall_at_k": 0.0,
+          "mrr": 0.0,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 518,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 919,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 919,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4747,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1217,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-tiangolo-fastapi-14502",
+        "repository": "tiangolo/fastapi",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 0,
+          "recall_at_k": 0.0,
+          "mrr": 0.0,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "fastapi/fastapi",
+            "issue_number": 14496,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 14500,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 14499,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 14497,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 14501,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-tiangolo-fastapi-403",
+        "repository": "tiangolo/fastapi",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "tiangolo/fastapi",
+              "issue_number": 403
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 403,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2574,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2574,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2574,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 483,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-tiangolo-fastapi-261",
+        "repository": "tiangolo/fastapi",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "tiangolo/fastapi",
+              "issue_number": 261
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 261,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 261,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1785,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 261,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 512,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-encode-starlette-818",
+        "repository": "encode/starlette",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "encode/starlette",
+              "issue_number": 818
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 818,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 818,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 818,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 818,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 818,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-encode-starlette-855",
+        "repository": "encode/starlette",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "encode/starlette",
+              "issue_number": 855
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 855,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 801,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 855,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 583,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 754,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "generated-tiangolo-fastapi-2776",
+        "repository": "tiangolo/fastapi",
+        "retrieval_metrics": {
+          "applicable": true,
+          "hit_at_k": 1,
+          "recall_at_k": 1.0,
+          "mrr": 1.0,
+          "matched_expected": [
+            {
+              "repository": "tiangolo/fastapi",
+              "issue_number": 2776
+            }
+          ]
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2776,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2776,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2776,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2776,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2776,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "unanswerable-01",
+        "repository": "unanswerable",
+        "retrieval_metrics": {
+          "applicable": false,
+          "hit_at_k": null,
+          "recall_at_k": null,
+          "mrr": null,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 6666,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 12220,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8028,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 13173,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 12395,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "unanswerable-02",
+        "repository": "unanswerable",
+        "retrieval_metrics": {
+          "applicable": false,
+          "hit_at_k": null,
+          "recall_at_k": null,
+          "mrr": null,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 364,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 878,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4211,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2350,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 401,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "unanswerable-03",
+        "repository": "unanswerable",
+        "retrieval_metrics": {
+          "applicable": false,
+          "hit_at_k": null,
+          "recall_at_k": null,
+          "mrr": null,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 3900,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 2587,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 960,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 960,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 2587,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "unanswerable-04",
+        "repository": "unanswerable",
+        "retrieval_metrics": {
+          "applicable": false,
+          "hit_at_k": null,
+          "recall_at_k": null,
+          "mrr": null,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1710,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2501,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 551,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 671,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 545,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "unanswerable-05",
+        "repository": "unanswerable",
+        "retrieval_metrics": {
+          "applicable": false,
+          "hit_at_k": null,
+          "recall_at_k": null,
+          "mrr": null,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 4678,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8652,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8652,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 12696,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 6027,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "unanswerable-06",
+        "repository": "unanswerable",
+        "retrieval_metrics": {
+          "applicable": false,
+          "hit_at_k": null,
+          "recall_at_k": null,
+          "mrr": null,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4577,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 2032,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5261,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 11103,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8762,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "unanswerable-07",
+        "repository": "unanswerable",
+        "retrieval_metrics": {
+          "applicable": false,
+          "hit_at_k": null,
+          "recall_at_k": null,
+          "mrr": null,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 3297,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 3297,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1790,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1781,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 453,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "unanswerable-08",
+        "repository": "unanswerable",
+        "retrieval_metrics": {
+          "applicable": false,
+          "hit_at_k": null,
+          "recall_at_k": null,
+          "mrr": null,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2009,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2009,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2009,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2009,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2106,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "unanswerable-09",
+        "repository": "unanswerable",
+        "retrieval_metrics": {
+          "applicable": false,
+          "hit_at_k": null,
+          "recall_at_k": null,
+          "mrr": null,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5882,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1082,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 6656,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 3711,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8652,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "unanswerable-10",
+        "repository": "unanswerable",
+        "retrieval_metrics": {
+          "applicable": false,
+          "hit_at_k": null,
+          "recall_at_k": null,
+          "mrr": null,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1828,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 149,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 246,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 149,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 80,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "unanswerable-11",
+        "repository": "unanswerable",
+        "retrieval_metrics": {
+          "applicable": false,
+          "hit_at_k": null,
+          "recall_at_k": null,
+          "mrr": null,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 2664,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 2664,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 143,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2387,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5261,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "unanswerable-12",
+        "repository": "unanswerable",
+        "retrieval_metrics": {
+          "applicable": false,
+          "hit_at_k": null,
+          "recall_at_k": null,
+          "mrr": null,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 3046,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 9880,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 5914,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 12801,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5063,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "unanswerable-13",
+        "repository": "unanswerable",
+        "retrieval_metrics": {
+          "applicable": false,
+          "hit_at_k": null,
+          "recall_at_k": null,
+          "mrr": null,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 2010,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 2010,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 917,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 50,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 136,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "unanswerable-14",
+        "repository": "unanswerable",
+        "retrieval_metrics": {
+          "applicable": false,
+          "hit_at_k": null,
+          "recall_at_k": null,
+          "mrr": null,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 3901,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 7170,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 3711,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 3711,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 3711,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      },
+      {
+        "case_id": "unanswerable-15",
+        "repository": "unanswerable",
+        "retrieval_metrics": {
+          "applicable": false,
+          "hit_at_k": null,
+          "recall_at_k": null,
+          "mrr": null,
+          "matched_expected": []
+        },
+        "retrieved_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4838,
+            "retrieval_score": 0.5
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4877,
+            "retrieval_score": 0.49193548387096775
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 702,
+            "retrieval_score": 0.48412698412698413
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5412,
+            "retrieval_score": 0.4765625
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 702,
+            "retrieval_score": 0.46923076923076923
+          }
+        ]
+      }
+    ]
+  }
+}
