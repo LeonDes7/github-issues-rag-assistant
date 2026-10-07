@@ -6,6 +6,7 @@
 
 # Python
 __pycache__/
+.question_embeddings.json
 *.py[cod]
 *.egg-info/
 .venv/
