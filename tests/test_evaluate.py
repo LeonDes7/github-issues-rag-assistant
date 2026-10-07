@@ -195,6 +195,59 @@ class EvaluationTests(unittest.TestCase):
         )
         self.assertIn("not ground-truth", metrics["heuristic_case_note"])
 
+    def test_summary_includes_full_set_and_per_repository_retrieval_metrics(self):
+        results = [
+            {
+                "verification_status": "manually_verified",
+                "expected_issues": [
+                    {"repository": "tiangolo/fastapi", "issue_number": 1}
+                ],
+                "retrieval_metrics": {
+                    "applicable": True,
+                    "hit_at_k": 1,
+                    "recall_at_k": 1.0,
+                    "mrr": 1.0,
+                },
+                "generation_metrics": {
+                    "abstained_appropriately": True,
+                    "citations_valid": True,
+                    "grounded_in_retrieved_chunks": True,
+                },
+            },
+            {
+                "verification_status": "heuristic",
+                "expected_issues": [
+                    {"repository": "tiangolo/fastapi", "issue_number": 2}
+                ],
+                "retrieval_metrics": {
+                    "applicable": True,
+                    "hit_at_k": 0,
+                    "recall_at_k": 0.0,
+                    "mrr": 0.0,
+                },
+                "generation_metrics": {
+                    "abstained_appropriately": True,
+                    "citations_valid": True,
+                    "grounded_in_retrieved_chunks": True,
+                },
+            },
+        ]
+
+        metrics = evaluate.summarize_metrics(results)
+
+        self.assertEqual(
+            metrics["retrieval_all_answerable_cases"]["scored_cases"],
+            2,
+        )
+        self.assertEqual(
+            metrics["retrieval_all_answerable_cases"]["hit_at_k"],
+            0.5,
+        )
+        self.assertEqual(
+            metrics["retrieval_by_repository"]["tiangolo/fastapi"]["mrr"],
+            0.5,
+        )
+
     def test_concise_report_includes_only_failed_cases(self):
         result = {
             "case_id": "miss",

@@ -285,6 +285,15 @@ def _mean(values: list[float]) -> float | None:
     return sum(values) / len(values)
 
 
+def _retrieval_summary(items: list[dict[str, Any]]) -> dict[str, Any]:
+    return {
+        "scored_cases": len(items),
+        "hit_at_k": _mean([item["hit_at_k"] for item in items]),
+        "recall_at_k": _mean([item["recall_at_k"] for item in items]),
+        "mrr": _mean([item["mrr"] for item in items]),
+    }
+
+
 def summarize_metrics(results: list[dict[str, Any]]) -> dict[str, Any]:
     by_status: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for result in results:
@@ -334,8 +343,33 @@ def summarize_metrics(results: list[dict[str, Any]]) -> dict[str, Any]:
         "manually_verified",
         {"scored_cases": 0, "hit_at_k": None, "recall_at_k": None, "mrr": None},
     )
+    all_answerable_retrieval = [
+        result["retrieval_metrics"]
+        for result in results
+        if result["retrieval_metrics"]["applicable"]
+    ]
+    by_repository: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for result in results:
+        metrics = result["retrieval_metrics"]
+        if not metrics["applicable"]:
+            continue
+        repositories = {
+            expected["repository"]
+            for expected in result.get("expected_issues", [])
+            if expected.get("repository")
+        }
+        for repository in repositories:
+            by_repository[repository].append(metrics)
+
     return {
         "case_count": len(results),
+        "retrieval_all_answerable_cases": _retrieval_summary(
+            all_answerable_retrieval
+        ),
+        "retrieval_by_repository": {
+            repository: _retrieval_summary(group)
+            for repository, group in sorted(by_repository.items())
+        },
         "retrieval_manual_verified_only": verified_retrieval,
         "retrieval_by_verification_status": retrieval_by_status,
         "generation_by_verification_status": generation_by_status,

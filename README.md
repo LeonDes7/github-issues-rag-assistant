@@ -245,10 +245,24 @@ resolution and are reported separately; that signal is uncertain and is not
 treated as guaranteed ground truth. Unresolved cases intentionally expect an
 abstention.
 
-Run the suite locally with top-5 retrieval:
+Build a larger 50-case set (15 randomly sampled closed issues per repository,
+plus five deliberately unanswerable questions) and a review-friendly CSV with:
 
 ```powershell
-python -m rag_assistant.evaluate --top-k 5
+python scripts/build_evaluation_set.py --seed 42
+```
+
+This uses the configured Postgres corpus and generation model. It writes
+`evaluation_cases.generated.jsonl` and `evaluation_cases.review.csv`; review
+the issue IDs and questions in the CSV, then mark verified cases in the JSONL
+before treating them as ground truth.
+
+Run the generated set locally with top-5 retrieval:
+
+```powershell
+python -m rag_assistant.evaluate `
+  --cases evaluation_cases.generated.jsonl `
+  --top-k 5
 ```
 
 The command calls the local retrieval/generation components, prints a concise
@@ -256,10 +270,10 @@ metrics summary and up to five failure examples, and stores run metadata and
 per-case outputs in `public.rag_evaluation_runs` and
 `public.rag_evaluation_case_results`. Stored metadata includes UTC timestamps,
 embedding and generation model names, `top_k`, case counts, and metrics.
-Retrieval Hit@k, Recall@k, and MRR are computed against expected repositories
-and issue numbers or issue URLs. The primary retrieval summary uses only
-`manually_verified` cases; heuristic cases are reported separately as
-exploratory results.
+Retrieval Hit@k, Recall@k, and MRR are computed over every answerable case,
+with both full-set and per-repository breakdowns. Verification-status
+breakdowns remain available so generated, not-yet-reviewed labels are clearly
+distinguished from manually verified cases.
 
 Generation evaluation records appropriate abstention, valid citation
 references, and whether factual sentences have cited evidence with lexical
