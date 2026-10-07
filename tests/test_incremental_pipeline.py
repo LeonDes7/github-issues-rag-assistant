@@ -113,7 +113,7 @@ class IncrementalPipelineTests(unittest.TestCase):
                 incremental_pipeline.embed_issue_chunks,
                 "run_embedding",
                 return_value={"chunk_count": 9},
-            ),
+            ) as run_embedding,
             patch.object(
                 incremental_pipeline.data_quality,
                 "check_bronze_layer",
@@ -151,6 +151,10 @@ class IncrementalPipelineTests(unittest.TestCase):
         self.assertEqual(second["silver"]["total_rows_in_rds"], 7)
         self.assertEqual(first["totals"]["chunks"], 9)
         self.assertEqual(second["totals"]["chunks"], 9)
+        self.assertEqual(
+            run_embedding.call_args.kwargs,
+            {"limit": None, "repositories": [repository]},
+        )
         self.assertEqual(watermarks[repository], updated_at)
 
 

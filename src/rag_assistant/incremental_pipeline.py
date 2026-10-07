@@ -147,7 +147,10 @@ def run_pipeline(repositories: list[str] | None = None) -> dict[str, Any]:
         database_settings,
         bronze_quality,
     )
-    gold_result = embed_issue_chunks.run_embedding(limit=None)
+    gold_result = embed_issue_chunks.run_embedding(
+        limit=None,
+        repositories=selected_repositories,
+    )
     gold_quality = data_quality.check_gold_layer(
         database_settings,
         silver_quality,
