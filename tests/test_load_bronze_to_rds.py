@@ -12,7 +12,7 @@ def source_record(
     closed_at="2026-01-03T00:00:00Z",
 ):
     return {
-        "repository": "fastapi/fastapi",
+        "repository": loader.BRONZE_SOURCES[0][0],
         "bronze_prefix": loader.BRONZE_SOURCES[0][1],
         "source_line_number": number,
         "raw": {
@@ -79,7 +79,7 @@ class BronzeRdsLoaderTests(unittest.TestCase):
             }
             for repository, _ in loader.BRONZE_SOURCES
         }
-        counts["fastapi/fastapi"]["source_records"] = 2
+        counts[loader.BRONZE_SOURCES[0][0]]["source_records"] = 2
 
         cleaned, summary = loader.validate_and_clean(sources, counts)
 
@@ -88,7 +88,7 @@ class BronzeRdsLoaderTests(unittest.TestCase):
         self.assertEqual(summary["duplicate_records"], 1)
         self.assertEqual(summary["missing_bodies"], 1)
         self.assertEqual(summary["missing_heuristic_resolutions"], 0)
-        self.assertEqual(counts["fastapi/fastapi"]["valid_records"], 1)
+        self.assertEqual(counts[loader.BRONZE_SOURCES[0][0]]["valid_records"], 1)
 
     def test_no_resolution_when_closed_date_is_missing(self):
         cleaned = loader.clean_record(source_record(closed_at=None))

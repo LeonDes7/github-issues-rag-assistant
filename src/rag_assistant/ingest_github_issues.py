@@ -13,6 +13,7 @@ from urllib.parse import urlparse
 
 import boto3
 import requests
+from botocore.exceptions import ClientError
 from dotenv import load_dotenv
 from requests import Response, Session
 
@@ -118,12 +119,14 @@ def verify_github_url(url: str) -> None:
         raise ValueError("Refusing to send GitHub credentials to an untrusted URL")
 
 
-def collect_closed_issues(
+def iter_closed_issues(
     session: Session,
     repository: str,
-    target_records: int,
-    max_entries_to_scan: int,
-) -> tuple[list[dict[str, Any]], dict[str, int]]:
+    counts: dict[str, int],
+    target_records: int | None = None,
+    max_entries_to_scan: int | None = None,
+    issue_exists: Any | None = None,
+):
     issue_url = f"{API_ROOT}/repos/{repository}/issues"
     verify_github_url(issue_url)
     params: dict[str, Any] | None = {
@@ -131,18 +134,17 @@ def collect_closed_issues(
         "per_page": 100,
         "page": 1,
     }
-    records: list[dict[str, Any]] = []
-    counts = {
-        "issues_seen": 0,
-        "pull_requests_skipped": 0,
-        "zero_comment_issues_skipped": 0,
-        "records_uploaded": 0,
-    }
-
     while (
         issue_url
-        and counts["issues_seen"] < max_entries_to_scan
-        and len(records) < target_records
+        and (
+            max_entries_to_scan is None
+            or counts["issues_seen"] < max_entries_to_scan
+        )
+        and (
+            target_records is None
+            or counts["records_uploaded"] + counts["resumed_issues"]
+            < target_records
+        )
     ):
         verify_github_url(issue_url)
         page, next_url = get_json(session, issue_url, params=params)
@@ -152,8 +154,15 @@ def collect_closed_issues(
 
         for issue in page:
             if (
-                counts["issues_seen"] >= max_entries_to_scan
-                or len(records) >= target_records
+                (
+                    max_entries_to_scan is not None
+                    and counts["issues_seen"] >= max_entries_to_scan
+                )
+                or (
+                    target_records is not None
+                    and counts["records_uploaded"] + counts["resumed_issues"]
+                    >= target_records
+                )
             ):
                 break
             counts["issues_seen"] += 1
@@ -162,8 +171,11 @@ def collect_closed_issues(
                 counts["pull_requests_skipped"] += 1
                 continue
 
-            if issue.get("comments", 0) == 0:
-                counts["zero_comment_issues_skipped"] += 1
+            issue_number = issue.get("number")
+            if isinstance(issue_number, bool) or not isinstance(issue_number, int):
+                raise ValueError("GitHub issue response has an invalid issue number")
+            if issue_exists is not None and issue_exists(issue_number):
+                counts["resumed_issues"] += 1
                 continue
 
             comments_url = issue.get("comments_url")
@@ -191,15 +203,37 @@ def collect_closed_issues(
                     )
                 comments.extend(comment_page)
 
-            if not comments:
-                counts["zero_comment_issues_skipped"] += 1
-                continue
-
-            records.append({"issue": issue, "comments": comments})
+            counts["comments_uploaded"] += len(comments)
+            counts["records_uploaded"] += 1
+            yield {"issue": issue, "comments": comments}
 
         issue_url = next_url
 
-    counts["records_uploaded"] = len(records)
+
+def collect_closed_issues(
+    session: Session,
+    repository: str,
+    target_records: int | None = None,
+    max_entries_to_scan: int | None = None,
+    issue_exists: Any | None = None,
+) -> tuple[list[dict[str, Any]], dict[str, int]]:
+    counts = {
+        "issues_seen": 0,
+        "pull_requests_skipped": 0,
+        "resumed_issues": 0,
+        "records_uploaded": 0,
+        "comments_uploaded": 0,
+    }
+    records = list(
+        iter_closed_issues(
+            session,
+            repository,
+            counts,
+            target_records=target_records,
+            max_entries_to_scan=max_entries_to_scan,
+            issue_exists=issue_exists,
+        )
+    )
     return records, counts
 
 
@@ -217,12 +251,23 @@ def required_environment() -> dict[str, Any]:
         raise ValueError(f"Missing required .env settings: {', '.join(missing)}")
     repositories = [
         repository.strip()
-        for repository in os.getenv("GITHUB_REPOS", "fastapi/fastapi").split(",")
+        for repository in os.getenv(
+            "GITHUB_REPOS",
+            "tiangolo/fastapi,encode/starlette,pydantic/pydantic",
+        ).split(",")
         if repository.strip()
     ]
     try:
-        target_records = int(os.getenv("TARGET_RECORDS_PER_REPO", "100"))
-        max_entries = int(os.getenv("MAX_ENTRIES_TO_SCAN_PER_REPO", "3000"))
+        target_records = (
+            int(os.environ["TARGET_RECORDS_PER_REPO"])
+            if os.getenv("TARGET_RECORDS_PER_REPO")
+            else None
+        )
+        max_entries = (
+            int(os.environ["MAX_ENTRIES_TO_SCAN_PER_REPO"])
+            if os.getenv("MAX_ENTRIES_TO_SCAN_PER_REPO")
+            else None
+        )
     except ValueError as exc:
         raise ValueError(
             "TARGET_RECORDS_PER_REPO and MAX_ENTRIES_TO_SCAN_PER_REPO "
@@ -230,7 +275,9 @@ def required_environment() -> dict[str, Any]:
         ) from exc
     if not repositories:
         raise ValueError("GITHUB_REPOS must contain at least one repository")
-    if target_records < 1 or max_entries < 1:
+    if (target_records is not None and target_records < 1) or (
+        max_entries is not None and max_entries < 1
+    ):
         raise ValueError("Repository target and scan limit must be positive")
     return {
         **{name: os.environ[name] for name in credential_names},
@@ -254,8 +301,8 @@ def s3_client(settings: dict[str, str]):
 
 def ingest_repository(
     repository: str,
-    target_records: int,
-    max_entries_to_scan: int,
+    target_records: int | None,
+    max_entries_to_scan: int | None,
     settings: dict[str, Any],
     client: Any,
 ) -> dict[str, Any]:
@@ -270,45 +317,63 @@ def ingest_repository(
             "User-Agent": "trustworthy-rag-assistant",
         }
     )
+    ingested_at = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
+    safe_repository = re.sub(r"[^A-Za-z0-9_.-]", "__", repository)
+    prefix = f"bronze/github/repo={safe_repository}"
+    counts = {
+        "issues_seen": 0,
+        "pull_requests_skipped": 0,
+        "resumed_issues": 0,
+        "records_uploaded": 0,
+        "comments_uploaded": 0,
+    }
+
+    def object_exists(issue_number: int) -> bool:
+        try:
+            client.head_object(
+                Bucket=settings["S3_BUCKET"],
+                Key=f"{prefix}/issue={issue_number}.json",
+            )
+        except ClientError as exc:
+            code = str(exc.response.get("Error", {}).get("Code", ""))
+            if code in {"404", "NoSuchKey", "NotFound"}:
+                return False
+            raise
+        return True
+
+    issues_key = f"{prefix}/issue=<issue_number>.json"
     try:
-        records, counts = collect_closed_issues(
+        records = iter_closed_issues(
             github_session,
             repository,
-            target_records,
-            max_entries_to_scan,
+            counts,
+            target_records=target_records,
+            max_entries_to_scan=max_entries_to_scan,
+            issue_exists=object_exists,
         )
+        for record in records:
+            issue_number = record["issue"]["number"]
+            client.put_object(
+                Bucket=settings["S3_BUCKET"],
+                Key=f"{prefix}/issue={issue_number}.json",
+                Body=json.dumps(
+                    record,
+                    ensure_ascii=False,
+                    separators=(",", ":"),
+                ).encode("utf-8"),
+                ContentType="application/json",
+            )
     finally:
         github_session.close()
 
-    ingested_at = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
-    safe_repository = re.sub(r"[^A-Za-z0-9_.-]", "__", repository)
-    prefix = (
-        f"bronze/github/repo={safe_repository}/"
-        f"ingested_at={ingested_at}"
-    )
-    issues_key = f"{prefix}/issues.jsonl"
-    manifest_key = f"{prefix}/manifest.json"
+    manifest_key = f"{prefix}/runs/{ingested_at}/manifest.json"
     manifest = {
         "repository": repository,
         "ingested_at": ingested_at,
-        "issue_entry_limit": max_entries_to_scan,
         "target_records_per_repo": target_records,
         "max_entries_to_scan_per_repo": max_entries_to_scan,
         **counts,
     }
-    lines = (
-        "\n".join(
-            json.dumps(record, ensure_ascii=False, separators=(",", ":"))
-            for record in records
-        )
-        + ("\n" if records else "")
-    )
-    client.put_object(
-        Bucket=settings["S3_BUCKET"],
-        Key=issues_key,
-        Body=lines.encode("utf-8"),
-        ContentType="application/x-ndjson",
-    )
     client.put_object(
         Bucket=settings["S3_BUCKET"],
         Key=manifest_key,
@@ -345,8 +410,9 @@ def run_ingestion(
         for key in (
             "issues_seen",
             "pull_requests_skipped",
-            "zero_comment_issues_skipped",
+            "resumed_issues",
             "records_uploaded",
+            "comments_uploaded",
         )
     }
     return {
@@ -366,12 +432,12 @@ def main() -> None:
     parser.add_argument(
         "--target-records-per-repo",
         type=int,
-        help="Valid issue records to collect from each repository",
+        help="Optional upper bound on new or resumed issue records per repository",
     )
     parser.add_argument(
         "--max-entries-to-scan-per-repo",
         type=int,
-        help="Maximum GitHub issue entries to inspect per repository",
+        help="Optional upper bound on GitHub issue entries to inspect per repository",
     )
     args = parser.parse_args()
 
@@ -394,7 +460,9 @@ def main() -> None:
         )
         if not repositories or any(not repository for repository in repositories):
             parser.error("At least one non-empty repository is required")
-        if target_records < 1 or max_entries < 1:
+        if (target_records is not None and target_records < 1) or (
+            max_entries is not None and max_entries < 1
+        ):
             parser.error("Record target and scan limit must be positive integers")
         for repository in repositories:
             if not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", repository):

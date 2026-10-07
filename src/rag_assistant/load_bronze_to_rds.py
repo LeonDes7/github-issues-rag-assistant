@@ -19,7 +19,7 @@ from psycopg.types.json import Jsonb
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 BRONZE_SOURCES = (
     (
-        "fastapi/fastapi",
+        "tiangolo/fastapi",
         "bronze/github/repo=fastapi__fastapi/ingested_at=20261005T101821560700Z/",
     ),
     (
@@ -161,39 +161,71 @@ def read_bronze_records(
     }
     total_rejected = 0
 
-    for repository, prefix in BRONZE_SOURCES:
-        response = client.get_object(
-            Bucket=bucket,
-            Key=f"{prefix}issues.jsonl",
-        )
-        body = response["Body"]
-        try:
-            content = body.read()
-        finally:
-            body.close()
+    source_keys: dict[str, list[tuple[str, str]]] = {
+        repository: [] for repository, _ in BRONZE_SOURCES
+    }
+    for repository, _ in BRONZE_SOURCES:
+        safe_repository = re.sub(r"[^A-Za-z0-9_.-]", "__", repository)
+        list_prefix = f"bronze/github/repo={safe_repository}/issue="
+        continuation_token = None
+        while True:
+            parameters: dict[str, Any] = {"Bucket": bucket, "Prefix": list_prefix}
+            if continuation_token:
+                parameters["ContinuationToken"] = continuation_token
+            response = client.list_objects_v2(**parameters)
+            if not isinstance(response, dict):
+                break
+            for item in response.get("Contents", []):
+                key = item.get("Key")
+                if isinstance(key, str) and key.endswith(".json"):
+                    source_keys[repository].append((key, list_prefix))
+            if not response.get("IsTruncated"):
+                break
+            continuation_token = response.get("NextContinuationToken")
+            if not continuation_token:
+                raise RuntimeError("S3 returned a truncated page without a continuation token")
 
-        for line_number, line in enumerate(content.decode("utf-8").splitlines(), 1):
-            if not line.strip():
-                continue
-            source_counts[repository]["source_records"] += 1
+    for repository, legacy_prefix in BRONZE_SOURCES:
+        source_keys[repository].append(
+            (f"{legacy_prefix}issues.jsonl", legacy_prefix)
+        )
+
+    for repository, keyed_sources in source_keys.items():
+        for key, prefix in keyed_sources:
+            response = client.get_object(Bucket=bucket, Key=key)
+            body = response["Body"]
             try:
-                raw_record = json.loads(line)
-            except json.JSONDecodeError:
-                source_counts[repository]["rejected_records"] += 1
-                total_rejected += 1
-                continue
-            if not isinstance(raw_record, dict):
-                source_counts[repository]["rejected_records"] += 1
-                total_rejected += 1
-                continue
-            sources.append(
-                {
-                    "repository": repository,
-                    "bronze_prefix": prefix,
-                    "source_line_number": line_number,
-                    "raw": raw_record,
-                }
+                content = body.read()
+            finally:
+                body.close()
+
+            lines = (
+                content.decode("utf-8").splitlines()
+                if key.endswith(".jsonl")
+                else [content.decode("utf-8")]
             )
+            for line_number, line in enumerate(lines, 1):
+                if not line.strip():
+                    continue
+                source_counts[repository]["source_records"] += 1
+                try:
+                    raw_record = json.loads(line)
+                except json.JSONDecodeError:
+                    source_counts[repository]["rejected_records"] += 1
+                    total_rejected += 1
+                    continue
+                if not isinstance(raw_record, dict):
+                    source_counts[repository]["rejected_records"] += 1
+                    total_rejected += 1
+                    continue
+                sources.append(
+                    {
+                        "repository": repository,
+                        "bronze_prefix": prefix,
+                        "source_line_number": line_number,
+                        "raw": raw_record,
+                    }
+                )
 
     return sources, source_counts, total_rejected
 

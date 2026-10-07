@@ -45,28 +45,19 @@ keys when those options are available.
 
 ## Step 1: GitHub Issues to the S3 Bronze layer
 
-The ingestion command collects valid closed issues with comments from one or
-more public repositories via the GitHub REST API. Pull requests are excluded,
-every retained issue's comments are fetched across all pages, and issues
-without comments are skipped. GitHub issue and comment response objects are
-stored without content transformation, as one JSON object per line.
+The ingestion command collects all closed issues from the configured public
+repositories via the GitHub REST API. Pull requests are excluded, each issue's
+comments are fetched across all pages, and issues without comments are retained
+with an empty comment list. Raw GitHub issue and comment response objects are
+stored unchanged as one JSON object per S3 key. The default repositories are
+`tiangolo/fastapi`, `encode/starlette`, and `pydantic/pydantic`.
 
-Set `GITHUB_TOKEN`, `GITHUB_REPOS`, `TARGET_RECORDS_PER_REPO`,
-`MAX_ENTRIES_TO_SCAN_PER_REPO`, `AWS_ACCESS_KEY_ID`,
+Set `GITHUB_TOKEN`, `GITHUB_REPOS`, `AWS_ACCESS_KEY_ID`,
 `AWS_SECRET_ACCESS_KEY`, `AWS_DEFAULT_REGION`, and `S3_BUCKET` in the local
 `.env` file. `AWS_SESSION_TOKEN` is optional. Separate repository names with
 commas and omit spaces where possible. The token is sent only to
 `api.github.com`; AWS credentials are used only by the S3 client. `.env` is
 ignored by Git.
-
-For example, this configuration targets 100 records per repository and scans
-no more than 3,000 GitHub issue entries per repository:
-
-```dotenv
-GITHUB_REPOS=fastapi/fastapi,encode/starlette,pydantic/pydantic
-TARGET_RECORDS_PER_REPO=100
-MAX_ENTRIES_TO_SCAN_PER_REPO=3000
-```
 
 Run from the project root after installing dependencies:
 
@@ -74,32 +65,30 @@ Run from the project root after installing dependencies:
 python -m rag_assistant.ingest_github_issues
 ```
 
-For each repository the script continues across issue pages until it collects
-the configured target of valid records or reaches the maximum number of API
-issue entries scanned. Pull requests and issues with no comments are counted
-as skipped entries and do not satisfy the target. If the scan limit is reached
-first, the manifest records the partial count. A command-line override is
-available with `--repos`, `--target-records-per-repo`, and
-`--max-entries-to-scan-per-repo`.
+The default is an unbounded historical backfill. Optional command-line or
+environment limits (`--target-records-per-repo`,
+`--max-entries-to-scan-per-repo`) are available only for deliberately partial
+runs. Requests use GitHub's pagination links, bounded retries with exponential
+backoff, and primary/secondary rate-limit handling based on response headers.
 
-Each run gets its own UTC timestamped S3 prefix, so reruns do not overwrite
-prior Bronze data:
+Each issue is written immediately, so a failed run resumes by skipping
+already-present S3 objects rather than repeating comment downloads. The stable
+keys are:
 
 ```text
-bronze/github/repo=fastapi__fastapi/ingested_at=<timestamp>/issues.jsonl
-bronze/github/repo=fastapi__fastapi/ingested_at=<timestamp>/manifest.json
+bronze/github/repo=tiangolo__fastapi/issue=<number>.json
+bronze/github/repo=tiangolo__fastapi/runs/<timestamp>/manifest.json
 ```
 
-The manifest preserves the repository, ingestion timestamp, issue-entry limit,
-issues seen, pull requests skipped, zero-comment issues skipped, and records
-uploaded, and includes the target and scan safety limit. Requests use timeouts,
-pagination, bounded retries with exponential backoff, and GitHub
-primary/secondary rate-limit handling.
+The manifest reports scanned issues, pull requests skipped, resumed issues,
+uploaded issues, and downloaded comments. Existing timestamped Bronze JSONL
+objects remain readable by the loader.
 
 ## Step 2: Clean the selected Bronze data and load RDS
 
-The loader reads only these three fixed Bronze `issues.jsonl` objects; it
-does not modify or replace any Bronze data:
+The loader discovers per-issue objects under the three configured repository
+prefixes and also accepts the earlier selected Bronze JSONL objects; it does
+not modify or replace any Bronze data:
 
 ```text
 bronze/github/repo=fastapi__fastapi/ingested_at=20261005T101821560700Z/issues.jsonl
