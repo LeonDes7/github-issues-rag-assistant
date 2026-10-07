@@ -167,6 +167,9 @@ def load_settings() -> dict[str, Any]:
     ))
     if not repositories:
         raise RuntimeError("RAG_REPOSITORIES must contain at least one repository")
+    context_mode = os.getenv("RAG_CONTEXT_MODE", "issues").strip().lower()
+    if context_mode not in {"chunks", "issues"}:
+        raise RuntimeError("RAG_CONTEXT_MODE must be 'chunks' or 'issues'")
     confidence_threshold = _float_setting(
         "RAG_CONFIDENCE_THRESHOLD",
         DEFAULT_CONFIDENCE_THRESHOLD,
@@ -184,6 +187,7 @@ def load_settings() -> dict[str, Any]:
         "RAG_RETRIEVAL_MODE": retrieval_mode,
         "RAG_HNSW_EF_SEARCH": hnsw_ef_search,
         "RAG_REPOSITORIES": repositories,
+        "RAG_CONTEXT_MODE": context_mode,
         "RAG_CONFIDENCE_THRESHOLD": confidence_threshold,
         "OPENAI_EMBEDDING_COST_PER_MILLION_TOKENS_USD": _float_setting(
             "OPENAI_EMBEDDING_COST_PER_MILLION_TOKENS_USD",
@@ -472,6 +476,26 @@ def retrieve_chunks(
     ]
 
 
+def retrieve_context(connection, embedding, top_k, retrieval_mode="vector", query_text=None, context_mode=None):
+    mode = context_mode or get_settings().get("RAG_CONTEXT_MODE", "issues")
+    if mode not in {"chunks", "issues"}:
+        raise ValueError("context_mode must be 'chunks' or 'issues'")
+    candidates = max(30, top_k) if mode == "issues" else top_k
+    kwargs = {"retrieval_mode": "hybrid", "query_text": query_text} if retrieval_mode == "hybrid" else {}
+    chunks = retrieve_chunks(connection, embedding, candidates, **kwargs)
+    if mode == "chunks":
+        return chunks
+    seen, selected = set(), []
+    for chunk in chunks:
+        key = (chunk["repository"], chunk["issue_number"])
+        if key not in seen:
+            seen.add(key)
+            selected.append(chunk)
+            if len(selected) == top_k:
+                break
+    return selected
+
+
 def generate_grounded_answer(
     client: OpenAI,
     model: str,
@@ -645,7 +669,7 @@ def create_app() -> FastAPI:
                 raise RuntimeError("Query embedding has an unexpected vector size")
             retrieval_mode = settings.get("RAG_RETRIEVAL_MODE", "vector")
             if retrieval_mode == "hybrid":
-                retrieved = retrieve_chunks(
+                retrieved = retrieve_context(
                     connection,
                     query_embedding,
                     request.top_k,
@@ -653,7 +677,7 @@ def create_app() -> FastAPI:
                     query_text=request.question,
                 )
             else:
-                retrieved = retrieve_chunks(
+                retrieved = retrieve_context(
                     connection,
                     query_embedding,
                     request.top_k,

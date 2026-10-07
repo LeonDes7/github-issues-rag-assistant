@@ -1,0 +1,17 @@
+# Archive and API context checkpoint
+
+Archive only was approved. All database rows remain: 76 alias issues, 632 chunks (including embeddings), and 76 classifications. The compressed JSONL files and schema/issue-number manifest are under the git-ignored `archives/` directory. `alias_archive_receipt.json` records counts, hashes, round-trip verification, and the scan for configured credential values and recognized credential patterns. No environment or connection settings were exported. The archive is a local copy; retained alias rows remain excluded from production retrieval.
+
+The configured storage names are `tiangolo/fastapi`, `encode/starlette`, and `pydantic/pydantic`. The first name matches the existing corpus even though GitHub redirects that repository. `GITHUB_REPOS` now governs ingestion, incremental loading, standalone embedding, and Bronze validation; Silver and Gold checks inherit the same scope. Explicit job overrides must be a subset. Configuring both FastAPI aliases is rejected. Job payloads cannot add an unconfigured alias. No ingestion or embedding run was performed.
+
+Read-only AWS audit in `us-east-2` found only the API Lambda and no matching ingestion Scheduler. See `pipeline_scope_audit.json` for the additional legacy EventBridge rule check. No AWS resources or deployed code changed. Future ingestion Lambda deployments must use the updated code and the same `GITHUB_REPOS` configuration.
+
+Scoped quality checks passed: 9,555 issues, 43,535 comments, 63,002 embedded chunks. The unscoped table still contains the additional 632 alias chunks. Bronze's 276 duplicate source records are deduplicated by the existing loader and are separate from those alias rows. Fourteen issues have no chunkable content.
+
+`RAG_CONTEXT_MODE=issues` is the API default: retrieve 30 ranked chunks, keep the highest-ranked chunk per `(repository, issue_number)`, then use up to five issues. `RAG_CONTEXT_MODE=chunks` selects the old five-chunk mode. Request `top_k` still controls context size; the comparison uses five. `RAG_HNSW_EF_SEARCH=100` and configured repository filtering apply to both modes. Collapse does not change vector scores or the confidence threshold. Lambda deployment remains pending.
+
+Ten frozen answerable cases cover three FastAPI, three Starlette, and four Pydantic cases, including the three retrieval successes added by collapse. Both modes use the same generation prompt and model. Human assessment of answer quality is pending. No generation calls have been made.
+
+Rerun checks: `python -m unittest discover -s tests -q`; `python scripts/run_quality_report.py` (read-only AWS/RDS); `python scripts/prepare_context_comparison.py` (cached embeddings, read-only retrieval, free model-access check). Use the repository virtual environment.
+
+Paid comparison, only after explicit approval: `python scripts/generate_context_comparison.py --approved-budget-usd 0.02`. It uses GPT-5 nano, minimal reasoning, 1,200 completion tokens per call, no automatic retries, and saves each result before continuing. Existing output prevents accidental repeated spend. Twenty calls: estimated 30,970 input tokens; $0.0047485 with 400 output tokens each; $0.0111485 at the output cap, using $0.05/$0.40 per million input/output tokens. Input token counts and those costs are estimates; measured usage will be recorded after the approved run. The $1 cumulative user cap continues to apply.

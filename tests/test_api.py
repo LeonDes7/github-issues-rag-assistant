@@ -35,6 +35,7 @@ class ApiTests(unittest.TestCase):
     def setUp(self):
         api.get_settings.cache_clear()
         self.settings = {
+            "RAG_CONTEXT_MODE": "chunks",
             "OPENAI_API_KEY": "test-api-key",
             "PGHOST": "db-host",
             "PGDATABASE": "db-name",
@@ -233,6 +234,17 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(response.json()["performance"]["llm_latency_ms"], 0)
         self.openai_client.chat.completions.create.assert_not_called()
 
+    def test_ask_issue_mode_fetches_thirty_and_generates_with_distinct_issues(self):
+        self.settings["RAG_CONTEXT_MODE"] = "issues"
+        candidates = [chunk(issue_number=12), chunk(issue_number=12), chunk(issue_number=13)]
+        self.openai_client.embeddings.create.return_value.data = [MagicMock(embedding=[0.01] * api.VECTOR_DIMENSIONS)]
+        with patch.object(api, "retrieve_chunks", return_value=candidates) as retrieve, patch.object(api, "generate_grounded_answer_with_usage", return_value=("Answer [1] [2]", 10, 5)) as generate:
+            response = self.client.post("/ask", json={"question": "How does middleware work?"})
+        self.assertEqual(response.status_code, 200)
+        retrieve.assert_called_once_with(self.connection, [0.01] * api.VECTOR_DIMENSIONS, 30)
+        self.assertEqual([c["issue_number"] for c in generate.call_args.args[3]], [12, 13])
+        self.assertEqual(len(response.json()["citations"]), 2)
+
     def test_confidence_cutoff_accepts_scores_at_the_threshold(self):
         self.assertFalse(api.should_refuse([{"retrieval_score": 0.25}], 0.25))
         self.assertTrue(api.should_refuse([{"retrieval_score": 0.249}], 0.25))
@@ -363,6 +375,20 @@ class ApiTests(unittest.TestCase):
         self.assertIn(["encode/starlette"], cursor.execute.call_args.args[1])
         with self.assertRaises(ValueError):
             api.retrieve_chunks(connection, [0.01] * api.VECTOR_DIMENSIONS, 5, repositories=[])
+
+    def test_issue_context_keeps_best_chunk_per_issue_and_old_mode_is_selectable(self):
+        candidates = [chunk(issue_number=1), chunk(issue_number=1, similarity=0.7),
+                      chunk(issue_number=2), chunk(issue_number=3), chunk(issue_number=4), chunk(issue_number=5)]
+        with patch.object(api, "retrieve_chunks", return_value=candidates) as retrieve:
+            selected = api.retrieve_context(self.connection, [0.01], 5, context_mode="issues")
+            self.assertEqual([c["issue_number"] for c in selected], [1, 2, 3, 4, 5])
+            self.assertIs(selected[0], candidates[0])
+            self.assertEqual(retrieve.call_args.args[2], 30)
+            old = api.retrieve_context(self.connection, [0.01], 5, context_mode="chunks")
+            self.assertEqual(retrieve.call_args.args[2], 5)
+            self.assertEqual(old, candidates)
+        with self.assertRaises(ValueError):
+            api.retrieve_context(self.connection, [0.01], 5, context_mode="invalid")
 
     def test_ask_uses_hybrid_retrieval_when_configured(self):
         self.settings["RAG_RETRIEVAL_MODE"] = "hybrid"
