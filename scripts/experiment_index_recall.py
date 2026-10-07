@@ -171,7 +171,8 @@ def main():
                 conn.execute("SELECT set_config('hnsw.ef_search', %s, true)", (str(ef or 40),))
                 adapter = QueryConnection(conn, exact=ef is None)
                 start = time.perf_counter()
-                retrieved = api.retrieve_chunks(adapter, cache["vectors"][case["case_id"]], 5, hnsw_ef_search=ef or 40)
+                retrieved = api.retrieve_chunks(adapter, cache["vectors"][case["case_id"]], 5, hnsw_ef_search=ef or 40,
+                                                repositories=["tiangolo/fastapi", "encode/starlette", "pydantic/pydantic", "fastapi/fastapi"])
                 elapsed = (time.perf_counter() - start) * 1000
                 metrics = evaluate.retrieval_case_metrics(case, retrieved)
                 gold_rank = next((rank for rank, chunk in enumerate(retrieved, 1)

@@ -120,10 +120,11 @@ def main():
         for index, case in enumerate(cases, 1):
             embedding = cache["vectors"][case["case_id"]]
             start = time.perf_counter()
-            baseline = api.retrieve_chunks(conn, embedding, 5, hnsw_ef_search=100)
+            historical_repositories = ["tiangolo/fastapi", "encode/starlette", "pydantic/pydantic", "fastapi/fastapi"]
+            baseline = api.retrieve_chunks(conn, embedding, 5, hnsw_ef_search=100, repositories=historical_repositories)
             baseline_latency = (time.perf_counter() - start) * 1000
             start = time.perf_counter()
-            candidates = api.retrieve_chunks(conn, embedding, 30, hnsw_ef_search=100)
+            candidates = api.retrieve_chunks(conn, embedding, 30, hnsw_ef_search=100, repositories=historical_repositories)
             selected = collapse(candidates)
             collapse_latency = (time.perf_counter() - start) * 1000
             for mode, chunks, latency in zip(modes, (baseline, selected), (baseline_latency, collapse_latency)):
