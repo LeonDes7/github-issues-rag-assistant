@@ -57,6 +57,7 @@ class IncrementalPipelineTests(unittest.TestCase):
             "GITHUB_REPOS": [repository],
             "TARGET_RECORDS_PER_REPO": None,
             "MAX_ENTRIES_TO_SCAN_PER_REPO": None,
+            "S3_BUCKET": "bucket",
         }
         database_settings = {
             "PGHOST": "host",
@@ -112,6 +113,29 @@ class IncrementalPipelineTests(unittest.TestCase):
                 incremental_pipeline.embed_issue_chunks,
                 "run_embedding",
                 return_value={"chunk_count": 9},
+            ),
+            patch.object(
+                incremental_pipeline.data_quality,
+                "check_bronze_layer",
+                return_value={
+                    "passed": True,
+                    "valid_issue_count": 2,
+                    "repositories": [repository],
+                },
+            ),
+            patch.object(
+                incremental_pipeline.data_quality,
+                "check_silver_layer",
+                return_value={
+                    "passed": True,
+                    "silver_issue_count": 2,
+                    "repositories": [repository],
+                },
+            ),
+            patch.object(
+                incremental_pipeline.data_quality,
+                "check_gold_layer",
+                return_value={"passed": True, "layer": "gold"},
             ),
             patch.object(
                 incremental_pipeline.psycopg,

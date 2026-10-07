@@ -10,7 +10,12 @@ import boto3
 import psycopg
 from dotenv import load_dotenv
 
-from rag_assistant import embed_issue_chunks, ingest_github_issues, load_bronze_to_rds
+from rag_assistant import (
+    data_quality,
+    embed_issue_chunks,
+    ingest_github_issues,
+    load_bronze_to_rds,
+)
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -133,8 +138,20 @@ def run_pipeline(repositories: list[str] | None = None) -> dict[str, Any]:
         )
         for repository in selected_repositories
     ]
+    bronze_quality = data_quality.check_bronze_layer(
+        s3,
+        github_settings["S3_BUCKET"],
+    )
     silver_result = load_bronze_to_rds.run_load()
+    silver_quality = data_quality.check_silver_layer(
+        database_settings,
+        bronze_quality,
+    )
     gold_result = embed_issue_chunks.run_embedding(limit=None)
+    gold_quality = data_quality.check_gold_layer(
+        database_settings,
+        silver_quality,
+    )
 
     with psycopg.connect(**database_options) as connection:
         advance_watermarks(connection, ingestion_results)
@@ -143,6 +160,10 @@ def run_pipeline(repositories: list[str] | None = None) -> dict[str, Any]:
         "repositories": ingestion_results,
         "silver": silver_result,
         "gold": gold_result,
+        "data_quality": {
+            "passed": True,
+            "layers": [bronze_quality, silver_quality, gold_quality],
+        },
         "totals": {
             "issues_uploaded": sum(
                 result["records_uploaded"] for result in ingestion_results

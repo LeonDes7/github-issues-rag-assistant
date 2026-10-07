@@ -167,7 +167,19 @@ python -m rag_assistant.incremental_pipeline
 The pipeline creates `public.github_ingestion_watermarks`, calls GitHub with
 each repository's last successful `updated_at` watermark, loads Bronze
 idempotently, embeds only issues whose content hash differs from Gold, and
-advances watermarks only after every stage succeeds. AWS SDK credentials are
+runs data-quality checks after each layer before advancing watermarks. A
+standalone report can be run against an already populated Bronze/Silver/Gold
+pipeline:
+
+```powershell
+python -m rag_assistant.data_quality
+```
+
+Malformed Bronze JSON, Silver key/null/duplicate/comment-shape violations,
+missing Gold embeddings, wrong vector dimensions, orphan chunks, and
+unexplained count differences fail loudly. Dedupe/rejection counts and issues
+without chunkable content are called out in the layer reports as expected
+drops. AWS SDK credentials are
 optional when running with an IAM role; `AWS_DEFAULT_REGION` and `S3_BUCKET`
 are still required. The ingestion Lambda entry point is
 `rag_assistant.ingestion_lambda_handler.handler`. Deploy a dedicated ingestion
