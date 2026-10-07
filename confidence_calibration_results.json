@@ -1,0 +1,318 @@
+{
+  "case_file": "evaluation_cases.generated.jsonl",
+  "retrieval_mode": "vector",
+  "top_k": 5,
+  "selection_method": "maximum balanced accuracy; ties choose lower cutoff",
+  "threshold_selection": {
+    "recommended_threshold": 0.5370554072220923,
+    "balanced_accuracy": 0.9555555555555555,
+    "unanswerable_cases": 15,
+    "answerable_cases": 45,
+    "correctly_refused": 15,
+    "wrongly_refused": 4,
+    "correctly_answered": 41,
+    "missed_unanswerable": 0
+  },
+  "cases": [
+    {
+      "case_id": "generated-encode-starlette-1119",
+      "answerable": true,
+      "score": 0.5705257610633847
+    },
+    {
+      "case_id": "generated-encode-starlette-408",
+      "answerable": true,
+      "score": 0.7589359361091567
+    },
+    {
+      "case_id": "generated-encode-starlette-542",
+      "answerable": true,
+      "score": 0.7296081052358815
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-2071",
+      "answerable": true,
+      "score": 0.5612204952012038
+    },
+    {
+      "case_id": "generated-encode-starlette-383",
+      "answerable": true,
+      "score": 0.6631083011284316
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-618",
+      "answerable": true,
+      "score": 0.599879404318414
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-4598",
+      "answerable": true,
+      "score": 0.654459197411082
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-7461",
+      "answerable": true,
+      "score": 0.4411138876598395
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-1873",
+      "answerable": true,
+      "score": 0.6003465481622543
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-5108",
+      "answerable": true,
+      "score": 0.6492582280869201
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-11555",
+      "answerable": true,
+      "score": 0.7801143915850891
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-5370",
+      "answerable": true,
+      "score": 0.7315958729708104
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-5946",
+      "answerable": true,
+      "score": 0.7951163513394253
+    },
+    {
+      "case_id": "generated-encode-starlette-953",
+      "answerable": true,
+      "score": 0.6203438921684512
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-5988",
+      "answerable": true,
+      "score": 0.5026759333877907
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-8499",
+      "answerable": true,
+      "score": 0.7680453710981265
+    },
+    {
+      "case_id": "generated-encode-starlette-1247",
+      "answerable": true,
+      "score": 0.6526491286278269
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-10995",
+      "answerable": true,
+      "score": 0.7268127956985418
+    },
+    {
+      "case_id": "generated-encode-starlette-494",
+      "answerable": true,
+      "score": 0.5847019615578554
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-9575",
+      "answerable": true,
+      "score": 0.7481591561273901
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-10999",
+      "answerable": true,
+      "score": 0.7631248007632082
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-10131",
+      "answerable": true,
+      "score": 0.8180497340847103
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-5997",
+      "answerable": true,
+      "score": 0.701214358741236
+    },
+    {
+      "case_id": "generated-encode-starlette-1295",
+      "answerable": true,
+      "score": 0.5127479252673433
+    },
+    {
+      "case_id": "generated-encode-starlette-127",
+      "answerable": true,
+      "score": 0.6378533371301229
+    },
+    {
+      "case_id": "generated-encode-starlette-94",
+      "answerable": true,
+      "score": 0.5912710983455194
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-1060",
+      "answerable": true,
+      "score": 0.7464101808930624
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-4999",
+      "answerable": true,
+      "score": 0.5861276949285644
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-33",
+      "answerable": true,
+      "score": 0.6242958020107515
+    },
+    {
+      "case_id": "generated-encode-starlette-1004",
+      "answerable": true,
+      "score": 0.6261384581957821
+    },
+    {
+      "case_id": "generated-encode-starlette-1454",
+      "answerable": true,
+      "score": 0.6094315010478875
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-4108",
+      "answerable": true,
+      "score": 0.6344073703324667
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-1276",
+      "answerable": true,
+      "score": 0.7269711898502594
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-11865",
+      "answerable": true,
+      "score": 0.7384581397760478
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-9866",
+      "answerable": true,
+      "score": 0.8086146811983534
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-4268",
+      "answerable": true,
+      "score": 0.69682570557078
+    },
+    {
+      "case_id": "generated-encode-starlette-726",
+      "answerable": true,
+      "score": 0.6870370183529932
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-5724",
+      "answerable": true,
+      "score": 0.7327840060544791
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-11491",
+      "answerable": true,
+      "score": 0.4153391237653661
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-14502",
+      "answerable": true,
+      "score": 0.7592895303280996
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-403",
+      "answerable": true,
+      "score": 0.6908870664228585
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-261",
+      "answerable": true,
+      "score": 0.6099919627951891
+    },
+    {
+      "case_id": "generated-encode-starlette-818",
+      "answerable": true,
+      "score": 0.7378720747895325
+    },
+    {
+      "case_id": "generated-encode-starlette-855",
+      "answerable": true,
+      "score": 0.6144980286925266
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-2776",
+      "answerable": true,
+      "score": 0.6872115036873208
+    },
+    {
+      "case_id": "unanswerable-01",
+      "answerable": false,
+      "score": 0.5128903192429808
+    },
+    {
+      "case_id": "unanswerable-02",
+      "answerable": false,
+      "score": 0.4114008246252522
+    },
+    {
+      "case_id": "unanswerable-03",
+      "answerable": false,
+      "score": 0.3967312265661399
+    },
+    {
+      "case_id": "unanswerable-04",
+      "answerable": false,
+      "score": 0.4612378243915016
+    },
+    {
+      "case_id": "unanswerable-05",
+      "answerable": false,
+      "score": 0.15194611575464223
+    },
+    {
+      "case_id": "unanswerable-06",
+      "answerable": false,
+      "score": 0.23975849566068164
+    },
+    {
+      "case_id": "unanswerable-07",
+      "answerable": false,
+      "score": 0.2794322924309127
+    },
+    {
+      "case_id": "unanswerable-08",
+      "answerable": false,
+      "score": 0.286129504853627
+    },
+    {
+      "case_id": "unanswerable-09",
+      "answerable": false,
+      "score": 0.2858784579594149
+    },
+    {
+      "case_id": "unanswerable-10",
+      "answerable": false,
+      "score": 0.26457479506252213
+    },
+    {
+      "case_id": "unanswerable-11",
+      "answerable": false,
+      "score": 0.3790398995349651
+    },
+    {
+      "case_id": "unanswerable-12",
+      "answerable": false,
+      "score": 0.2114852243061257
+    },
+    {
+      "case_id": "unanswerable-13",
+      "answerable": false,
+      "score": 0.2777611210039881
+    },
+    {
+      "case_id": "unanswerable-14",
+      "answerable": false,
+      "score": 0.23938410854275172
+    },
+    {
+      "case_id": "unanswerable-15",
+      "answerable": false,
+      "score": 0.20502411946962118
+    }
+  ]
+}

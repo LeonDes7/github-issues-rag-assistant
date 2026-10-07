@@ -1,0 +1,77 @@
+{
+  "as_of": "2026-10-07",
+  "repositories": [
+    "tiangolo/fastapi",
+    "encode/starlette",
+    "pydantic/pydantic"
+  ],
+  "bronze": {
+    "issues_endpoint_entries_seen": 23626,
+    "pull_requests_skipped": 14071,
+    "issues_uploaded_in_full_run": 9554,
+    "issues_already_present_from_smoke_run": 1,
+    "valid_unique_issues": 9555,
+    "comments_uploaded": 43535,
+    "source_records_in_quality_check": 9831,
+    "duplicate_issue_records_deduplicated": 276
+  },
+  "silver": {
+    "issues": 9555,
+    "comments": 43535,
+    "null_or_blank_key_rows": 0,
+    "duplicate_issue_keys": 0,
+    "malformed_comment_arrays": 0
+  },
+  "gold": {
+    "issues_with_chunks": 9541,
+    "chunks": 63002,
+    "embedded_chunks": 63002,
+    "embedding_dimensions": 1536,
+    "expected_no_content_drops": 14
+  },
+  "embedding_estimate": {
+    "estimated_full_corpus_input_tokens": 12924845,
+    "estimated_full_corpus_cost_usd_at_0_02_per_million_tokens": 0.2584969,
+    "resumed_pass_actual_input_tokens": 5029067,
+    "resumed_pass_estimated_cost_usd": 0.10058134,
+    "total_actual_cost": "Not reported; the first attempt was stopped after partial completion."
+  },
+  "data_quality": {
+    "passed": true,
+    "bronze_expected_duplicate_drops": 276,
+    "gold_expected_no_content_drops": 14,
+    "hard_failures": []
+  },
+  "retrieval_baseline": {
+    "case_count": 60,
+    "answerable_cases": 45,
+    "top_k": 5,
+    "vector": {
+      "hit_at_5": 0.8,
+      "recall_at_5": 0.8,
+      "mrr": 0.7525925925925926
+    },
+    "hybrid": {
+      "hit_at_5": 0.8,
+      "recall_at_5": 0.8,
+      "mrr": 0.7525925925925926
+    }
+  },
+  "confidence_calibration": {
+    "retrieval_mode": "vector",
+    "threshold": 0.5370554072220923,
+    "answerable_cases": 45,
+    "unanswerable_cases": 15,
+    "correctly_refused": 15,
+    "wrongly_refused": 4
+  },
+  "performance": {
+    "case_count": 60,
+    "retrieval_mode": "vector",
+    "confidence_threshold": 0.5370554072220923,
+    "p50_latency_ms": 1896.2639500387013,
+    "p95_latency_ms": 3817.023079982027,
+    "average_cost_per_query_usd": 0.00021607366666666667,
+    "refused_queries": 19
+  }
+}

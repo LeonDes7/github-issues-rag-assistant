@@ -137,16 +137,21 @@ only missing embeddings. Re-running on unchanged text reuses the existing
 embedding; changed text resets only that chunk's embedding. Embedding batches
 are retried for transient connection, rate-limit, and server errors.
 
-Preview the first 25 issues without writing rows or calling OpenAI:
+Preview the first 25 issues without writing rows or calling OpenAI. To preview
+the complete requested three-repository corpus, use `--all`. The CLI supports
+`--repos` to restrict the run:
 
 ```powershell
-python -m rag_assistant.embed_issue_chunks --limit 25 --dry-run
+python -m rag_assistant.embed_issue_chunks --all --dry-run --repos tiangolo/fastapi,encode/starlette,pydantic/pydantic
 ```
 
-Run the embedding pass for the first 25 issues:
+Review the pending chunk count, token count, and estimated cost before
+embedding. The estimate excludes chunks with reusable embeddings and checks
+content hashes; existing-chunk checks are batched to stay within PostgreSQL's
+parameter limit. Run the full embedding pass for the three repositories with:
 
 ```powershell
-python -m rag_assistant.embed_issue_chunks --limit 25
+python -m rag_assistant.embed_issue_chunks --all --repos tiangolo/fastapi,encode/starlette,pydantic/pydantic
 ```
 
 The report includes chunk counts by type, estimated/actual API calls and
@@ -252,9 +257,12 @@ characters. Do not expose `.env` or commit credentials.
 
 If the top retrieval score is below `RAG_CONFIDENCE_THRESHOLD`, the API
 returns “There isn't enough evidence in the indexed issues to answer this
-question.” without making a generation request. The default cutoff (`0.25`) is
-a starting value; calibrate it against the generated answerable and
-unanswerable cases for the selected retrieval mode:
+question.” without making a generation request. The default cutoff is
+`0.5370554072220923`, calibrated against the generated 60-case evaluation set
+in vector mode. On that small calibration set, it correctly refused all 15
+unanswerable questions and wrongly refused 4 of 45 answerable questions
+(41 correctly passed through). Treat this as a preliminary estimate; expand
+the unanswerable set and recalibrate if the corpus or retrieval mode changes:
 
 ```powershell
 python scripts/calibrate_confidence.py `
@@ -264,8 +272,8 @@ python scripts/calibrate_confidence.py `
 
 The calibration report selects the cutoff with maximum balanced accuracy,
 reports correctly refused and wrongly refused counts, and saves the complete
-score list to `confidence_calibration_results.json`. Set the printed
-`RAG_CONFIDENCE_THRESHOLD` in the API environment to deploy that cutoff.
+score list to `confidence_calibration_results.json`. The selected value is
+also the API default and the example `.env` value.
 
 Each API request also logs retrieval, generation, and total latency, token
 usage, refusal status, and estimated cost to the application log. The
@@ -279,6 +287,11 @@ python scripts/measure_rag_performance.py `
 ```
 
 The detailed sample results are written to `rag_performance_results.json`.
+The 2026-10-07 vector-mode run over all 60 cases measured p50 latency of
+1.896 s, p95 of 3.817 s, average estimated cost of $0.000216/query, and
+19 refusals (15 expected unanswerables plus 4 wrongly refused answerables).
+These latency and cost figures are run-specific estimates, not service-level
+guarantees.
 
 ## Step 6: Local RAG evaluation
 
@@ -290,8 +303,8 @@ resolution and are reported separately; that signal is uncertain and is not
 treated as guaranteed ground truth. Unresolved cases intentionally expect an
 abstention.
 
-Build a larger 50-case set (15 randomly sampled closed issues per repository,
-plus five deliberately unanswerable questions) and a review-friendly CSV with:
+Build a 60-case set (15 randomly sampled closed issues per repository, plus
+15 deliberately unanswerable questions) and a review-friendly CSV with:
 
 ```powershell
 python scripts/build_evaluation_set.py --seed 42
@@ -299,8 +312,9 @@ python scripts/build_evaluation_set.py --seed 42
 
 This uses the configured Postgres corpus and generation model. It writes
 `evaluation_cases.generated.jsonl` and `evaluation_cases.review.csv`; review
-the issue IDs and questions in the CSV, then mark verified cases in the JSONL
-before treating them as ground truth.
+the issue IDs and questions against each source issue before marking cases
+`manually_verified` in the JSONL. The checked-in run output contains the
+manually reviewed 45 answerable cases and 15 off-topic cases.
 
 Run the generated set locally with top-5 retrieval:
 
@@ -347,6 +361,14 @@ python scripts/compare_retrieval_modes.py `
 The script prints side-by-side Hit@5, Recall@5, and MRR (or the selected `k`),
 prints per-repository rows, and writes full run data to
 `retrieval_comparison_results.json`.
+On the 45 manually verified answerable cases in the 2026-10-07 baseline,
+vector and hybrid both scored Hit@5 0.8000, Recall@5 0.8000, and MRR 0.7526.
+Per-repository metrics and complete case-level results are in the saved JSON.
+
+The full 2026-10-07 corpus snapshot is recorded in `corpus_snapshot.json`:
+9,555 unique issues, 43,535 comments, and 63,002 embedded chunks. Data-quality
+checks passed; 276 duplicate Bronze rows were deduplicated, and 14 issues with
+no chunkable content were expected not to appear in Gold.
 
 ## Step 5: Bug/feature/usage classification
 
