@@ -42,6 +42,7 @@ CREATE TABLE IF NOT EXISTS {TABLE_NAME} (
     ),
     chunk_text TEXT NOT NULL,
     source_url TEXT NOT NULL,
+    content_hash TEXT NOT NULL DEFAULT '',
     embedding vector({VECTOR_DIMENSIONS}),
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT github_issue_chunks_issue_fk
@@ -53,6 +54,11 @@ CREATE TABLE IF NOT EXISTS {TABLE_NAME} (
 )
 """
 
+ALTER_TABLE_SQL = f"""
+ALTER TABLE {TABLE_NAME}
+    ADD COLUMN IF NOT EXISTS content_hash TEXT NOT NULL DEFAULT ''
+"""
+
 CREATE_INDEX_SQL = f"""
 CREATE INDEX IF NOT EXISTS github_issue_chunks_embedding_hnsw_idx
 ON {TABLE_NAME} USING hnsw (embedding vector_cosine_ops)
@@ -60,23 +66,43 @@ ON {TABLE_NAME} USING hnsw (embedding vector_cosine_ops)
 
 ISSUES_QUERY = """
 SELECT repository, issue_number, title, body, github_url, comments,
-       resolution_text, resolution_confidence
+       resolution_text, resolution_confidence, content_hash
+FROM public.github_issues_clean
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM public.github_issue_chunks AS chunks
+    WHERE chunks.repository = github_issues_clean.repository
+      AND chunks.issue_number = github_issues_clean.issue_number
+)
+OR EXISTS (
+    SELECT 1
+    FROM public.github_issue_chunks AS chunks
+    WHERE chunks.repository = github_issues_clean.repository
+      AND chunks.issue_number = github_issues_clean.issue_number
+      AND chunks.content_hash IS DISTINCT FROM github_issues_clean.content_hash
+)
+ORDER BY repository, issue_number
+"""
+ALL_ISSUES_QUERY = """
+SELECT repository, issue_number, title, body, github_url, comments,
+       resolution_text, resolution_confidence, content_hash
 FROM public.github_issues_clean
 ORDER BY repository, issue_number
-LIMIT %s
 """
 
 UPSERT_CHUNK_SQL = f"""
 INSERT INTO {TABLE_NAME} AS existing (
     chunk_id, repository, issue_number, chunk_index, chunk_type, chunk_text,
-    source_url, embedding
-) VALUES (%s, %s, %s, %s, %s, %s, %s, NULL)
+    source_url, content_hash, embedding
+) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, NULL)
 ON CONFLICT (repository, issue_number, chunk_type, chunk_index) DO UPDATE SET
     chunk_id = EXCLUDED.chunk_id,
     chunk_text = EXCLUDED.chunk_text,
     source_url = EXCLUDED.source_url,
+    content_hash = EXCLUDED.content_hash,
     embedding = CASE
         WHEN existing.chunk_text IS DISTINCT FROM EXCLUDED.chunk_text
+          OR existing.content_hash IS DISTINCT FROM EXCLUDED.content_hash
         THEN NULL
         ELSE existing.embedding
     END
@@ -92,6 +118,7 @@ class IssueChunk:
     chunk_type: str
     chunk_text: str
     source_url: str
+    content_hash: str
     token_count: int
 
 
@@ -261,6 +288,7 @@ def build_issue_chunks(rows: list[dict[str, Any]]) -> list[IssueChunk]:
                         chunk_type=chunk_type,
                         chunk_text=text,
                         source_url=source_url,
+                        content_hash=row.get("content_hash", ""),
                         token_count=count,
                     )
                 )
@@ -269,10 +297,16 @@ def build_issue_chunks(rows: list[dict[str, Any]]) -> list[IssueChunk]:
 
 def load_issue_rows(
     connection: psycopg.Connection[Any],
-    limit: int,
+    limit: int | None,
+    changed_only: bool = True,
 ) -> list[dict[str, Any]]:
+    query = ISSUES_QUERY if changed_only else ALL_ISSUES_QUERY
+    parameters: tuple[int, ...] = ()
+    if limit is not None:
+        query += "\nLIMIT %s"
+        parameters = (limit,)
     with connection.cursor() as cursor:
-        cursor.execute(ISSUES_QUERY, (limit,))
+        cursor.execute(query, parameters)
         columns = [description.name for description in cursor.description]
         return [dict(zip(columns, row)) for row in cursor.fetchall()]
 
@@ -280,8 +314,28 @@ def load_issue_rows(
 def prepare_chunk_table(connection: psycopg.Connection[Any]) -> None:
     with connection.cursor() as cursor:
         cursor.execute(CREATE_TABLE_SQL)
+        cursor.execute(ALTER_TABLE_SQL)
         cursor.execute(CREATE_INDEX_SQL)
     connection.commit()
+
+
+def delete_issue_chunks(
+    connection: psycopg.Connection[Any],
+    rows: list[dict[str, Any]],
+) -> None:
+    identities = list(
+        dict.fromkeys((row["repository"], row["issue_number"]) for row in rows)
+    )
+    if not identities:
+        return
+    values_sql = ", ".join(["(%s, %s)"] * len(identities))
+    parameters = [value for identity in identities for value in identity]
+    with connection.cursor() as cursor:
+        cursor.execute(
+            f"DELETE FROM {TABLE_NAME} "
+            f"WHERE (repository, issue_number) IN ({values_sql})",
+            parameters,
+        )
 
 
 def persist_chunk_rows(
@@ -300,6 +354,7 @@ def persist_chunk_rows(
                     chunk.chunk_type,
                     chunk.chunk_text,
                     chunk.source_url,
+                    chunk.content_hash,
                 ),
             )
     connection.commit()
@@ -525,10 +580,17 @@ def table_totals(connection: psycopg.Connection[Any]) -> dict[str, Any]:
     }
 
 
-def run_embedding(limit: int, dry_run: bool = False) -> dict[str, Any]:
+def run_embedding(
+    limit: int | None = 25,
+    dry_run: bool = False,
+) -> dict[str, Any]:
     settings = required_environment()
     with psycopg.connect(**database_options(settings)) as connection:
-        rows = load_issue_rows(connection, limit)
+        if dry_run:
+            rows = load_issue_rows(connection, limit, changed_only=False)
+        else:
+            prepare_chunk_table(connection)
+            rows = load_issue_rows(connection, limit, changed_only=True)
         chunks = build_issue_chunks(rows)
         estimate = summarize_chunks(chunks)
         result: dict[str, Any] = {
@@ -559,9 +621,23 @@ def run_embedding(limit: int, dry_run: bool = False) -> dict[str, Any]:
             return result
 
         if not chunks:
-            raise ValueError("No chunkable issue text found in selected records")
+            if dry_run:
+                return result
+            result.update(
+                {
+                    "embeddings_stored": 0,
+                    "failed_or_skipped_chunks": 0,
+                    "failed_chunks": 0,
+                    "skipped_chunks_already_embedded": 0,
+                    "input_tokens_used": 0,
+                    "actual_embedding_api_calls": 0,
+                    "table_totals": table_totals(connection),
+                    "similarity_search_examples": [],
+                }
+            )
+            return result
 
-        prepare_chunk_table(connection)
+        delete_issue_chunks(connection, rows)
         persist_chunk_rows(connection, chunks)
         pending = get_pending_chunks(connection, chunks)
         client = OpenAI(api_key=settings["OPENAI_API_KEY"], max_retries=0)

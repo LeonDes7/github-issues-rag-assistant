@@ -1,5 +1,6 @@
 """Clean the selected S3 Bronze issue records and load them into RDS."""
 
+import hashlib
 import json
 import os
 import re
@@ -44,6 +45,8 @@ CREATE TABLE IF NOT EXISTS {TABLE_NAME} (
     labels JSONB NOT NULL,
     created_at TIMESTAMPTZ,
     closed_at TIMESTAMPTZ,
+    updated_at TIMESTAMPTZ,
+    content_hash TEXT NOT NULL DEFAULT '',
     comment_count INTEGER NOT NULL,
     comments JSONB NOT NULL,
     author_associations JSONB NOT NULL,
@@ -58,8 +61,14 @@ CREATE TABLE IF NOT EXISTS {TABLE_NAME} (
 )
 """
 
+ALTER_TABLE_SQL = f"""
+ALTER TABLE {TABLE_NAME}
+    ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ,
+    ADD COLUMN IF NOT EXISTS content_hash TEXT NOT NULL DEFAULT ''
+"""
+
 UPSERT_SQL = f"""
-INSERT INTO {TABLE_NAME} (
+INSERT INTO {TABLE_NAME} AS existing (
     repository,
     issue_number,
     title,
@@ -68,6 +77,8 @@ INSERT INTO {TABLE_NAME} (
     labels,
     created_at,
     closed_at,
+    updated_at,
+    content_hash,
     comment_count,
     comments,
     author_associations,
@@ -78,7 +89,7 @@ INSERT INTO {TABLE_NAME} (
     source_line_number,
     loaded_at
 ) VALUES (
-    %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
+    %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
     CURRENT_TIMESTAMP
 )
 ON CONFLICT (repository, issue_number) DO UPDATE SET
@@ -88,6 +99,8 @@ ON CONFLICT (repository, issue_number) DO UPDATE SET
     labels = EXCLUDED.labels,
     created_at = EXCLUDED.created_at,
     closed_at = EXCLUDED.closed_at,
+    updated_at = EXCLUDED.updated_at,
+    content_hash = EXCLUDED.content_hash,
     comment_count = EXCLUDED.comment_count,
     comments = EXCLUDED.comments,
     author_associations = EXCLUDED.author_associations,
@@ -97,6 +110,19 @@ ON CONFLICT (repository, issue_number) DO UPDATE SET
     bronze_prefix = EXCLUDED.bronze_prefix,
     source_line_number = EXCLUDED.source_line_number,
     loaded_at = CURRENT_TIMESTAMP
+WHERE (
+    existing.title, existing.body, existing.github_url, existing.labels,
+    existing.created_at, existing.closed_at, existing.updated_at,
+    existing.content_hash, existing.comment_count, existing.comments,
+    existing.author_associations, existing.resolution_text,
+    existing.resolution_heuristic, existing.resolution_confidence
+) IS DISTINCT FROM (
+    EXCLUDED.title, EXCLUDED.body, EXCLUDED.github_url, EXCLUDED.labels,
+    EXCLUDED.created_at, EXCLUDED.closed_at, EXCLUDED.updated_at,
+    EXCLUDED.content_hash, EXCLUDED.comment_count, EXCLUDED.comments,
+    EXCLUDED.author_associations, EXCLUDED.resolution_text,
+    EXCLUDED.resolution_heuristic, EXCLUDED.resolution_confidence
+)
 RETURNING (xmax = 0)
 """
 
@@ -104,8 +130,6 @@ RETURNING (xmax = 0)
 def required_environment() -> dict[str, Any]:
     load_dotenv(PROJECT_ROOT / ".env")
     required_names = (
-        "AWS_ACCESS_KEY_ID",
-        "AWS_SECRET_ACCESS_KEY",
         "AWS_DEFAULT_REGION",
         "S3_BUCKET",
         "PGHOST",
@@ -116,6 +140,10 @@ def required_environment() -> dict[str, Any]:
     missing = [name for name in required_names if not os.getenv(name)]
     if missing:
         raise ValueError(f"Missing required .env settings: {', '.join(missing)}")
+    if bool(os.getenv("AWS_ACCESS_KEY_ID")) != bool(os.getenv("AWS_SECRET_ACCESS_KEY")):
+        raise ValueError(
+            "AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY must be set together"
+        )
 
     try:
         port = int(os.getenv("PGPORT", "5432"))
@@ -126,6 +154,8 @@ def required_environment() -> dict[str, Any]:
 
     return {
         **{name: os.environ[name] for name in required_names},
+        "AWS_ACCESS_KEY_ID": os.getenv("AWS_ACCESS_KEY_ID"),
+        "AWS_SECRET_ACCESS_KEY": os.getenv("AWS_SECRET_ACCESS_KEY"),
         "AWS_SESSION_TOKEN": os.getenv("AWS_SESSION_TOKEN"),
         "PGPORT": port,
         "PGSSLMODE": os.getenv("PGSSLMODE", "require"),
@@ -133,12 +163,11 @@ def required_environment() -> dict[str, Any]:
 
 
 def create_s3_client(settings: dict[str, Any]) -> Any:
-    options: dict[str, Any] = {
-        "region_name": settings["AWS_DEFAULT_REGION"],
-        "aws_access_key_id": settings["AWS_ACCESS_KEY_ID"],
-        "aws_secret_access_key": settings["AWS_SECRET_ACCESS_KEY"],
-    }
-    if settings["AWS_SESSION_TOKEN"]:
+    options: dict[str, Any] = {"region_name": settings["AWS_DEFAULT_REGION"]}
+    if settings["AWS_ACCESS_KEY_ID"] and settings["AWS_SECRET_ACCESS_KEY"]:
+        options["aws_access_key_id"] = settings["AWS_ACCESS_KEY_ID"]
+        options["aws_secret_access_key"] = settings["AWS_SECRET_ACCESS_KEY"]
+    if settings["AWS_SESSION_TOKEN"] and "aws_access_key_id" in options:
         options["aws_session_token"] = settings["AWS_SESSION_TOKEN"]
     return boto3.client("s3", **options)
 
@@ -362,17 +391,42 @@ def clean_record(source: dict[str, Any]) -> dict[str, Any]:
     resolution_text, resolution_heuristic, resolution_confidence = (
         choose_resolution(comments, closed_at)
     )
+    updated_at = parse_timestamp(issue.get("updated_at"))
     author = issue.get("user")
     issue_author_association = issue.get("author_association")
+    title = normalize_title(issue.get("title"))
+    body = normalize_text(issue.get("body"))
+    labels = clean_labels(issue.get("labels"))
+    content_hash = hashlib.sha256(
+        json.dumps(
+            {
+                "title": title,
+                "body": body,
+                "github_url": github_url,
+                "comments": [
+                    {"body": comment["body"], "html_url": comment["html_url"]}
+                    for comment in comments
+                    if comment["body"]
+                ],
+                "resolution_text": resolution_text,
+                "resolution_confidence": resolution_confidence,
+            },
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+    ).hexdigest()
     return {
         "repository": repository,
         "issue_number": issue_number,
-        "title": normalize_title(issue.get("title")),
-        "body": normalize_text(issue.get("body")),
+        "title": title,
+        "body": body,
         "github_url": github_url,
-        "labels": clean_labels(issue.get("labels")),
+        "labels": labels,
         "created_at": created_at,
         "closed_at": closed_at,
+        "updated_at": updated_at,
+        "content_hash": content_hash,
         "comment_count": len(comments),
         "comments": comments,
         "author_associations": {
@@ -485,6 +539,7 @@ def upsert_records(
     with psycopg.connect(**database_options(settings)) as connection:
         with connection.cursor() as cursor:
             cursor.execute(CREATE_TABLE_SQL)
+            cursor.execute(ALTER_TABLE_SQL)
             for record in records:
                 values = (
                     record["repository"],
@@ -495,6 +550,8 @@ def upsert_records(
                     Jsonb(record["labels"]),
                     record["created_at"],
                     record["closed_at"],
+                    record["updated_at"],
+                    record["content_hash"],
                     record["comment_count"],
                     Jsonb(record["comments"]),
                     Jsonb(record["author_associations"]),
@@ -505,8 +562,10 @@ def upsert_records(
                     record["source_line_number"],
                 )
                 cursor.execute(UPSERT_SQL, values)
-                was_inserted = cursor.fetchone()[0]
-                if was_inserted:
+                result = cursor.fetchone()
+                if result is None:
+                    continue
+                if result[0]:
                     inserted += 1
                 else:
                     updated += 1

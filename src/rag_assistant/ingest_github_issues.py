@@ -126,6 +126,7 @@ def iter_closed_issues(
     target_records: int | None = None,
     max_entries_to_scan: int | None = None,
     issue_exists: Any | None = None,
+    since: str | None = None,
 ):
     issue_url = f"{API_ROOT}/repos/{repository}/issues"
     verify_github_url(issue_url)
@@ -134,6 +135,8 @@ def iter_closed_issues(
         "per_page": 100,
         "page": 1,
     }
+    if since:
+        params["since"] = since
     while (
         issue_url
         and (
@@ -174,6 +177,11 @@ def iter_closed_issues(
             issue_number = issue.get("number")
             if isinstance(issue_number, bool) or not isinstance(issue_number, int):
                 raise ValueError("GitHub issue response has an invalid issue number")
+            updated_at = issue.get("updated_at")
+            if isinstance(updated_at, str):
+                current_max = counts["max_updated_at"]
+                if current_max is None or updated_at > current_max:
+                    counts["max_updated_at"] = updated_at
             if issue_exists is not None and issue_exists(issue_number):
                 counts["resumed_issues"] += 1
                 continue
@@ -216,6 +224,7 @@ def collect_closed_issues(
     target_records: int | None = None,
     max_entries_to_scan: int | None = None,
     issue_exists: Any | None = None,
+    since: str | None = None,
 ) -> tuple[list[dict[str, Any]], dict[str, int]]:
     counts = {
         "issues_seen": 0,
@@ -223,6 +232,7 @@ def collect_closed_issues(
         "resumed_issues": 0,
         "records_uploaded": 0,
         "comments_uploaded": 0,
+        "max_updated_at": None,
     }
     records = list(
         iter_closed_issues(
@@ -232,6 +242,7 @@ def collect_closed_issues(
             target_records=target_records,
             max_entries_to_scan=max_entries_to_scan,
             issue_exists=issue_exists,
+            since=since,
         )
     )
     return records, counts
@@ -239,14 +250,16 @@ def collect_closed_issues(
 
 def required_environment() -> dict[str, Any]:
     load_dotenv(PROJECT_ROOT / ".env")
-    credential_names = (
-        "GITHUB_TOKEN",
-        "AWS_ACCESS_KEY_ID",
-        "AWS_SECRET_ACCESS_KEY",
-        "AWS_DEFAULT_REGION",
-        "S3_BUCKET",
-    )
-    missing = [name for name in credential_names if not os.getenv(name)]
+    required_names = ("GITHUB_TOKEN", "AWS_DEFAULT_REGION", "S3_BUCKET")
+    credential_names = ("AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY")
+    aws_region = os.getenv("AWS_DEFAULT_REGION") or os.getenv("AWS_REGION")
+    if aws_region:
+        os.environ.setdefault("AWS_DEFAULT_REGION", aws_region)
+    missing = [name for name in required_names if not os.getenv(name)]
+    if bool(os.getenv(credential_names[0])) != bool(os.getenv(credential_names[1])):
+        raise ValueError(
+            "AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY must be set together"
+        )
     if missing:
         raise ValueError(f"Missing required .env settings: {', '.join(missing)}")
     repositories = [
@@ -280,7 +293,8 @@ def required_environment() -> dict[str, Any]:
     ):
         raise ValueError("Repository target and scan limit must be positive")
     return {
-        **{name: os.environ[name] for name in credential_names},
+        **{name: os.environ[name] for name in required_names},
+        **{name: os.getenv(name) for name in credential_names},
         "GITHUB_REPOS": repositories,
         "TARGET_RECORDS_PER_REPO": target_records,
         "MAX_ENTRIES_TO_SCAN_PER_REPO": max_entries,
@@ -291,10 +305,11 @@ def s3_client(settings: dict[str, str]):
     session_token = os.getenv("AWS_SESSION_TOKEN")
     client_options: dict[str, str] = {
         "region_name": settings["AWS_DEFAULT_REGION"],
-        "aws_access_key_id": settings["AWS_ACCESS_KEY_ID"],
-        "aws_secret_access_key": settings["AWS_SECRET_ACCESS_KEY"],
     }
-    if session_token:
+    if settings.get("AWS_ACCESS_KEY_ID") and settings.get("AWS_SECRET_ACCESS_KEY"):
+        client_options["aws_access_key_id"] = settings["AWS_ACCESS_KEY_ID"]
+        client_options["aws_secret_access_key"] = settings["AWS_SECRET_ACCESS_KEY"]
+    if session_token and "aws_access_key_id" in client_options:
         client_options["aws_session_token"] = session_token
     return boto3.client("s3", **client_options)
 
@@ -305,6 +320,7 @@ def ingest_repository(
     max_entries_to_scan: int | None,
     settings: dict[str, Any],
     client: Any,
+    since: str | None = None,
 ) -> dict[str, Any]:
     if not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", repository):
         raise ValueError(f"Invalid repository name: {repository!r}")
@@ -326,6 +342,8 @@ def ingest_repository(
         "resumed_issues": 0,
         "records_uploaded": 0,
         "comments_uploaded": 0,
+        "max_updated_at": None,
+        "max_updated_at": None,
     }
 
     def object_exists(issue_number: int) -> bool:
@@ -349,7 +367,8 @@ def ingest_repository(
             counts,
             target_records=target_records,
             max_entries_to_scan=max_entries_to_scan,
-            issue_exists=object_exists,
+            issue_exists=object_exists if since is None else None,
+            since=since,
         )
         for record in records:
             issue_number = record["issue"]["number"]
@@ -372,6 +391,7 @@ def ingest_repository(
         "ingested_at": ingested_at,
         "target_records_per_repo": target_records,
         "max_entries_to_scan_per_repo": max_entries_to_scan,
+        "since": since,
         **counts,
     }
     client.put_object(
@@ -390,8 +410,9 @@ def ingest_repository(
 
 def run_ingestion(
     repositories: list[str],
-    target_records: int,
-    max_entries_to_scan: int,
+    target_records: int | None = None,
+    max_entries_to_scan: int | None = None,
+    since_by_repository: dict[str, str | None] | None = None,
 ) -> dict[str, Any]:
     settings = required_environment()
     client = s3_client(settings)
@@ -402,6 +423,7 @@ def run_ingestion(
             max_entries_to_scan,
             settings,
             client,
+            since=(since_by_repository or {}).get(repository),
         )
         for repository in repositories
     ]

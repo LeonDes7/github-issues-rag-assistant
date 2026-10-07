@@ -60,6 +60,7 @@ class GithubIssueIngestionTests(unittest.TestCase):
                 "resumed_issues": 0,
                 "records_uploaded": 2,
                 "comments_uploaded": 3,
+                "max_updated_at": None,
             },
         )
         self.assertEqual(get_json.call_count, 5)
@@ -105,6 +106,7 @@ class GithubIssueIngestionTests(unittest.TestCase):
                 "resumed_issues": 0,
                 "records_uploaded": 1,
                 "comments_uploaded": 0,
+                "max_updated_at": None,
             },
         )
         self.assertEqual(get_json.call_count, 2)
@@ -114,6 +116,7 @@ class GithubIssueIngestionTests(unittest.TestCase):
             "number": 10,
             "comments": 1,
             "comments_url": "https://api.github.com/issue/10/comments",
+            "updated_at": "2026-04-01T12:00:00Z",
         }
         with patch.object(
             ingestion,
@@ -128,7 +131,35 @@ class GithubIssueIngestionTests(unittest.TestCase):
 
         self.assertEqual(records, [])
         self.assertEqual(counts["resumed_issues"], 1)
+        self.assertEqual(counts["max_updated_at"], "2026-04-01T12:00:00Z")
         get_json.assert_called_once()
+
+    def test_since_is_passed_to_github_issue_listing(self):
+        issue = {
+            "number": 12,
+            "comments": 0,
+            "comments_url": "https://api.github.com/issue/12/comments",
+        }
+        with patch.object(
+            ingestion,
+            "get_json",
+            side_effect=[([issue], None), ([], None)],
+        ) as get_json:
+            ingestion.collect_closed_issues(
+                Mock(),
+                "fastapi/fastapi",
+                since="2026-04-01T12:00:00Z",
+            )
+
+        self.assertEqual(
+            get_json.call_args_list[0].kwargs["params"],
+            {
+                "state": "closed",
+                "per_page": 100,
+                "page": 1,
+                "since": "2026-04-01T12:00:00Z",
+            },
+        )
 
     def test_get_json_retries_primary_rate_limit(self):
         limited_response = Mock()

@@ -62,6 +62,18 @@ class BronzeRdsLoaderTests(unittest.TestCase):
         )
         self.assertEqual(cleaned["resolution_confidence"], "low")
         self.assertIsInstance(cleaned["comments"][0]["created_at"], str)
+        self.assertEqual(
+            cleaned["content_hash"],
+            loader.clean_record(source_record())["content_hash"],
+        )
+
+    def test_content_hash_changes_when_issue_content_changes(self):
+        original = loader.clean_record(source_record())
+        changed = loader.clean_record(
+            source_record(body="A newly edited issue body.")
+        )
+
+        self.assertNotEqual(original["content_hash"], changed["content_hash"])
 
     def test_validation_rejects_duplicate_key_and_summarizes_gaps(self):
         sources = [
@@ -163,6 +175,7 @@ class BronzeRdsLoaderTests(unittest.TestCase):
         self.assertTrue(
             any("ON CONFLICT (repository, issue_number)" in sql for sql in executed_sql)
         )
+        self.assertIn("IS DISTINCT FROM", loader.UPSERT_SQL)
 
 
 if __name__ == "__main__":

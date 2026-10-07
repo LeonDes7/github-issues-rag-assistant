@@ -86,20 +86,15 @@ objects remain readable by the loader.
 
 ## Step 2: Clean the selected Bronze data and load RDS
 
-The loader discovers per-issue objects under the three configured repository
-prefixes and also accepts the earlier selected Bronze JSONL objects; it does
-not modify or replace any Bronze data:
-
-```text
-bronze/github/repo=fastapi__fastapi/ingested_at=20261005T101821560700Z/issues.jsonl
-bronze/github/repo=encode__starlette/ingested_at=20261005T101851267365Z/issues.jsonl
-bronze/github/repo=pydantic__pydantic/ingested_at=20261005T101918016130Z/issues.jsonl
-```
+The loader discovers per-issue objects under each repository prefix and also
+accepts the earlier selected Bronze JSONL objects; it does not modify Bronze.
 
 The loader uses the AWS and PostgreSQL settings already configured in `.env`.
 It creates `public.github_issues_clean`, with a unique constraint on
 `(repository, issue_number)`, and uses PostgreSQL upserts so reruns update
-existing records rather than adding duplicates. Labels, comments, and author
+changed records rather than adding duplicates or rewriting unchanged rows.
+Each clean issue stores a content hash and GitHub `updated_at`; the hash covers
+the material used to build its chunks. Labels, comments, and author
 associations are stored as JSONB; issue/comment text is normalized while
 retaining Markdown and code formatting. The raw API response remains available
 unchanged in S3 Bronze.
@@ -160,6 +155,34 @@ current OpenAI pricing before relying on this estimate), failed/skipped
 embeddings, and an example nearest-neighbor similarity result without
 printing chunk text. `--limit` can be increased after reviewing the test
 result.
+
+## Incremental daily pipeline
+
+Run the complete Bronze-to-Gold flow locally with:
+
+```powershell
+python -m rag_assistant.incremental_pipeline
+```
+
+The pipeline creates `public.github_ingestion_watermarks`, calls GitHub with
+each repository's last successful `updated_at` watermark, loads Bronze
+idempotently, embeds only issues whose content hash differs from Gold, and
+advances watermarks only after every stage succeeds. AWS SDK credentials are
+optional when running with an IAM role; `AWS_DEFAULT_REGION` and `S3_BUCKET`
+are still required. The ingestion Lambda entry point is
+`rag_assistant.ingestion_lambda_handler.handler`. Deploy a dedicated ingestion
+Lambda from the existing ECR image with its image command set to that handler;
+the existing API Lambda keeps `rag_assistant.lambda_handler.handler`.
+
+Create the daily 03:00 UTC EventBridge Scheduler rule after creating a role
+that trusts `scheduler.amazonaws.com` and can invoke the ingestion Lambda:
+
+```powershell
+.\scripts\create_daily_ingestion_schedule.ps1 `
+  -LambdaArn "arn:aws:lambda:us-east-2:123456789012:function:github-rag-ingestion" `
+  -ScheduleRoleArn "arn:aws:iam::123456789012:role/github-rag-scheduler" `
+  -Region "us-east-2"
+```
 
 ## Step 4: Local FastAPI retrieval and generation API
 
@@ -346,8 +369,9 @@ docker build -t trustworthy-rag-assistant .
 
 The Lambda runtime reads `RAG_SECRETS_ARN` and loads the JSON secret from AWS
 Secrets Manager. Store `OPENAI_API_KEY`, `PGPASSWORD`, and `API_AUTH_TOKEN`
-there; grant the Lambda execution role only `secretsmanager:GetSecretValue`
-for that secret. Configure PostgreSQL host/database/user, model names, and
+there; include `GITHUB_TOKEN` for the ingestion Lambda. Grant the Lambda
+execution role only `secretsmanager:GetSecretValue` for that secret. Configure
+PostgreSQL host/database/user, model names, S3 bucket/region, and
 `RAG_SECRETS_ARN` as Lambda environment settings. Never place `.env` in the
 image or pass secret values on a command line.
 
