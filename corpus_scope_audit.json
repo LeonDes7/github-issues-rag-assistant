@@ -1,0 +1,75 @@
+{
+  "initial_session_ef_search": "40",
+  "after_default_query_session_ef_search": "40",
+  "after_override_query_session_ef_search": "40",
+  "configured_default": 100,
+  "chunks_by_repository": [
+    [
+      "encode/starlette",
+      4450,
+      776
+    ],
+    [
+      "fastapi/fastapi",
+      632,
+      76
+    ],
+    [
+      "pydantic/pydantic",
+      30297,
+      5214
+    ],
+    [
+      "tiangolo/fastapi",
+      28255,
+      3551
+    ]
+  ],
+  "silver_by_repository": [
+    [
+      "encode/starlette",
+      777,
+      3214,
+      "2026-10-07 18:15:13.731677+00:00",
+      "2026-10-07 18:15:13.731677+00:00"
+    ],
+    [
+      "fastapi/fastapi",
+      76,
+      420,
+      "2026-10-05 10:23:57.122166+00:00",
+      "2026-10-05 10:23:57.122166+00:00"
+    ],
+    [
+      "pydantic/pydantic",
+      5223,
+      20149,
+      "2026-10-07 18:15:13.731677+00:00",
+      "2026-10-07 18:15:13.731677+00:00"
+    ],
+    [
+      "tiangolo/fastapi",
+      3555,
+      20172,
+      "2026-10-07 18:15:13.731677+00:00",
+      "2026-10-07 18:15:13.731677+00:00"
+    ]
+  ],
+  "alias_bronze_provenance": [
+    [
+      "bronze/github/repo=fastapi__fastapi/ingested_at=20261005T101821560700Z/",
+      76
+    ]
+  ],
+  "alias_silver_overlap": [
+    76,
+    76
+  ],
+  "alias_chunk_identity_overlap": 632,
+  "all_database_gold_quality": [
+    63634,
+    0,
+    0,
+    0
+  ]
+}

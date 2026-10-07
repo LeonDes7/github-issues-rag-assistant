@@ -57,12 +57,12 @@ def main():
                 "(embedding <=> %s::vector = %s AND chunk_id < %s))",
                 (vector, best[3], vector, best[3], best[0]),
             ).fetchone()[0] if best else None
-            live = api.retrieve_chunks(conn, cache["vectors"][item["case_id"]], 5)
+            live = api.retrieve_chunks(conn, cache["vectors"][item["case_id"]], 5, hnsw_ef_search=40)
             item["exact_vector_gold_rank"] = rank
             item["exact_vector_gold_chunk"] = {"chunk_id": str(best[0]), "chunk_type": best[1],
                                                 "source_url": best[2], "similarity": 1 - best[3]} if best else None
             item["live_vector_top5"] = [{k: r[k] for k in ("repository", "issue_number", "source_url", "chunk_type", "similarity_score")} for r in live]
-            wider = api.retrieve_chunks(conn, cache["vectors"][item["case_id"]], 100)
+            wider = api.retrieve_chunks(conn, cache["vectors"][item["case_id"]], 100, hnsw_ef_search=40)
             item["approximate_vector_gold_rank_with_limit_100"] = next(
                 (r for r, chunk in enumerate(wider, 1) if chunk["repository"] == gold["repository"]
                  and chunk["issue_number"] == gold["issue_number"]), None)

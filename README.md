@@ -214,6 +214,10 @@ Set `OPENAI_API_KEY`, `API_AUTH_TOKEN`, `OPENAI_EMBEDDING_MODEL`,
 `OPENAI_GENERATION_MODEL`, `RAG_RETRIEVAL_MODE`, and optionally
 `CORS_ALLOWED_ORIGINS` in `.env`. `RAG_RETRIEVAL_MODE` accepts `vector`
 (default) or `hybrid`.
+`RAG_HNSW_EF_SEARCH` defaults to `100` and accepts integers from 1 to 1000;
+set it to `40` to reproduce the original search depth. Retrieval applies this
+with `SET LOCAL` inside each query's transaction, independently of the RDS
+parameter group. The setting resets when the transaction ends.
 `API_AUTH_TOKEN` is required for `/ask`; use a high-entropy token and do not
 check it into source control.
 The default embedding model is `text-embedding-3-small`; the default
