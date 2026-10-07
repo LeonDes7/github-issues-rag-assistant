@@ -1,0 +1,17 @@
+{
+  "region": "us-east-2",
+  "configured_repositories": [
+    "tiangolo/fastapi",
+    "encode/starlette",
+    "pydantic/pydantic"
+  ],
+  "functions": [
+    {
+      "name": "github-rag-api",
+      "repository_settings": {},
+      "image_command": []
+    }
+  ],
+  "schedules": [],
+  "legacy_eventbridge_scheduled_rules": []
+}

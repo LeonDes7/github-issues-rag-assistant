@@ -175,7 +175,12 @@ def create_s3_client(settings: dict[str, Any]) -> Any:
 def read_bronze_records(
     client: Any,
     bucket: str,
+    repositories: list[str] | None = None,
 ) -> tuple[list[dict[str, Any]], dict[str, dict[str, int]], int]:
+    from rag_assistant.repository_scope import selected_repositories
+    selected = selected_repositories(repositories)
+    legacy = dict(BRONZE_SOURCES)
+    selected_sources = [(repo, legacy.get(repo)) for repo in selected]
     sources: list[dict[str, Any]] = []
     source_counts = {
         repository: {
@@ -186,14 +191,14 @@ def read_bronze_records(
             "missing_bodies": 0,
             "missing_heuristic_resolutions": 0,
         }
-        for repository, _ in BRONZE_SOURCES
+        for repository, _ in selected_sources
     }
     total_rejected = 0
 
     source_keys: dict[str, list[tuple[str, str]]] = {
-        repository: [] for repository, _ in BRONZE_SOURCES
+        repository: [] for repository, _ in selected_sources
     }
-    for repository, _ in BRONZE_SOURCES:
+    for repository, _ in selected_sources:
         safe_repository = re.sub(r"[^A-Za-z0-9_.-]", "__", repository)
         list_prefix = f"bronze/github/repo={safe_repository}/issue="
         continuation_token = None
@@ -214,7 +219,9 @@ def read_bronze_records(
             if not continuation_token:
                 raise RuntimeError("S3 returned a truncated page without a continuation token")
 
-    for repository, legacy_prefix in BRONZE_SOURCES:
+    for repository, legacy_prefix in selected_sources:
+        if not legacy_prefix:
+            continue
         source_keys[repository].append(
             (f"{legacy_prefix}issues.jsonl", legacy_prefix)
         )
@@ -574,12 +581,13 @@ def upsert_records(
     return inserted, updated, total_rows
 
 
-def run_load() -> dict[str, Any]:
+def run_load(repositories: list[str] | None = None) -> dict[str, Any]:
     settings = required_environment()
     s3 = create_s3_client(settings)
     sources, source_counts, parse_rejections = read_bronze_records(
         s3,
         settings["S3_BUCKET"],
+        repositories=repositories,
     )
     cleaned, validation = validate_and_clean(sources, source_counts)
     validation["rejected_records"] += parse_rejections
@@ -591,7 +599,7 @@ def run_load() -> dict[str, Any]:
                 "repository": repository,
                 "s3_path": f"s3://{settings['S3_BUCKET']}/{prefix}issues.jsonl",
             }
-            for repository, prefix in BRONZE_SOURCES
+            for repository, prefix in BRONZE_SOURCES if repository in source_counts
         ],
         "rows_inserted": inserted,
         "rows_updated": updated,

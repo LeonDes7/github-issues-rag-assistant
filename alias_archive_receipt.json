@@ -1,0 +1,34 @@
+{
+  "archive_path": "archives\\fastapi_alias\\20261007T210850Z",
+  "rows": {
+    "github_issues_clean": 76,
+    "github_issue_chunks": 632,
+    "github_issue_classifications": 76
+  },
+  "total_rows": 784,
+  "database_rows_retained": true,
+  "credential_scan_passed": true,
+  "roundtrip_verified": true,
+  "files": {
+    "github_issues_clean.jsonl.gz": {
+      "rows": 76,
+      "bytes": 139991,
+      "sha256": "a52b27d9d308b6cda5cf5c9ff918fac6c4505a91622a5906b900a8f62a91eaa7"
+    },
+    "github_issue_chunks.jsonl.gz": {
+      "rows": 632,
+      "bytes": 4468399,
+      "sha256": "c68dbc68906b7462b0b492d911bbebde81beea63a684d3656c849fbc43bfdae6"
+    },
+    "github_issue_classifications.jsonl.gz": {
+      "rows": 76,
+      "bytes": 855,
+      "sha256": "a09f9bc7ba2beead3d71db6c392ae23c7d06abaf52f20e4ababad9cf29542592"
+    }
+  },
+  "database_counts_verified_after_archive": {
+    "github_issues_clean": 76,
+    "github_issue_chunks": 632,
+    "github_issue_classifications": 76
+  }
+}

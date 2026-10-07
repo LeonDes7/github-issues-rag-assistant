@@ -40,9 +40,9 @@ def require_pass(report: dict[str, Any]) -> dict[str, Any]:
     return report
 
 
-def check_bronze_layer(client: Any, bucket: str) -> dict[str, Any]:
+def check_bronze_layer(client: Any, bucket: str, repositories: list[str] | None = None) -> dict[str, Any]:
     sources, source_counts, parse_rejections = (
-        load_bronze_to_rds.read_bronze_records(client, bucket)
+        load_bronze_to_rds.read_bronze_records(client, bucket, repositories=repositories)
     )
     cleaned, validation = load_bronze_to_rds.validate_and_clean(
         sources,

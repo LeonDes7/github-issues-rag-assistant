@@ -120,7 +120,8 @@ def run_pipeline(repositories: list[str] | None = None) -> dict[str, Any]:
     github_settings = ingest_github_issues.required_environment()
     database_settings = load_bronze_to_rds.required_environment()
     embed_issue_chunks.required_environment()
-    selected_repositories = repositories or github_settings["GITHUB_REPOS"]
+    from rag_assistant.repository_scope import selected_repositories as select_repositories
+    selected_repositories = select_repositories(repositories if repositories is not None else github_settings["GITHUB_REPOS"])
 
     database_options = load_bronze_to_rds.database_options(database_settings)
     with psycopg.connect(**database_options) as connection:
@@ -141,8 +142,9 @@ def run_pipeline(repositories: list[str] | None = None) -> dict[str, Any]:
     bronze_quality = data_quality.check_bronze_layer(
         s3,
         github_settings["S3_BUCKET"],
+        repositories=selected_repositories,
     )
-    silver_result = load_bronze_to_rds.run_load()
+    silver_result = load_bronze_to_rds.run_load(repositories=selected_repositories)
     silver_quality = data_quality.check_silver_layer(
         database_settings,
         bronze_quality,

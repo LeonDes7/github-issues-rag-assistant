@@ -288,6 +288,8 @@ def required_environment() -> dict[str, Any]:
         ) from exc
     if not repositories:
         raise ValueError("GITHUB_REPOS must contain at least one repository")
+    from rag_assistant.repository_scope import configured_repositories
+    repositories = configured_repositories()
     if (target_records is not None and target_records < 1) or (
         max_entries is not None and max_entries < 1
     ):
@@ -414,6 +416,9 @@ def run_ingestion(
     max_entries_to_scan: int | None = None,
     since_by_repository: dict[str, str | None] | None = None,
 ) -> dict[str, Any]:
+    from rag_assistant.repository_scope import selected_repositories
+
+    repositories = selected_repositories(repositories)
     settings = required_environment()
     client = s3_client(settings)
     results = [

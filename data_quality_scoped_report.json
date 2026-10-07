@@ -1,0 +1,68 @@
+{
+  "passed": true,
+  "layers": [
+    {
+      "layer": "bronze",
+      "passed": true,
+      "counts": {
+        "source_records": 9831,
+        "parsed_records": 9831,
+        "valid_unique_issues": 9555,
+        "rejected_records": 276,
+        "duplicate_records": 276,
+        "expected_deduplicated_or_rejected": 276
+      },
+      "hard_failures": [],
+      "warnings": [
+        "276 Bronze row(s) were rejected, including 276 duplicate issue keys"
+      ],
+      "valid_issue_count": 9555,
+      "repositories": [
+        "encode/starlette",
+        "pydantic/pydantic",
+        "tiangolo/fastapi"
+      ]
+    },
+    {
+      "layer": "silver",
+      "passed": true,
+      "counts": {
+        "bronze_valid_unique_issues": 9555,
+        "silver_rows": 9555,
+        "silver_comments": 43535,
+        "null_or_blank_key_rows": 0,
+        "duplicate_issue_keys": 0,
+        "malformed_comment_arrays": 0,
+        "comments_are_nested_under_existing_issue_rows": true
+      },
+      "hard_failures": [],
+      "warnings": [],
+      "silver_issue_count": 9555,
+      "repositories": [
+        "encode/starlette",
+        "pydantic/pydantic",
+        "tiangolo/fastapi"
+      ]
+    },
+    {
+      "layer": "gold",
+      "passed": true,
+      "counts": {
+        "silver_rows": 9555,
+        "silver_chunkable_issues": 9541,
+        "expected_no_content_drops": 14,
+        "gold_issues_with_chunks": 9541,
+        "gold_chunks": 63002,
+        "chunks_without_embeddings": 0,
+        "embeddings_with_wrong_dimensions": 0,
+        "orphan_chunks": 0,
+        "embedding_dimensions": 1536
+      },
+      "hard_failures": [],
+      "warnings": [
+        "14 Silver issue(s) have no chunkable body, comment, or resolution and are expected not to appear in Gold"
+      ]
+    }
+  ],
+  "read_method": "Existing quality checks, eight-worker read-only S3 prefetch; unchanged validation and source order"
+}

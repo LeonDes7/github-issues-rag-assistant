@@ -705,6 +705,8 @@ def run_embedding(
     repositories: list[str] | None = None,
 ) -> dict[str, Any]:
     settings = required_environment()
+    from rag_assistant.repository_scope import selected_repositories
+    repositories = selected_repositories(repositories)
     if repositories is not None and (
         not repositories or any(not repository.strip() for repository in repositories)
     ):
@@ -870,7 +872,7 @@ def main() -> None:
     )
     parser.add_argument(
         "--repos",
-        help="Comma-separated repository names to include (defaults to all)",
+        help="Configured repository names to include (defaults to GITHUB_REPOS)",
     )
     args = parser.parse_args()
     if args.limit < 1:
