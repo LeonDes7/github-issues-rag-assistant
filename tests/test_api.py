@@ -213,6 +213,40 @@ class ApiTests(unittest.TestCase):
             response.json()["retrieval_metadata"]["retrieved_count"],
             0,
         )
+        self.openai_client.chat.completions.create.assert_not_called()
+
+    def test_ask_refuses_low_confidence_without_calling_generation(self):
+        low_confidence = chunk(similarity=0.1)
+        low_confidence["retrieval_score"] = 0.1
+        with patch.object(api, "retrieve_chunks", return_value=[low_confidence]):
+            self.openai_client.embeddings.create.return_value.data = [
+                MagicMock(embedding=[0.01] * api.VECTOR_DIMENSIONS)
+            ]
+
+            response = self.client.post(
+                "/ask",
+                json={"question": "How does this issue behave?"},
+            )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("isn't enough evidence", response.json()["answer"])
+        self.assertEqual(response.json()["performance"]["llm_latency_ms"], 0)
+        self.openai_client.chat.completions.create.assert_not_called()
+
+    def test_confidence_cutoff_accepts_scores_at_the_threshold(self):
+        self.assertFalse(api.should_refuse([{"retrieval_score": 0.25}], 0.25))
+        self.assertTrue(api.should_refuse([{"retrieval_score": 0.249}], 0.25))
+
+    def test_estimated_request_cost_uses_configured_token_rates(self):
+        settings = {
+            "OPENAI_EMBEDDING_COST_PER_MILLION_TOKENS_USD": 0.02,
+            "OPENAI_GENERATION_INPUT_COST_PER_MILLION_TOKENS_USD": 0.15,
+            "OPENAI_GENERATION_OUTPUT_COST_PER_MILLION_TOKENS_USD": 0.60,
+        }
+
+        cost = api.estimate_request_cost(settings, 1000, 2000, 500)
+
+        self.assertAlmostEqual(cost, 0.00062)
 
     def test_hybrid_retrieval_uses_full_text_ranking_and_reciprocal_rank_fusion(self):
         connection = MagicMock()

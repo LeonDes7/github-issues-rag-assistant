@@ -1,9 +1,12 @@
 """Local FastAPI retrieval-and-generation API for GitHub issue chunks."""
 
 import json
+import logging
+import math
 import os
 import re
 import secrets
+import time
 from collections.abc import Generator
 from functools import lru_cache
 from pathlib import Path
@@ -24,6 +27,14 @@ DEFAULT_EMBEDDING_MODEL = "text-embedding-3-small"
 DEFAULT_GENERATION_MODEL = "gpt-4o-mini"
 DEFAULT_CORS_ORIGINS = "http://localhost:8501,http://127.0.0.1:8501"
 VECTOR_DIMENSIONS = 1536
+DEFAULT_CONFIDENCE_THRESHOLD = 0.25
+DEFAULT_EMBEDDING_COST_PER_MILLION_TOKENS_USD = 0.02
+DEFAULT_GENERATION_INPUT_COST_PER_MILLION_TOKENS_USD = 0.15
+DEFAULT_GENERATION_OUTPUT_COST_PER_MILLION_TOKENS_USD = 0.60
+LOW_EVIDENCE_ANSWER = (
+    "There isn't enough evidence in the indexed issues to answer this question."
+)
+LOGGER = logging.getLogger(__name__)
 bearer_scheme = HTTPBearer(auto_error=False)
 
 GROUNDED_ANSWER_PROMPT = """You are a trustworthy assistant for GitHub issues. Answer the user’s question only using the retrieved issue excerpts below.
@@ -71,12 +82,24 @@ class RetrievalMetadata(BaseModel):
     embedding_model: str
     generation_model: str
     retrieval_mode: str
+    confidence_threshold: float
+
+
+class PerformanceMetadata(BaseModel):
+    retrieval_latency_ms: float
+    llm_latency_ms: float
+    total_latency_ms: float
+    embedding_tokens: int
+    generation_prompt_tokens: int
+    generation_completion_tokens: int
+    estimated_cost_usd: float
 
 
 class AskResponse(BaseModel):
     answer: str
     citations: list[Citation]
     retrieval_metadata: RetrievalMetadata
+    performance: PerformanceMetadata
 
 
 def load_settings() -> dict[str, Any]:
@@ -130,6 +153,12 @@ def load_settings() -> dict[str, Any]:
     retrieval_mode = os.getenv("RAG_RETRIEVAL_MODE", "vector").strip().lower()
     if retrieval_mode not in {"vector", "hybrid"}:
         raise RuntimeError("RAG_RETRIEVAL_MODE must be 'vector' or 'hybrid'")
+    confidence_threshold = _float_setting(
+        "RAG_CONFIDENCE_THRESHOLD",
+        DEFAULT_CONFIDENCE_THRESHOLD,
+    )
+    if not 0 <= confidence_threshold <= 1:
+        raise RuntimeError("RAG_CONFIDENCE_THRESHOLD must be between 0 and 1")
 
     return {
         **values,
@@ -139,7 +168,81 @@ def load_settings() -> dict[str, Any]:
         "OPENAI_GENERATION_MODEL": generation_model,
         "CORS_ALLOWED_ORIGINS": origins,
         "RAG_RETRIEVAL_MODE": retrieval_mode,
+        "RAG_CONFIDENCE_THRESHOLD": confidence_threshold,
+        "OPENAI_EMBEDDING_COST_PER_MILLION_TOKENS_USD": _float_setting(
+            "OPENAI_EMBEDDING_COST_PER_MILLION_TOKENS_USD",
+            DEFAULT_EMBEDDING_COST_PER_MILLION_TOKENS_USD,
+        ),
+        "OPENAI_GENERATION_INPUT_COST_PER_MILLION_TOKENS_USD": _float_setting(
+            "OPENAI_GENERATION_INPUT_COST_PER_MILLION_TOKENS_USD",
+            DEFAULT_GENERATION_INPUT_COST_PER_MILLION_TOKENS_USD,
+        ),
+        "OPENAI_GENERATION_OUTPUT_COST_PER_MILLION_TOKENS_USD": _float_setting(
+            "OPENAI_GENERATION_OUTPUT_COST_PER_MILLION_TOKENS_USD",
+            DEFAULT_GENERATION_OUTPUT_COST_PER_MILLION_TOKENS_USD,
+        ),
     }
+
+
+def _float_setting(name: str, default: float) -> float:
+    value = os.getenv(name)
+    if value is None:
+        return default
+    try:
+        parsed = float(value)
+    except ValueError as exc:
+        raise RuntimeError(f"{name} must be a number") from exc
+    if not math.isfinite(parsed) or parsed < 0:
+        raise RuntimeError(f"{name} must be a finite non-negative number")
+    return parsed
+
+
+def retrieval_score(retrieved: list[dict[str, Any]]) -> float:
+    if not retrieved:
+        return 0.0
+    score = retrieved[0].get(
+        "retrieval_score",
+        retrieved[0].get("similarity_score", 0.0),
+    )
+    if not isinstance(score, (float, int)) or not math.isfinite(score):
+        return 0.0
+    return min(1.0, max(0.0, float(score)))
+
+
+def should_refuse(
+    retrieved: list[dict[str, Any]],
+    confidence_threshold: float,
+) -> bool:
+    return not retrieved or retrieval_score(retrieved) < confidence_threshold
+
+
+def estimate_request_cost(
+    settings: dict[str, Any],
+    embedding_tokens: int,
+    generation_prompt_tokens: int,
+    generation_completion_tokens: int,
+) -> float:
+    embedding_cost = (
+        embedding_tokens
+        * settings.get(
+            "OPENAI_EMBEDDING_COST_PER_MILLION_TOKENS_USD",
+            DEFAULT_EMBEDDING_COST_PER_MILLION_TOKENS_USD,
+        )
+        / 1_000_000
+    )
+    generation_cost = (
+        generation_prompt_tokens
+        * settings.get(
+            "OPENAI_GENERATION_INPUT_COST_PER_MILLION_TOKENS_USD",
+            DEFAULT_GENERATION_INPUT_COST_PER_MILLION_TOKENS_USD,
+        )
+        + generation_completion_tokens
+        * settings.get(
+            "OPENAI_GENERATION_OUTPUT_COST_PER_MILLION_TOKENS_USD",
+            DEFAULT_GENERATION_OUTPUT_COST_PER_MILLION_TOKENS_USD,
+        )
+    ) / 1_000_000
+    return round(embedding_cost + generation_cost, 10)
 
 
 def _load_runtime_secrets() -> dict[str, str]:
@@ -273,7 +376,10 @@ def retrieve_chunks(
             fused AS (
                 SELECT chunk_id,
                        MAX(similarity_score) AS similarity_score,
-                       SUM(1.0 / (60 + rank)) AS retrieval_score
+                       LEAST(
+                           1.0,
+                           SUM(1.0 / (60 + rank)) / (2.0 / 61.0)
+                       ) AS retrieval_score
                 FROM ranked_candidates
                 GROUP BY chunk_id
             )
@@ -332,6 +438,21 @@ def generate_grounded_answer(
     question: str,
     retrieved: list[dict[str, Any]],
 ) -> str:
+    answer, _, _ = generate_grounded_answer_with_usage(
+        client,
+        model,
+        question,
+        retrieved,
+    )
+    return answer
+
+
+def generate_grounded_answer_with_usage(
+    client: OpenAI,
+    model: str,
+    question: str,
+    retrieved: list[dict[str, Any]],
+) -> tuple[str, int, int]:
     evidence = [
         {
             "citation": f"[{index}]",
@@ -359,9 +480,16 @@ def generate_grounded_answer(
     answer = response.choices[0].message.content
     if not answer or not answer.strip():
         raise RuntimeError("Generation model returned an empty answer")
-    return clean_generated_answer(
-        answer.strip(),
-        [chunk["chunk_text"] for chunk in retrieved],
+    usage = response.usage
+    prompt_tokens = getattr(usage, "prompt_tokens", 0) if usage else 0
+    completion_tokens = getattr(usage, "completion_tokens", 0) if usage else 0
+    return (
+        clean_generated_answer(
+            answer.strip(),
+            [chunk["chunk_text"] for chunk in retrieved],
+        ),
+        prompt_tokens if isinstance(prompt_tokens, int) else 0,
+        completion_tokens if isinstance(completion_tokens, int) else 0,
     )
 
 
@@ -448,12 +576,29 @@ def create_app() -> FastAPI:
         connection: psycopg.Connection[Any] = Depends(get_db_connection),
         client: OpenAI = Depends(get_openai_client),
     ) -> AskResponse:
+        request_started = time.perf_counter()
+        retrieval_latency_ms = 0.0
+        llm_latency_ms = 0.0
+        embedding_tokens = 0
+        generation_prompt_tokens = 0
+        generation_completion_tokens = 0
+        retrieved: list[dict[str, Any]] = []
+        retrieval_mode = "vector"
+        refused = False
+        settings = get_settings()
         try:
-            settings = get_settings()
+            retrieval_started = time.perf_counter()
             embedding_response = client.embeddings.create(
                 model=settings["OPENAI_EMBEDDING_MODEL"],
                 input=request.question,
                 dimensions=VECTOR_DIMENSIONS,
+            )
+            embedding_usage = getattr(embedding_response, "usage", None)
+            embedding_tokens_value = getattr(embedding_usage, "prompt_tokens", 0)
+            embedding_tokens = (
+                embedding_tokens_value
+                if isinstance(embedding_tokens_value, int)
+                else 0
             )
             query_embedding = embedding_response.data[0].embedding
             if len(query_embedding) != VECTOR_DIMENSIONS:
@@ -473,12 +618,29 @@ def create_app() -> FastAPI:
                     query_embedding,
                     request.top_k,
                 )
-            answer = generate_grounded_answer(
-                client,
-                settings["OPENAI_GENERATION_MODEL"],
-                request.question,
-                retrieved,
+            retrieval_latency_ms = (
+                time.perf_counter() - retrieval_started
+            ) * 1000
+            confidence_threshold = settings.get(
+                "RAG_CONFIDENCE_THRESHOLD",
+                DEFAULT_CONFIDENCE_THRESHOLD,
             )
+            refused = should_refuse(retrieved, confidence_threshold)
+            if refused:
+                answer = LOW_EVIDENCE_ANSWER
+            else:
+                llm_started = time.perf_counter()
+                (
+                    answer,
+                    generation_prompt_tokens,
+                    generation_completion_tokens,
+                ) = generate_grounded_answer_with_usage(
+                    client,
+                    settings["OPENAI_GENERATION_MODEL"],
+                    request.question,
+                    retrieved,
+                )
+                llm_latency_ms = (time.perf_counter() - llm_started) * 1000
         except HTTPException:
             raise
         except (OpenAIError, psycopg.Error, RuntimeError, ValueError) as exc:
@@ -486,6 +648,31 @@ def create_app() -> FastAPI:
                 status_code=502,
                 detail="Retrieval or generation failed",
             ) from exc
+        finally:
+            total_latency_ms = (time.perf_counter() - request_started) * 1000
+            estimated_cost_usd = estimate_request_cost(
+                settings,
+                embedding_tokens,
+                generation_prompt_tokens,
+                generation_completion_tokens,
+            )
+            LOGGER.info(
+                "rag_request_metrics %s",
+                json.dumps(
+                    {
+                        "retrieval_latency_ms": round(retrieval_latency_ms, 3),
+                        "llm_latency_ms": round(llm_latency_ms, 3),
+                        "total_latency_ms": round(total_latency_ms, 3),
+                        "embedding_tokens": embedding_tokens,
+                        "generation_prompt_tokens": generation_prompt_tokens,
+                        "generation_completion_tokens": generation_completion_tokens,
+                        "estimated_cost_usd": estimated_cost_usd,
+                        "retrieval_mode": retrieval_mode,
+                        "retrieval_score": retrieval_score(retrieved),
+                        "refused": refused,
+                    }
+                ),
+            )
 
         citations = [
             Citation(
@@ -513,6 +700,19 @@ def create_app() -> FastAPI:
                 embedding_model=settings["OPENAI_EMBEDDING_MODEL"],
                 generation_model=settings["OPENAI_GENERATION_MODEL"],
                 retrieval_mode=retrieval_mode,
+                confidence_threshold=settings.get(
+                    "RAG_CONFIDENCE_THRESHOLD",
+                    DEFAULT_CONFIDENCE_THRESHOLD,
+                ),
+            ),
+            performance=PerformanceMetadata(
+                retrieval_latency_ms=round(retrieval_latency_ms, 3),
+                llm_latency_ms=round(llm_latency_ms, 3),
+                total_latency_ms=round(total_latency_ms, 3),
+                embedding_tokens=embedding_tokens,
+                generation_prompt_tokens=generation_prompt_tokens,
+                generation_completion_tokens=generation_completion_tokens,
+                estimated_cost_usd=estimated_cost_usd,
             ),
         )
 

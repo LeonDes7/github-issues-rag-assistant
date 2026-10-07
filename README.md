@@ -250,6 +250,36 @@ mode-specific retrieval score, plus `retrieval_metadata` including requested
 Questions must contain non-whitespace text and be no longer than 4,000
 characters. Do not expose `.env` or commit credentials.
 
+If the top retrieval score is below `RAG_CONFIDENCE_THRESHOLD`, the API
+returns “There isn't enough evidence in the indexed issues to answer this
+question.” without making a generation request. The default cutoff (`0.25`) is
+a starting value; calibrate it against the generated answerable and
+unanswerable cases for the selected retrieval mode:
+
+```powershell
+python scripts/calibrate_confidence.py `
+  --cases evaluation_cases.generated.jsonl `
+  --mode vector
+```
+
+The calibration report selects the cutoff with maximum balanced accuracy,
+reports correctly refused and wrongly refused counts, and saves the complete
+score list to `confidence_calibration_results.json`. Set the printed
+`RAG_CONFIDENCE_THRESHOLD` in the API environment to deploy that cutoff.
+
+Each API request also logs retrieval, generation, and total latency, token
+usage, refusal status, and estimated cost to the application log. The
+generation/embedding token rates are configurable in `.env`; defaults are
+rough estimates and should be checked against current OpenAI pricing. To
+measure p50/p95 latency and average estimated cost over the eval questions:
+
+```powershell
+python scripts/measure_rag_performance.py `
+  --cases evaluation_cases.generated.jsonl
+```
+
+The detailed sample results are written to `rag_performance_results.json`.
+
 ## Step 6: Local RAG evaluation
 
 `evaluation_cases.jsonl` is a small, version-controlled held-out suite of 10

@@ -89,6 +89,7 @@ def _show_result(result: dict[str, Any]) -> None:
         st.json(
             {
                 "retrieval_metadata": result.get("retrieval_metadata", {}),
+                "performance": result.get("performance", {}),
                 "citations": citations,
             }
         )
