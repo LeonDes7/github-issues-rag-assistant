@@ -31,7 +31,10 @@ class QueryCursor:
     def __exit__(self, *args):
         return self.cursor.__exit__(*args)
 
-    def execute(self, sql, params):
+    def execute(self, sql, params=None):
+        if sql.startswith("SET LOCAL "):
+            self.cursor.execute(sql)
+            return
         if self.owner.exact:
             old = "ORDER BY chunks.embedding <=> %s::vector"
             if sql.count(old) != 1:
@@ -53,6 +56,9 @@ class QueryConnection:
 
     def cursor(self):
         return QueryCursor(self.connection.cursor(), self)
+
+    def transaction(self):
+        return self.connection.transaction()
 
 
 def percentile(values, fraction):
@@ -165,7 +171,7 @@ def main():
                 conn.execute("SELECT set_config('hnsw.ef_search', %s, true)", (str(ef or 40),))
                 adapter = QueryConnection(conn, exact=ef is None)
                 start = time.perf_counter()
-                retrieved = api.retrieve_chunks(adapter, cache["vectors"][case["case_id"]], 5)
+                retrieved = api.retrieve_chunks(adapter, cache["vectors"][case["case_id"]], 5, hnsw_ef_search=ef or 40)
                 elapsed = (time.perf_counter() - start) * 1000
                 metrics = evaluate.retrieval_case_metrics(case, retrieved)
                 gold_rank = next((rank for rank, chunk in enumerate(retrieved, 1)

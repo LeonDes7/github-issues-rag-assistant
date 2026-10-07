@@ -292,6 +292,47 @@ class ApiTests(unittest.TestCase):
                 retrieval_mode="hybrid",
             )
 
+    def test_retrieval_sets_local_search_depth_inside_transaction(self):
+        connection = MagicMock()
+        cursor = connection.cursor.return_value.__enter__.return_value
+        cursor.fetchall.return_value = []
+        events = []
+        connection.transaction.return_value.__enter__.side_effect = lambda: events.append("transaction")
+        cursor.execute.side_effect = lambda sql, *args: events.append(sql)
+        for depth in (100, 40):
+            with self.subTest(depth=depth):
+                events.clear()
+                self.settings["RAG_HNSW_EF_SEARCH"] = depth
+                api.retrieve_chunks(connection, [0.01] * api.VECTOR_DIMENSIONS, 5)
+                self.assertEqual(events[:2], ["transaction", f"SET LOCAL hnsw.ef_search = {depth}"])
+                self.assertIn("ORDER BY chunks.embedding", events[2])
+
+    def test_retrieval_defaults_to_100_and_rejects_invalid_depth(self):
+        connection = MagicMock()
+        cursor = connection.cursor.return_value.__enter__.return_value
+        cursor.fetchall.return_value = []
+        api.retrieve_chunks(connection, [0.01] * api.VECTOR_DIMENSIONS, 5)
+        self.assertEqual(cursor.execute.call_args_list[0].args, ("SET LOCAL hnsw.ef_search = 100",))
+        for depth in (0, 1001, True, "40"):
+            with self.subTest(depth=depth), self.assertRaises(ValueError):
+                api.retrieve_chunks(connection, [0.01] * api.VECTOR_DIMENSIONS, 5, hnsw_ef_search=depth)
+
+    def test_hnsw_search_depth_environment_default_override_and_validation(self):
+        environment = {key: "test-value" for key in (
+            "OPENAI_API_KEY", "PGHOST", "PGDATABASE", "PGUSER", "PGPASSWORD", "API_AUTH_TOKEN"
+        )}
+        with patch.dict(os.environ, environment, clear=True), patch.object(api, "load_dotenv"), patch.object(api, "_load_runtime_secrets", return_value={}):
+            # setUp mocks load_settings for HTTP tests; exercise the actual
+            # configuration loader here, without reading local credentials.
+            loader = self.settings_patch.temp_original
+            self.assertEqual(loader()["RAG_HNSW_EF_SEARCH"], 100)
+            os.environ["RAG_HNSW_EF_SEARCH"] = "40"
+            self.assertEqual(loader()["RAG_HNSW_EF_SEARCH"], 40)
+            for value in ("bad", "0", "1001"):
+                os.environ["RAG_HNSW_EF_SEARCH"] = value
+                with self.subTest(value=value), self.assertRaisesRegex(RuntimeError, "RAG_HNSW_EF_SEARCH"):
+                    loader()
+
     def test_ask_uses_hybrid_retrieval_when_configured(self):
         self.settings["RAG_RETRIEVAL_MODE"] = "hybrid"
         with patch.object(

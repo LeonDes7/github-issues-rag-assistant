@@ -153,6 +153,12 @@ def load_settings() -> dict[str, Any]:
     retrieval_mode = os.getenv("RAG_RETRIEVAL_MODE", "vector").strip().lower()
     if retrieval_mode not in {"vector", "hybrid"}:
         raise RuntimeError("RAG_RETRIEVAL_MODE must be 'vector' or 'hybrid'")
+    try:
+        hnsw_ef_search = int(os.getenv("RAG_HNSW_EF_SEARCH", "100"))
+    except ValueError as exc:
+        raise RuntimeError("RAG_HNSW_EF_SEARCH must be an integer") from exc
+    if not 1 <= hnsw_ef_search <= 1000:
+        raise RuntimeError("RAG_HNSW_EF_SEARCH must be between 1 and 1000")
     confidence_threshold = _float_setting(
         "RAG_CONFIDENCE_THRESHOLD",
         DEFAULT_CONFIDENCE_THRESHOLD,
@@ -168,6 +174,7 @@ def load_settings() -> dict[str, Any]:
         "OPENAI_GENERATION_MODEL": generation_model,
         "CORS_ALLOWED_ORIGINS": origins,
         "RAG_RETRIEVAL_MODE": retrieval_mode,
+        "RAG_HNSW_EF_SEARCH": hnsw_ef_search,
         "RAG_CONFIDENCE_THRESHOLD": confidence_threshold,
         "OPENAI_EMBEDDING_COST_PER_MILLION_TOKENS_USD": _float_setting(
             "OPENAI_EMBEDDING_COST_PER_MILLION_TOKENS_USD",
@@ -310,7 +317,14 @@ def retrieve_chunks(
     top_k: int,
     retrieval_mode: str = "vector",
     query_text: str | None = None,
+    hnsw_ef_search: int | None = None,
 ) -> list[dict[str, Any]]:
+    ef_search = (
+        get_settings().get("RAG_HNSW_EF_SEARCH", 100)
+        if hnsw_ef_search is None else hnsw_ef_search
+    )
+    if isinstance(ef_search, bool) or not isinstance(ef_search, int) or not 1 <= ef_search <= 1000:
+        raise ValueError("hnsw_ef_search must be an integer between 1 and 1000")
     vector_literal = "[" + ",".join(str(value) for value in embedding) + "]"
     if retrieval_mode == "vector":
         query = """
@@ -412,9 +426,13 @@ def retrieve_chunks(
         )
     else:
         raise ValueError("retrieval_mode must be 'vector' or 'hybrid'")
-    with connection.cursor() as cursor:
-        cursor.execute(query, parameters)
-        rows = cursor.fetchall()
+    # Explicit transaction also supports autocommit callers. A nested call uses
+    # a savepoint; each query sets its own depth without a parameter-group change.
+    with connection.transaction():
+        with connection.cursor() as cursor:
+            cursor.execute(f"SET LOCAL hnsw.ef_search = {ef_search}")
+            cursor.execute(query, parameters)
+            rows = cursor.fetchall()
     return [
         {
             "repository": row[0],
