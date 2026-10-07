@@ -60,6 +60,7 @@ class Citation(BaseModel):
     source_url: str
     chunk_type: str
     similarity_score: float
+    retrieval_score: float
     predicted_category: str | None = None
     classification_confidence: str | None = None
 
@@ -69,6 +70,7 @@ class RetrievalMetadata(BaseModel):
     retrieved_count: int
     embedding_model: str
     generation_model: str
+    retrieval_mode: str
 
 
 class AskResponse(BaseModel):
@@ -125,6 +127,9 @@ def load_settings() -> dict[str, Any]:
     ]
     if not origins:
         raise RuntimeError("CORS_ALLOWED_ORIGINS must contain at least one origin")
+    retrieval_mode = os.getenv("RAG_RETRIEVAL_MODE", "vector").strip().lower()
+    if retrieval_mode not in {"vector", "hybrid"}:
+        raise RuntimeError("RAG_RETRIEVAL_MODE must be 'vector' or 'hybrid'")
 
     return {
         **values,
@@ -133,6 +138,7 @@ def load_settings() -> dict[str, Any]:
         "OPENAI_EMBEDDING_MODEL": embedding_model,
         "OPENAI_GENERATION_MODEL": generation_model,
         "CORS_ALLOWED_ORIGINS": origins,
+        "RAG_RETRIEVAL_MODE": retrieval_mode,
     }
 
 
@@ -199,14 +205,16 @@ def retrieve_chunks(
     connection: psycopg.Connection[Any],
     embedding: list[float],
     top_k: int,
+    retrieval_mode: str = "vector",
+    query_text: str | None = None,
 ) -> list[dict[str, Any]]:
     vector_literal = "[" + ",".join(str(value) for value in embedding) + "]"
-    with connection.cursor() as cursor:
-        cursor.execute(
-            """
+    if retrieval_mode == "vector":
+        query = """
             SELECT chunks.repository, chunks.issue_number, issues.github_url,
                    chunks.source_url, chunks.chunk_type, chunks.chunk_text,
                    1 - (chunks.embedding <=> %s::vector) AS similarity_score,
+                   1 - (chunks.embedding <=> %s::vector) AS retrieval_score,
                    classifications.label, classifications.confidence
             FROM public.github_issue_chunks AS chunks
             JOIN public.github_issues_clean AS issues
@@ -220,9 +228,86 @@ def retrieve_chunks(
             WHERE chunks.embedding IS NOT NULL
             ORDER BY chunks.embedding <=> %s::vector
             LIMIT %s
-            """,
-            (vector_literal, vector_literal, top_k),
+        """
+        parameters = (vector_literal, vector_literal, vector_literal, top_k)
+    elif retrieval_mode == "hybrid":
+        if not query_text or not query_text.strip():
+            raise ValueError("query_text is required for hybrid retrieval")
+        query = """
+            WITH search_query AS (
+                SELECT plainto_tsquery('english', %s) AS query
+            ),
+            vector_results AS (
+                SELECT chunks.chunk_id,
+                       1 - (chunks.embedding <=> %s::vector) AS similarity_score,
+                       ROW_NUMBER() OVER (
+                           ORDER BY chunks.embedding <=> %s::vector,
+                                    chunks.chunk_id
+                       ) AS rank
+                FROM public.github_issue_chunks AS chunks
+                WHERE chunks.embedding IS NOT NULL
+                ORDER BY chunks.embedding <=> %s::vector
+                LIMIT %s
+            ),
+            text_results AS (
+                SELECT chunks.chunk_id,
+                       ROW_NUMBER() OVER (
+                           ORDER BY ts_rank_cd(chunks.search_vector, search_query.query)
+                                    DESC,
+                                    chunks.chunk_id
+                       ) AS rank
+                FROM public.github_issue_chunks AS chunks
+                CROSS JOIN search_query
+                WHERE chunks.search_vector @@ search_query.query
+                ORDER BY ts_rank_cd(chunks.search_vector, search_query.query) DESC,
+                         chunks.chunk_id
+                LIMIT %s
+            ),
+            ranked_candidates AS (
+                SELECT chunk_id, rank, similarity_score, 1 AS source_rank
+                FROM vector_results
+                UNION ALL
+                SELECT chunk_id, rank, NULL::double precision, 2 AS source_rank
+                FROM text_results
+            ),
+            fused AS (
+                SELECT chunk_id,
+                       MAX(similarity_score) AS similarity_score,
+                       SUM(1.0 / (60 + rank)) AS retrieval_score
+                FROM ranked_candidates
+                GROUP BY chunk_id
+            )
+            SELECT chunks.repository, chunks.issue_number, issues.github_url,
+                   chunks.source_url, chunks.chunk_type, chunks.chunk_text,
+                   COALESCE(fused.similarity_score, 0) AS similarity_score,
+                   fused.retrieval_score,
+                   classifications.label, classifications.confidence
+            FROM fused
+            JOIN public.github_issue_chunks AS chunks USING (chunk_id)
+            JOIN public.github_issues_clean AS issues
+              ON issues.repository = chunks.repository
+             AND issues.issue_number = chunks.issue_number
+            LEFT JOIN public.github_issue_classifications AS classifications
+              ON classifications.repository = chunks.repository
+             AND classifications.issue_number = chunks.issue_number
+             AND classifications.classification_method = 'heuristic'
+             AND classifications.classifier_version = 'heuristic-v1'
+            ORDER BY fused.retrieval_score DESC, chunks.chunk_id
+            LIMIT %s
+        """
+        parameters = (
+            query_text,
+            vector_literal,
+            vector_literal,
+            vector_literal,
+            top_k,
+            top_k,
+            top_k,
         )
+    else:
+        raise ValueError("retrieval_mode must be 'vector' or 'hybrid'")
+    with connection.cursor() as cursor:
+        cursor.execute(query, parameters)
         rows = cursor.fetchall()
     return [
         {
@@ -233,8 +318,9 @@ def retrieve_chunks(
             "chunk_type": row[4],
             "chunk_text": row[5],
             "similarity_score": float(row[6]),
-            "predicted_category": row[7],
-            "classification_confidence": row[8],
+            "retrieval_score": float(row[7]),
+            "predicted_category": row[8],
+            "classification_confidence": row[9],
         }
         for row in rows
     ]
@@ -372,7 +458,21 @@ def create_app() -> FastAPI:
             query_embedding = embedding_response.data[0].embedding
             if len(query_embedding) != VECTOR_DIMENSIONS:
                 raise RuntimeError("Query embedding has an unexpected vector size")
-            retrieved = retrieve_chunks(connection, query_embedding, request.top_k)
+            retrieval_mode = settings.get("RAG_RETRIEVAL_MODE", "vector")
+            if retrieval_mode == "hybrid":
+                retrieved = retrieve_chunks(
+                    connection,
+                    query_embedding,
+                    request.top_k,
+                    retrieval_mode="hybrid",
+                    query_text=request.question,
+                )
+            else:
+                retrieved = retrieve_chunks(
+                    connection,
+                    query_embedding,
+                    request.top_k,
+                )
             answer = generate_grounded_answer(
                 client,
                 settings["OPENAI_GENERATION_MODEL"],
@@ -395,6 +495,10 @@ def create_app() -> FastAPI:
                 source_url=chunk["source_url"],
                 chunk_type=chunk["chunk_type"],
                 similarity_score=chunk["similarity_score"],
+                retrieval_score=chunk.get(
+                    "retrieval_score",
+                    chunk["similarity_score"],
+                ),
                 predicted_category=chunk.get("predicted_category"),
                 classification_confidence=chunk.get("classification_confidence"),
             )
@@ -408,6 +512,7 @@ def create_app() -> FastAPI:
                 retrieved_count=len(retrieved),
                 embedding_model=settings["OPENAI_EMBEDDING_MODEL"],
                 generation_model=settings["OPENAI_GENERATION_MODEL"],
+                retrieval_mode=retrieval_mode,
             ),
         )
 

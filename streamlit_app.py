@@ -32,6 +32,12 @@ def _show_result(result: dict[str, Any]) -> None:
         st.markdown(answer)
 
     citations = result.get("citations", [])
+    retrieval_metadata = result.get("retrieval_metadata", {})
+    retrieval_mode = (
+        retrieval_metadata.get("retrieval_mode")
+        if isinstance(retrieval_metadata, dict)
+        else "vector"
+    )
     if not isinstance(citations, list):
         citations = []
     if citations:
@@ -63,10 +69,15 @@ def _show_result(result: dict[str, Any]) -> None:
             issue_number = citation.get("issue_number", "unknown")
             url = citation.get("source_url") or citation.get("issue_url")
             chunk_type = citation.get("chunk_type", "evidence")
-            score = citation.get("similarity_score")
+            score = (
+                citation.get("retrieval_score")
+                if retrieval_mode == "hybrid"
+                else citation.get("similarity_score")
+            )
             label = f"[{index}] {repository}#{issue_number} — {chunk_type}"
             if isinstance(score, (int, float)):
-                label += f" · similarity {score:.3f}"
+                score_label = "RRF" if retrieval_mode == "hybrid" else "similarity"
+                label += f" · {score_label} {score:.3f}"
             if isinstance(url, str) and url.startswith("https://github.com/"):
                 st.markdown(f"- [{label}]({url})")
             else:

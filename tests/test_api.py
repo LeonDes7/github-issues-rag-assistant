@@ -214,6 +214,82 @@ class ApiTests(unittest.TestCase):
             0,
         )
 
+    def test_hybrid_retrieval_uses_full_text_ranking_and_reciprocal_rank_fusion(self):
+        connection = MagicMock()
+        cursor = connection.cursor.return_value.__enter__.return_value
+        cursor.fetchall.return_value = [
+            (
+                "encode/starlette",
+                42,
+                "https://github.com/encode/starlette/issues/42",
+                "https://github.com/encode/starlette/issues/42#issuecomment-1",
+                "comment",
+                "middleware startup order",
+                0.73,
+                0.04,
+                "bug",
+                "medium",
+            )
+        ]
+
+        retrieved = api.retrieve_chunks(
+            connection,
+            [0.01] * api.VECTOR_DIMENSIONS,
+            5,
+            retrieval_mode="hybrid",
+            query_text="middleware startup order",
+        )
+
+        sql = cursor.execute.call_args.args[0]
+        parameters = cursor.execute.call_args.args[1]
+        self.assertIn("plainto_tsquery('english'", sql)
+        self.assertIn("chunks.search_vector @@ search_query.query", sql)
+        self.assertIn("SUM(1.0 / (60 + rank))", sql)
+        self.assertEqual(parameters[0], "middleware startup order")
+        self.assertEqual(retrieved[0]["retrieval_score"], 0.04)
+        self.assertEqual(retrieved[0]["similarity_score"], 0.73)
+
+    def test_hybrid_retrieval_requires_question_text(self):
+        with self.assertRaisesRegex(ValueError, "query_text is required"):
+            api.retrieve_chunks(
+                MagicMock(),
+                [0.01] * api.VECTOR_DIMENSIONS,
+                5,
+                retrieval_mode="hybrid",
+            )
+
+    def test_ask_uses_hybrid_retrieval_when_configured(self):
+        self.settings["RAG_RETRIEVAL_MODE"] = "hybrid"
+        with patch.object(
+            api,
+            "retrieve_chunks",
+            return_value=[chunk()],
+        ) as retrieve:
+            self.openai_client.embeddings.create.return_value.data = [
+                MagicMock(embedding=[0.01] * api.VECTOR_DIMENSIONS)
+            ]
+            self.openai_client.chat.completions.create.return_value.choices = [
+                MagicMock(message=MagicMock(content="Evidence supports this. [1]"))
+            ]
+
+            response = self.client.post(
+                "/ask",
+                json={"question": "How does middleware start?"},
+            )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json()["retrieval_metadata"]["retrieval_mode"],
+            "hybrid",
+        )
+        retrieve.assert_called_once_with(
+            self.connection,
+            [0.01] * api.VECTOR_DIMENSIONS,
+            5,
+            retrieval_mode="hybrid",
+            query_text="How does middleware start?",
+        )
+
     def test_generated_answer_removes_empty_markdown_and_unsupported_code(self):
         malformed = (
             "Findings:\n"

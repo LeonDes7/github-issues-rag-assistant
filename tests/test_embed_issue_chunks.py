@@ -132,7 +132,9 @@ class IssueChunkEmbeddingTests(unittest.TestCase):
             embedder.CREATE_TABLE_SQL,
         )
         self.assertIn("embedding vector(1536)", embedder.CREATE_TABLE_SQL)
+        self.assertIn("search_vector tsvector", embedder.CREATE_TABLE_SQL)
         self.assertIn("USING hnsw (embedding vector_cosine_ops)", embedder.CREATE_INDEX_SQL)
+        self.assertIn("USING gin (search_vector)", embedder.CREATE_FULL_TEXT_INDEX_SQL)
         self.assertIn(
             "WHEN existing.chunk_text IS DISTINCT FROM EXCLUDED.chunk_text",
             embedder.UPSERT_CHUNK_SQL,

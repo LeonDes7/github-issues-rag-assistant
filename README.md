@@ -187,14 +187,16 @@ that trusts `scheduler.amazonaws.com` and can invoke the ingestion Lambda:
 ## Step 4: Local FastAPI retrieval and generation API
 
 The local API exposes `GET /health` to verify PostgreSQL connectivity and
-`POST /ask` to embed a question, retrieve the nearest issue chunks with
-pgvector cosine distance, and generate a concise answer grounded only in those
-retrieved excerpts. Citation metadata is built from retrieved database rows,
-not from model-generated source URLs. Heuristic-resolution chunks remain
-labeled low-confidence evidence in the prompt.
+`POST /ask` to embed a question, retrieve issue chunks using vector-only or
+hybrid pgvector/full-text search, and generate a concise answer grounded only
+in those retrieved excerpts. Citation metadata is built from retrieved
+database rows, not from model-generated source URLs. Heuristic-resolution
+chunks remain labeled low-confidence evidence in the prompt.
 
 Set `OPENAI_API_KEY`, `API_AUTH_TOKEN`, `OPENAI_EMBEDDING_MODEL`,
-`OPENAI_GENERATION_MODEL`, and optionally `CORS_ALLOWED_ORIGINS` in `.env`.
+`OPENAI_GENERATION_MODEL`, `RAG_RETRIEVAL_MODE`, and optionally
+`CORS_ALLOWED_ORIGINS` in `.env`. `RAG_RETRIEVAL_MODE` accepts `vector`
+(default) or `hybrid`.
 `API_AUTH_TOKEN` is required for `/ask`; use a high-entropy token and do not
 check it into source control.
 The default embedding model is `text-embedding-3-small`; the default
@@ -230,8 +232,9 @@ Invoke-RestMethod -Method Post `
 ```
 
 The JSON response contains `answer`, a `citations` array with repository,
-issue number, issue URL, source URL, chunk type and cosine similarity score,
-and `retrieval_metadata` including requested `top_k` and retrieved count.
+issue number, issue URL, source URL, chunk type, cosine similarity, and the
+mode-specific retrieval score, plus `retrieval_metadata` including requested
+`top_k`, retrieved count, and retrieval mode.
 Questions must contain non-whitespace text and be no longer than 4,000
 characters. Do not expose `.env` or commit credentials.
 
@@ -286,6 +289,22 @@ python -m rag_assistant.evaluate --top-k 5 --judge
 
 Judge results are labeled automated estimates, not absolute truth. The
 evaluation command does not alter issue or chunk rows.
+
+Hybrid retrieval combines a pgvector candidate list with English PostgreSQL
+full-text candidates and fuses their ranks with reciprocal rank fusion
+(`k=60`). Gold setup creates a generated `tsvector` and GIN index. Compare both
+modes over the same generated evaluation set without calling the answer
+generation model:
+
+```powershell
+python scripts/compare_retrieval_modes.py `
+  --cases evaluation_cases.generated.jsonl `
+  --top-k 5
+```
+
+The script prints side-by-side Hit@5, Recall@5, and MRR (or the selected `k`),
+prints per-repository rows, and writes full run data to
+`retrieval_comparison_results.json`.
 
 ## Step 5: Bug/feature/usage classification
 

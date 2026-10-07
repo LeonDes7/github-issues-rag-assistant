@@ -43,6 +43,9 @@ CREATE TABLE IF NOT EXISTS {TABLE_NAME} (
     chunk_text TEXT NOT NULL,
     source_url TEXT NOT NULL,
     content_hash TEXT NOT NULL DEFAULT '',
+    search_vector tsvector GENERATED ALWAYS AS (
+        to_tsvector('english'::regconfig, chunk_text)
+    ) STORED,
     embedding vector({VECTOR_DIMENSIONS}),
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT github_issue_chunks_issue_fk
@@ -56,12 +59,20 @@ CREATE TABLE IF NOT EXISTS {TABLE_NAME} (
 
 ALTER_TABLE_SQL = f"""
 ALTER TABLE {TABLE_NAME}
-    ADD COLUMN IF NOT EXISTS content_hash TEXT NOT NULL DEFAULT ''
+    ADD COLUMN IF NOT EXISTS content_hash TEXT NOT NULL DEFAULT '',
+    ADD COLUMN IF NOT EXISTS search_vector tsvector GENERATED ALWAYS AS (
+        to_tsvector('english'::regconfig, chunk_text)
+    ) STORED
 """
 
 CREATE_INDEX_SQL = f"""
 CREATE INDEX IF NOT EXISTS github_issue_chunks_embedding_hnsw_idx
 ON {TABLE_NAME} USING hnsw (embedding vector_cosine_ops)
+"""
+
+CREATE_FULL_TEXT_INDEX_SQL = f"""
+CREATE INDEX IF NOT EXISTS github_issue_chunks_search_vector_gin_idx
+ON {TABLE_NAME} USING gin (search_vector)
 """
 
 ISSUES_QUERY = """
@@ -316,6 +327,7 @@ def prepare_chunk_table(connection: psycopg.Connection[Any]) -> None:
         cursor.execute(CREATE_TABLE_SQL)
         cursor.execute(ALTER_TABLE_SQL)
         cursor.execute(CREATE_INDEX_SQL)
+        cursor.execute(CREATE_FULL_TEXT_INDEX_SQL)
     connection.commit()
 
 
