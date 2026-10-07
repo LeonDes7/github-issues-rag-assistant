@@ -1,0 +1,504 @@
+{
+  "note": "Top-five lists are saved baseline outputs; FTS counts and plans are live read-only checks. Full hybrid execution plans use an existing corpus embedding as a diagnostic probe, NOT a question embedding or eval rerun. No OpenAI calls.",
+  "rows": [
+    {
+      "case_id": "generated-encode-starlette-1119",
+      "question": "What could be the reason for receiving a 405 Method Not Allowed error when trying to access the /predict endpoint?",
+      "fts_matches": 0,
+      "vector": "tiangolo/fastapi#4108, tiangolo/fastapi#793, tiangolo/fastapi#5291, tiangolo/fastapi#793, tiangolo/fastapi#793",
+      "hybrid": "tiangolo/fastapi#4108, tiangolo/fastapi#793, tiangolo/fastapi#5291, tiangolo/fastapi#793, tiangolo/fastapi#793",
+      "differs": false
+    },
+    {
+      "case_id": "generated-encode-starlette-408",
+      "question": "What is the recommended way to dump settings in starlette.config without exposing sensitive information like JWT secrets?",
+      "fts_matches": 0,
+      "vector": "encode/starlette#408, encode/starlette#408, encode/starlette#671, encode/starlette#671, encode/starlette#763",
+      "hybrid": "encode/starlette#408, encode/starlette#408, encode/starlette#671, encode/starlette#671, encode/starlette#763",
+      "differs": false
+    },
+    {
+      "case_id": "generated-encode-starlette-542",
+      "question": "What is the recommended workaround for the dependency issue between graphene and aniso8601 when installing starlette[full]?",
+      "fts_matches": 0,
+      "vector": "encode/starlette#542, encode/starlette#542, encode/starlette#542, encode/starlette#542, encode/starlette#1144",
+      "hybrid": "encode/starlette#542, encode/starlette#542, encode/starlette#542, encode/starlette#542, encode/starlette#1144",
+      "differs": false
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-2071",
+      "question": "What problem did the reporter observe when sending larger base64-encoded video frames over a WebSocket?",
+      "fts_matches": 0,
+      "vector": "encode/starlette#407, encode/starlette#1369, encode/starlette#940, encode/starlette#407, encode/starlette#940",
+      "hybrid": "encode/starlette#407, encode/starlette#1369, encode/starlette#940, encode/starlette#407, encode/starlette#940",
+      "differs": false
+    },
+    {
+      "case_id": "generated-encode-starlette-383",
+      "question": "What is the recommended workaround for the incorrect redirect location when using `url_path_for` in a mounted sub-application?",
+      "fts_matches": 0,
+      "vector": "encode/starlette#383, encode/starlette#383, encode/starlette#814, encode/starlette#814, encode/starlette#383",
+      "hybrid": "encode/starlette#383, encode/starlette#383, encode/starlette#814, encode/starlette#814, encode/starlette#383",
+      "differs": false
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-618",
+      "question": "What steps should I take if the automatic reload feature fails to work on Windows 10 when modifying main.py?",
+      "fts_matches": 0,
+      "vector": "tiangolo/fastapi#618, tiangolo/fastapi#759, tiangolo/fastapi#618, tiangolo/fastapi#618, tiangolo/fastapi#618",
+      "hybrid": "tiangolo/fastapi#618, tiangolo/fastapi#759, tiangolo/fastapi#618, tiangolo/fastapi#618, tiangolo/fastapi#618",
+      "differs": false
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-4598",
+      "question": "What workaround is suggested for enforcing non-empty strings in Pydantic models?",
+      "fts_matches": 0,
+      "vector": "pydantic/pydantic#1626, pydantic/pydantic#3295, pydantic/pydantic#3710, pydantic/pydantic#1626, pydantic/pydantic#1626",
+      "hybrid": "pydantic/pydantic#1626, pydantic/pydantic#3295, pydantic/pydantic#3710, pydantic/pydantic#1626, pydantic/pydantic#1626",
+      "differs": false
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-7461",
+      "question": "What is the proposed workaround for the issue with hide_input_in_errors not working in error.json() and error.errors()?",
+      "fts_matches": 0,
+      "vector": "tiangolo/fastapi#1909, tiangolo/fastapi#1909, encode/starlette#1175, tiangolo/fastapi#227, encode/starlette#1116",
+      "hybrid": "tiangolo/fastapi#1909, tiangolo/fastapi#1909, encode/starlette#1175, tiangolo/fastapi#227, encode/starlette#1116",
+      "differs": false
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-1873",
+      "question": "What testing limitation did the reporter describe for service logic that uses FastAPI dependency injection?",
+      "fts_matches": 0,
+      "vector": "tiangolo/fastapi#656, tiangolo/fastapi#4893, tiangolo/fastapi#1873, tiangolo/fastapi#656, tiangolo/fastapi#656",
+      "hybrid": "tiangolo/fastapi#656, tiangolo/fastapi#4893, tiangolo/fastapi#1873, tiangolo/fastapi#656, tiangolo/fastapi#656",
+      "differs": false
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-5108",
+      "question": "What steps can I take to resolve the issue of missing roles when retrieving resources associated with a user in my FastAPI application?",
+      "fts_matches": 0,
+      "vector": "tiangolo/fastapi#5676, tiangolo/fastapi#5676, tiangolo/fastapi#2350, tiangolo/fastapi#5676, tiangolo/fastapi#5676",
+      "hybrid": "tiangolo/fastapi#5676, tiangolo/fastapi#5676, tiangolo/fastapi#2350, tiangolo/fastapi#5676, tiangolo/fastapi#5676",
+      "differs": false
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-11555",
+      "question": "What is the expected behavior of `model.model_json_schema()` regarding dictionary key types in Pydantic, and is there a workaround for this issue?",
+      "fts_matches": 0,
+      "vector": "pydantic/pydantic#11555, pydantic/pydantic#11555, pydantic/pydantic#8548, pydantic/pydantic#10445, pydantic/pydantic#7042",
+      "hybrid": "pydantic/pydantic#11555, pydantic/pydantic#11555, pydantic/pydantic#8548, pydantic/pydantic#10445, pydantic/pydantic#7042",
+      "differs": false
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-5370",
+      "question": "What should I do if Gunicorn keeps spinning up workers instead of failing when an exception is raised during the startup event in FastAPI?",
+      "fts_matches": 0,
+      "vector": "tiangolo/fastapi#5370, tiangolo/fastapi#5370, tiangolo/fastapi#5370, tiangolo/fastapi#5370, tiangolo/fastapi#253",
+      "hybrid": "tiangolo/fastapi#5370, tiangolo/fastapi#5370, tiangolo/fastapi#5370, tiangolo/fastapi#5370, tiangolo/fastapi#253",
+      "differs": false
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-5946",
+      "question": "What changes were made to BaseModel.__getattr__ in Pydantic V2 that affect its use with private attributes, and is there a recommended workaround for this issue?",
+      "fts_matches": 0,
+      "vector": "pydantic/pydantic#5946, pydantic/pydantic#5946, pydantic/pydantic#5946, pydantic/pydantic#5946, pydantic/pydantic#5946",
+      "hybrid": "pydantic/pydantic#5946, pydantic/pydantic#5946, pydantic/pydantic#5946, pydantic/pydantic#5946, pydantic/pydantic#5946",
+      "differs": false
+    },
+    {
+      "case_id": "generated-encode-starlette-953",
+      "question": "What is the recommended approach if I need to override the default GraphiQL HTML code due to network restrictions?",
+      "fts_matches": 0,
+      "vector": "encode/starlette#953, encode/starlette#970, encode/starlette#970, encode/starlette#970, encode/starlette#953",
+      "hybrid": "encode/starlette#953, encode/starlette#970, encode/starlette#970, encode/starlette#970, encode/starlette#953",
+      "differs": false
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-5988",
+      "question": "What mismatch did the reporter observe between the large integer in the example and the value displayed by the response model?",
+      "fts_matches": 0,
+      "vector": "tiangolo/fastapi#2349, tiangolo/fastapi#782, tiangolo/fastapi#3028, tiangolo/fastapi#782, tiangolo/fastapi#5988",
+      "hybrid": "tiangolo/fastapi#2349, tiangolo/fastapi#782, tiangolo/fastapi#3028, tiangolo/fastapi#782, tiangolo/fastapi#5988",
+      "differs": false
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-8499",
+      "question": "What is the workaround for the RecursionError encountered when parsing graph-like data with Pydantic V2?",
+      "fts_matches": 0,
+      "vector": "pydantic/pydantic#8499, pydantic/pydantic#8499, pydantic/pydantic#8499, pydantic/pydantic#8499, pydantic/pydantic#8499",
+      "hybrid": "pydantic/pydantic#8499, pydantic/pydantic#8499, pydantic/pydantic#8499, pydantic/pydantic#8499, pydantic/pydantic#8499",
+      "differs": false
+    },
+    {
+      "case_id": "generated-encode-starlette-1247",
+      "question": "What is the reason that the `http.disconnect` event is not received when using the TestClient, and is there a workaround for testing streaming behavior?",
+      "fts_matches": 0,
+      "vector": "encode/starlette#1247, encode/starlette#1247, encode/starlette#1247, encode/starlette#1247, encode/starlette#1247",
+      "hybrid": "encode/starlette#1247, encode/starlette#1247, encode/starlette#1247, encode/starlette#1247, encode/starlette#1247",
+      "differs": false
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-10995",
+      "question": "Why does setting an attribute in a nested model not reflect as modified when using model_dump with exclude_unset set to true on the outer model?",
+      "fts_matches": 0,
+      "vector": "pydantic/pydantic#10995, pydantic/pydantic#10995, pydantic/pydantic#10995, pydantic/pydantic#10995, pydantic/pydantic#10995",
+      "hybrid": "pydantic/pydantic#10995, pydantic/pydantic#10995, pydantic/pydantic#10995, pydantic/pydantic#10995, pydantic/pydantic#10995",
+      "differs": false
+    },
+    {
+      "case_id": "generated-encode-starlette-494",
+      "question": "What is the recommended approach to reject a websocket connection without encountering an exception?",
+      "fts_matches": 0,
+      "vector": "encode/starlette#494, encode/starlette#494, encode/starlette#494, encode/starlette#494, encode/starlette#494",
+      "hybrid": "encode/starlette#494, encode/starlette#494, encode/starlette#494, encode/starlette#494, encode/starlette#494",
+      "differs": false
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-9575",
+      "question": "What could be causing the deprecation warnings to not show up when using the deprecated fields in Pydantic, and is there a specific version of `typing_extensions` that needs to be used?",
+      "fts_matches": 0,
+      "vector": "pydantic/pydantic#9575, pydantic/pydantic#9575, pydantic/pydantic#9575, pydantic/pydantic#7790, pydantic/pydantic#8818",
+      "hybrid": "pydantic/pydantic#9575, pydantic/pydantic#9575, pydantic/pydantic#9575, pydantic/pydantic#7790, pydantic/pydantic#8818",
+      "differs": false
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-10999",
+      "question": "What is the reason the example for multipart/form-data is not showing up in the FastAPI documentation?",
+      "fts_matches": 0,
+      "vector": "tiangolo/fastapi#10999, tiangolo/fastapi#10999, tiangolo/fastapi#10999, tiangolo/fastapi#10999, tiangolo/fastapi#10999",
+      "hybrid": "tiangolo/fastapi#10999, tiangolo/fastapi#10999, tiangolo/fastapi#10999, tiangolo/fastapi#10999, tiangolo/fastapi#10999",
+      "differs": false
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-10131",
+      "question": "What is the reported bug regarding the discriminator field in schema generation with `by_alias=False` in Pydantic?",
+      "fts_matches": 0,
+      "vector": "pydantic/pydantic#10131, pydantic/pydantic#10131, pydantic/pydantic#10131, pydantic/pydantic#10131, pydantic/pydantic#10131",
+      "hybrid": "pydantic/pydantic#10131, pydantic/pydantic#10131, pydantic/pydantic#10131, pydantic/pydantic#10131, pydantic/pydantic#10131",
+      "differs": false
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-5997",
+      "question": "Why did the discussion say `ads_id` was reported as required after the upgrade to Pydantic V2?",
+      "fts_matches": 0,
+      "vector": "pydantic/pydantic#5997, pydantic/pydantic#5997, pydantic/pydantic#5997, pydantic/pydantic#5997, pydantic/pydantic#5997",
+      "hybrid": "pydantic/pydantic#5997, pydantic/pydantic#5997, pydantic/pydantic#5997, pydantic/pydantic#5997, pydantic/pydantic#5997",
+      "differs": false
+    },
+    {
+      "case_id": "generated-encode-starlette-1295",
+      "question": "What is the expected behavior regarding the handling of headers during a websocket connection upgrade?",
+      "fts_matches": 0,
+      "vector": "encode/starlette#1295, encode/starlette#58, tiangolo/fastapi#166, tiangolo/fastapi#166, tiangolo/fastapi#166",
+      "hybrid": "encode/starlette#1295, encode/starlette#58, tiangolo/fastapi#166, tiangolo/fastapi#166, tiangolo/fastapi#166",
+      "differs": false
+    },
+    {
+      "case_id": "generated-encode-starlette-127",
+      "question": "What are the potential benefits of moving routing keyword arguments to `request.kwargs` instead of using them in function signatures?",
+      "fts_matches": 0,
+      "vector": "encode/starlette#127, tiangolo/fastapi#9614, tiangolo/fastapi#9614, tiangolo/fastapi#1292, tiangolo/fastapi#2625",
+      "hybrid": "encode/starlette#127, tiangolo/fastapi#9614, tiangolo/fastapi#9614, tiangolo/fastapi#1292, tiangolo/fastapi#2625",
+      "differs": false
+    },
+    {
+      "case_id": "generated-encode-starlette-94",
+      "question": "What are the potential benefits of implementing server-side CORS enforcement, and how might it affect developer testing and logging?",
+      "fts_matches": 0,
+      "vector": "encode/starlette#94, encode/starlette#94, encode/starlette#94, encode/starlette#34, encode/starlette#94",
+      "hybrid": "encode/starlette#94, encode/starlette#94, encode/starlette#94, encode/starlette#34, encode/starlette#94",
+      "differs": false
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-1060",
+      "question": "What validation error occurs when subclassing `StrictStr` or `ConstrainedStr` in the reported Pydantic 1.2.0 example?",
+      "fts_matches": 0,
+      "vector": "pydantic/pydantic#1060, pydantic/pydantic#6261, pydantic/pydantic#6261, pydantic/pydantic#6261, pydantic/pydantic#5377",
+      "hybrid": "pydantic/pydantic#1060, pydantic/pydantic#6261, pydantic/pydantic#6261, pydantic/pydantic#6261, pydantic/pydantic#5377",
+      "differs": false
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-4999",
+      "question": "What unexpected behavior occurred when the reporter called `.parse_obj()` in an async loop?",
+      "fts_matches": 0,
+      "vector": "pydantic/pydantic#1287, pydantic/pydantic#1287, pydantic/pydantic#1287, pydantic/pydantic#1287, pydantic/pydantic#2160",
+      "hybrid": "pydantic/pydantic#1287, pydantic/pydantic#1287, pydantic/pydantic#1287, pydantic/pydantic#1287, pydantic/pydantic#2160",
+      "differs": false
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-33",
+      "question": "What potential confusion could arise for users regarding the use of synchronous request handlers in FastAPI, and how was this addressed in the documentation?",
+      "fts_matches": 0,
+      "vector": "tiangolo/fastapi#1002, tiangolo/fastapi#1066, tiangolo/fastapi#33, tiangolo/fastapi#2374, tiangolo/fastapi#1066",
+      "hybrid": "tiangolo/fastapi#1002, tiangolo/fastapi#1066, tiangolo/fastapi#33, tiangolo/fastapi#2374, tiangolo/fastapi#1066",
+      "differs": false
+    },
+    {
+      "case_id": "generated-encode-starlette-1004",
+      "question": "Was there any discussion on whether the `StaticFiles` app would support `os.PathLike` in future updates?",
+      "fts_matches": 0,
+      "vector": "encode/starlette#1004, encode/starlette#1265, encode/starlette#1083, encode/starlette#1004, encode/starlette#1265",
+      "hybrid": "encode/starlette#1004, encode/starlette#1265, encode/starlette#1083, encode/starlette#1004, encode/starlette#1265",
+      "differs": false
+    },
+    {
+      "case_id": "generated-encode-starlette-1454",
+      "question": "What is the impact of Starlette lowercasing headers on the functionality of the pdf.js library when serving PDFs?",
+      "fts_matches": 0,
+      "vector": "encode/starlette#1454, encode/starlette#1067, encode/starlette#1067, encode/starlette#1067, encode/starlette#650",
+      "hybrid": "encode/starlette#1454, encode/starlette#1067, encode/starlette#1067, encode/starlette#1067, encode/starlette#650",
+      "differs": false
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-4108",
+      "question": "What should be the correct behavior for setting exclusiveMinimum and exclusiveMaximum in the model schema?",
+      "fts_matches": 0,
+      "vector": "pydantic/pydantic#1417, pydantic/pydantic#1417, pydantic/pydantic#1417, pydantic/pydantic#1164, pydantic/pydantic#1164",
+      "hybrid": "pydantic/pydantic#1417, pydantic/pydantic#1417, pydantic/pydantic#1417, pydantic/pydantic#1164, pydantic/pydantic#1164",
+      "differs": false
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-1276",
+      "question": "How can I configure FastAPI to print logs to a file and change the log format?",
+      "fts_matches": 0,
+      "vector": "tiangolo/fastapi#1276, tiangolo/fastapi#1276, tiangolo/fastapi#1276, tiangolo/fastapi#1276, tiangolo/fastapi#1276",
+      "hybrid": "tiangolo/fastapi#1276, tiangolo/fastapi#1276, tiangolo/fastapi#1276, tiangolo/fastapi#1276, tiangolo/fastapi#1276",
+      "differs": false
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-11865",
+      "question": "What is the rationale behind not wanting to expose `isinstance_python()` from `SchemaValidator` in the `BaseModel` namespace?",
+      "fts_matches": 0,
+      "vector": "pydantic/pydantic#11865, pydantic/pydantic#11865, pydantic/pydantic#11746, pydantic/pydantic#10160, pydantic/pydantic#10160",
+      "hybrid": "pydantic/pydantic#11865, pydantic/pydantic#11865, pydantic/pydantic#11746, pydantic/pydantic#10160, pydantic/pydantic#10160",
+      "differs": false
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-9866",
+      "question": "What is the issue with `model_fields_set` not updating when using the `append` method on a list in Pydantic, and is there a workaround for this behavior?",
+      "fts_matches": 1,
+      "vector": "pydantic/pydantic#9866, pydantic/pydantic#9866, pydantic/pydantic#9866, pydantic/pydantic#8575, pydantic/pydantic#9866",
+      "hybrid": "pydantic/pydantic#9866, pydantic/pydantic#9866, pydantic/pydantic#9866, pydantic/pydantic#9866, pydantic/pydantic#8575",
+      "differs": true
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-4268",
+      "question": "What is the issue with specifying parameters in openapi_extras, and how does it affect the existing query parameters?",
+      "fts_matches": 0,
+      "vector": "tiangolo/fastapi#4268, tiangolo/fastapi#4268, tiangolo/fastapi#4268, tiangolo/fastapi#4268, tiangolo/fastapi#4764",
+      "hybrid": "tiangolo/fastapi#4268, tiangolo/fastapi#4268, tiangolo/fastapi#4268, tiangolo/fastapi#4268, tiangolo/fastapi#4764",
+      "differs": false
+    },
+    {
+      "case_id": "generated-encode-starlette-726",
+      "question": "What are the recommended approaches for implementing a 'sink' feature to forward requests to a legacy Django app while using Starlette?",
+      "fts_matches": 0,
+      "vector": "encode/starlette#726, encode/starlette#726, encode/starlette#726, encode/starlette#437, encode/starlette#437",
+      "hybrid": "encode/starlette#726, encode/starlette#726, encode/starlette#726, encode/starlette#437, encode/starlette#437",
+      "differs": false
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-5724",
+      "question": "What are the recommended practices for structuring a FastAPI project to support multiple versions of the same API?",
+      "fts_matches": 0,
+      "vector": "tiangolo/fastapi#5724, tiangolo/fastapi#381, tiangolo/fastapi#5724, tiangolo/fastapi#381, tiangolo/fastapi#381",
+      "hybrid": "tiangolo/fastapi#5724, tiangolo/fastapi#381, tiangolo/fastapi#5724, tiangolo/fastapi#381, tiangolo/fastapi#381",
+      "differs": false
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-11491",
+      "question": "What specific issues were identified in the organization of the serialization documentation that led to the decision to rewrite it?",
+      "fts_matches": 0,
+      "vector": "tiangolo/fastapi#518, tiangolo/fastapi#919, tiangolo/fastapi#919, tiangolo/fastapi#4747, tiangolo/fastapi#1217",
+      "hybrid": "tiangolo/fastapi#518, tiangolo/fastapi#919, tiangolo/fastapi#919, tiangolo/fastapi#4747, tiangolo/fastapi#1217",
+      "differs": false
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-14502",
+      "question": "What performance symptom does the issue report when the FastAPI application is under load?",
+      "fts_matches": 0,
+      "vector": "fastapi/fastapi#14496, tiangolo/fastapi#14500, tiangolo/fastapi#14499, tiangolo/fastapi#14497, tiangolo/fastapi#14501",
+      "hybrid": "fastapi/fastapi#14496, tiangolo/fastapi#14500, tiangolo/fastapi#14499, tiangolo/fastapi#14497, tiangolo/fastapi#14501",
+      "differs": false
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-403",
+      "question": "What response behavior did the reporter expect from `asyncio.ensure_future()` inside a FastAPI endpoint, and how did it differ from Starlette?",
+      "fts_matches": 0,
+      "vector": "tiangolo/fastapi#403, tiangolo/fastapi#2574, tiangolo/fastapi#2574, tiangolo/fastapi#2574, tiangolo/fastapi#483",
+      "hybrid": "tiangolo/fastapi#403, tiangolo/fastapi#2574, tiangolo/fastapi#2574, tiangolo/fastapi#2574, tiangolo/fastapi#483",
+      "differs": false
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-261",
+      "question": "Is there a recommended workaround for handling the `detail` parameter in `HTTPException` before the fix was released?",
+      "fts_matches": 0,
+      "vector": "tiangolo/fastapi#261, tiangolo/fastapi#261, tiangolo/fastapi#1785, tiangolo/fastapi#261, tiangolo/fastapi#512",
+      "hybrid": "tiangolo/fastapi#261, tiangolo/fastapi#261, tiangolo/fastapi#1785, tiangolo/fastapi#261, tiangolo/fastapi#512",
+      "differs": false
+    },
+    {
+      "case_id": "generated-encode-starlette-818",
+      "question": "Why did enabling `requests_mock.Mocker()` interfere with the HTTP adapters used by Starlette `TestClient`?",
+      "fts_matches": 0,
+      "vector": "encode/starlette#818, encode/starlette#818, encode/starlette#818, encode/starlette#818, encode/starlette#818",
+      "hybrid": "encode/starlette#818, encode/starlette#818, encode/starlette#818, encode/starlette#818, encode/starlette#818",
+      "differs": false
+    },
+    {
+      "case_id": "generated-encode-starlette-855",
+      "question": "Is there a way to expose certain session data, like a username, to the frontend without compromising encryption or using the backend's secret key?",
+      "fts_matches": 0,
+      "vector": "encode/starlette#855, tiangolo/fastapi#801, encode/starlette#855, encode/starlette#583, tiangolo/fastapi#754",
+      "hybrid": "encode/starlette#855, tiangolo/fastapi#801, encode/starlette#855, encode/starlette#583, tiangolo/fastapi#754",
+      "differs": false
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-2776",
+      "question": "What can be done to make context variables set in an async dependency visible within threads spawned by a ThreadPoolExecutor in a synchronous route?",
+      "fts_matches": 0,
+      "vector": "tiangolo/fastapi#2776, tiangolo/fastapi#2776, tiangolo/fastapi#2776, tiangolo/fastapi#2776, tiangolo/fastapi#2776",
+      "hybrid": "tiangolo/fastapi#2776, tiangolo/fastapi#2776, tiangolo/fastapi#2776, tiangolo/fastapi#2776, tiangolo/fastapi#2776",
+      "differs": false
+    },
+    {
+      "case_id": "unanswerable-01",
+      "question": "What is the latest stable Python release today?",
+      "fts_matches": 0,
+      "vector": "pydantic/pydantic#6666, pydantic/pydantic#12220, pydantic/pydantic#8028, pydantic/pydantic#13173, pydantic/pydantic#12395",
+      "hybrid": "pydantic/pydantic#6666, pydantic/pydantic#12220, pydantic/pydantic#8028, pydantic/pydantic#13173, pydantic/pydantic#12395",
+      "differs": false
+    },
+    {
+      "case_id": "unanswerable-02",
+      "question": "Which AWS IAM policy should I attach for production access?",
+      "fts_matches": 0,
+      "vector": "tiangolo/fastapi#364, tiangolo/fastapi#878, tiangolo/fastapi#4211, tiangolo/fastapi#2350, tiangolo/fastapi#401",
+      "hybrid": "tiangolo/fastapi#364, tiangolo/fastapi#878, tiangolo/fastapi#4211, tiangolo/fastapi#2350, tiangolo/fastapi#401",
+      "differs": false
+    },
+    {
+      "case_id": "unanswerable-03",
+      "question": "What is the current price of a PostgreSQL RDS instance?",
+      "fts_matches": 0,
+      "vector": "pydantic/pydantic#3900, pydantic/pydantic#2587, pydantic/pydantic#960, pydantic/pydantic#960, pydantic/pydantic#2587",
+      "hybrid": "pydantic/pydantic#3900, pydantic/pydantic#2587, pydantic/pydantic#960, pydantic/pydantic#960, pydantic/pydantic#2587",
+      "differs": false
+    },
+    {
+      "case_id": "unanswerable-04",
+      "question": "Can you diagnose my private production server from this repository?",
+      "fts_matches": 0,
+      "vector": "tiangolo/fastapi#1710, tiangolo/fastapi#2501, tiangolo/fastapi#551, encode/starlette#671, tiangolo/fastapi#545",
+      "hybrid": "tiangolo/fastapi#1710, tiangolo/fastapi#2501, tiangolo/fastapi#551, encode/starlette#671, tiangolo/fastapi#545",
+      "differs": false
+    },
+    {
+      "case_id": "unanswerable-05",
+      "question": "Who won the most recent international football tournament?",
+      "fts_matches": 0,
+      "vector": "pydantic/pydantic#4678, pydantic/pydantic#8652, pydantic/pydantic#8652, pydantic/pydantic#12696, pydantic/pydantic#6027",
+      "hybrid": "pydantic/pydantic#4678, pydantic/pydantic#8652, pydantic/pydantic#8652, pydantic/pydantic#12696, pydantic/pydantic#6027",
+      "differs": false
+    },
+    {
+      "case_id": "unanswerable-06",
+      "question": "What is the weather forecast for Tokyo tomorrow?",
+      "fts_matches": 0,
+      "vector": "tiangolo/fastapi#4577, encode/starlette#2032, tiangolo/fastapi#5261, pydantic/pydantic#11103, pydantic/pydantic#8762",
+      "hybrid": "tiangolo/fastapi#4577, encode/starlette#2032, tiangolo/fastapi#5261, pydantic/pydantic#11103, pydantic/pydantic#8762",
+      "differs": false
+    },
+    {
+      "case_id": "unanswerable-07",
+      "question": "Convert 37 degrees Celsius to Fahrenheit.",
+      "fts_matches": 0,
+      "vector": "tiangolo/fastapi#3297, tiangolo/fastapi#3297, encode/starlette#1790, tiangolo/fastapi#1781, tiangolo/fastapi#453",
+      "hybrid": "tiangolo/fastapi#3297, tiangolo/fastapi#3297, encode/starlette#1790, tiangolo/fastapi#1781, tiangolo/fastapi#453",
+      "differs": false
+    },
+    {
+      "case_id": "unanswerable-08",
+      "question": "Write a short birthday message for my coworker.",
+      "fts_matches": 0,
+      "vector": "tiangolo/fastapi#2009, tiangolo/fastapi#2009, tiangolo/fastapi#2009, tiangolo/fastapi#2009, tiangolo/fastapi#2106",
+      "hybrid": "tiangolo/fastapi#2009, tiangolo/fastapi#2009, tiangolo/fastapi#2009, tiangolo/fastapi#2009, tiangolo/fastapi#2106",
+      "differs": false
+    },
+    {
+      "case_id": "unanswerable-09",
+      "question": "What is the current balance in my bank account?",
+      "fts_matches": 0,
+      "vector": "tiangolo/fastapi#5882, encode/starlette#1082, pydantic/pydantic#6656, tiangolo/fastapi#3711, pydantic/pydantic#8652",
+      "hybrid": "tiangolo/fastapi#5882, encode/starlette#1082, pydantic/pydantic#6656, tiangolo/fastapi#3711, pydantic/pydantic#8652",
+      "differs": false
+    },
+    {
+      "case_id": "unanswerable-10",
+      "question": "Which restaurant near me has the best reviews?",
+      "fts_matches": 0,
+      "vector": "tiangolo/fastapi#1828, tiangolo/fastapi#149, tiangolo/fastapi#246, tiangolo/fastapi#149, tiangolo/fastapi#80",
+      "hybrid": "tiangolo/fastapi#1828, tiangolo/fastapi#149, tiangolo/fastapi#246, tiangolo/fastapi#149, tiangolo/fastapi#80",
+      "differs": false
+    },
+    {
+      "case_id": "unanswerable-11",
+      "question": "Summarize the contents of a file on my personal computer.",
+      "fts_matches": 0,
+      "vector": "encode/starlette#2664, encode/starlette#2664, tiangolo/fastapi#143, tiangolo/fastapi#2387, tiangolo/fastapi#5261",
+      "hybrid": "encode/starlette#2664, encode/starlette#2664, tiangolo/fastapi#143, tiangolo/fastapi#2387, tiangolo/fastapi#5261",
+      "differs": false
+    },
+    {
+      "case_id": "unanswerable-12",
+      "question": "What time does the sun set in Chicago today?",
+      "fts_matches": 0,
+      "vector": "tiangolo/fastapi#3046, pydantic/pydantic#9880, pydantic/pydantic#5914, pydantic/pydantic#12801, tiangolo/fastapi#5063",
+      "hybrid": "tiangolo/fastapi#3046, pydantic/pydantic#9880, pydantic/pydantic#5914, pydantic/pydantic#12801, tiangolo/fastapi#5063",
+      "differs": false
+    },
+    {
+      "case_id": "unanswerable-13",
+      "question": "Recommend a movie released this weekend.",
+      "fts_matches": 0,
+      "vector": "encode/starlette#2010, encode/starlette#2010, encode/starlette#917, encode/starlette#50, encode/starlette#136",
+      "hybrid": "encode/starlette#2010, encode/starlette#2010, encode/starlette#917, encode/starlette#50, encode/starlette#136",
+      "differs": false
+    },
+    {
+      "case_id": "unanswerable-14",
+      "question": "How many calories are in the lunch I ate today?",
+      "fts_matches": 0,
+      "vector": "tiangolo/fastapi#3901, pydantic/pydantic#7170, tiangolo/fastapi#3711, tiangolo/fastapi#3711, tiangolo/fastapi#3711",
+      "hybrid": "tiangolo/fastapi#3901, pydantic/pydantic#7170, tiangolo/fastapi#3711, tiangolo/fastapi#3711, tiangolo/fastapi#3711",
+      "differs": false
+    },
+    {
+      "case_id": "unanswerable-15",
+      "question": "What is the latest stock price for a company I own?",
+      "fts_matches": 0,
+      "vector": "tiangolo/fastapi#4838, tiangolo/fastapi#4877, tiangolo/fastapi#702, tiangolo/fastapi#5412, tiangolo/fastapi#702",
+      "hybrid": "tiangolo/fastapi#4838, tiangolo/fastapi#4877, tiangolo/fastapi#702, tiangolo/fastapi#5412, tiangolo/fastapi#702",
+      "differs": false
+    }
+  ],
+  "fts_plans": [
+    {
+      "case_id": "generated-encode-starlette-1119",
+      "plan": "Limit  (cost=788.29..788.30 rows=1 width=20) (actual time=2.832..2.834 rows=0.00 loops=1)\n  Buffers: shared hit=232\n  ->  Sort  (cost=788.29..788.30 rows=1 width=20) (actual time=2.831..2.832 rows=0.00 loops=1)\n        Sort Key: (ts_rank_cd(search_vector, '''could'' & ''reason'' & ''receiv'' & ''405'' & ''method'' & ''allow'' & ''error'' & ''tri'' & ''access'' & ''/predict'' & ''endpoint'''::tsquery)) DESC, chunk_id\n        Sort Method: quicksort  Memory: 25kB\n        Buffers: shared hit=232\n        ->  Bitmap Heap Scan on github_issue_chunks  (cost=784.27..788.28 rows=1 width=20) (actual time=2.796..2.797 rows=0.00 loops=1)\n              Recheck Cond: (search_vector @@ '''could'' & ''reason'' & ''receiv'' & ''405'' & ''method'' & ''allow'' & ''error'' & ''tri'' & ''access'' & ''/predict'' & ''endpoint'''::tsquery)\n              Buffers: shared hit=226\n              ->  Bitmap Index Scan on github_issue_chunks_search_vector_gin_idx  (cost=0.00..784.27 rows=1 width=0) (actual time=2.782..2.783 rows=0.00 loops=1)\n                    Index Cond: (search_vector @@ '''could'' & ''reason'' & ''receiv'' & ''405'' & ''method'' & ''allow'' & ''error'' & ''tri'' & ''access'' & ''/predict'' & ''endpoint'''::tsquery)\n                    Index Searches: 1\n                    Buffers: shared hit=226\nPlanning:\n  Buffers: shared hit=38 read=4\n  I/O Timings: shared read=2.638\nPlanning Time: 3.630 ms\nExecution Time: 2.883 ms"
+    },
+    {
+      "case_id": "generated-encode-starlette-408",
+      "plan": "Limit  (cost=801.26..801.27 rows=1 width=20) (actual time=2.794..2.795 rows=0.00 loops=1)\n  Buffers: shared hit=215\n  ->  Sort  (cost=801.26..801.27 rows=1 width=20) (actual time=2.793..2.794 rows=0.00 loops=1)\n        Sort Key: (ts_rank_cd(search_vector, '''recommend'' & ''way'' & ''dump'' & ''set'' & ''starlette.config'' & ''without'' & ''expos'' & ''sensit'' & ''inform'' & ''like'' & ''jwt'' & ''secret'''::tsquery)) DESC, chunk_id\n        Sort Method: quicksort  Memory: 25kB\n        Buffers: shared hit=215\n        ->  Bitmap Heap Scan on github_issue_chunks  (cost=797.24..801.25 rows=1 width=20) (actual time=2.788..2.788 rows=0.00 loops=1)\n              Recheck Cond: (search_vector @@ '''recommend'' & ''way'' & ''dump'' & ''set'' & ''starlette.config'' & ''without'' & ''expos'' & ''sensit'' & ''inform'' & ''like'' & ''jwt'' & ''secret'''::tsquery)\n              Buffers: shared hit=215\n              ->  Bitmap Index Scan on github_issue_chunks_search_vector_gin_idx  (cost=0.00..797.23 rows=1 width=0) (actual time=2.778..2.778 rows=0.00 loops=1)\n                    Index Cond: (search_vector @@ '''recommend'' & ''way'' & ''dump'' & ''set'' & ''starlette.config'' & ''without'' & ''expos'' & ''sensit'' & ''inform'' & ''like'' & ''jwt'' & ''secret'''::tsquery)\n                    Index Searches: 1\n                    Buffers: shared hit=215\nPlanning:\n  Buffers: shared hit=1\nPlanning Time: 0.210 ms\nExecution Time: 2.821 ms"
+    },
+    {
+      "case_id": "generated-encode-starlette-542",
+      "plan": "Limit  (cost=762.36..762.36 rows=1 width=20) (actual time=2.311..2.312 rows=0.00 loops=1)\n  Buffers: shared hit=204\n  ->  Sort  (cost=762.36..762.36 rows=1 width=20) (actual time=2.311..2.311 rows=0.00 loops=1)\n        Sort Key: (ts_rank_cd(search_vector, '''recommend'' & ''workaround'' & ''depend'' & ''issu'' & ''graphen'' & ''aniso8601'' & ''instal'' & ''starlett'' & ''full'''::tsquery)) DESC, chunk_id\n        Sort Method: quicksort  Memory: 25kB\n        Buffers: shared hit=204\n        ->  Bitmap Heap Scan on github_issue_chunks  (cost=758.33..762.35 rows=1 width=20) (actual time=2.306..2.306 rows=0.00 loops=1)\n              Recheck Cond: (search_vector @@ '''recommend'' & ''workaround'' & ''depend'' & ''issu'' & ''graphen'' & ''aniso8601'' & ''instal'' & ''starlett'' & ''full'''::tsquery)\n              Buffers: shared hit=204\n              ->  Bitmap Index Scan on github_issue_chunks_search_vector_gin_idx  (cost=0.00..758.33 rows=1 width=0) (actual time=2.295..2.296 rows=0.00 loops=1)\n                    Index Cond: (search_vector @@ '''recommend'' & ''workaround'' & ''depend'' & ''issu'' & ''graphen'' & ''aniso8601'' & ''instal'' & ''starlett'' & ''full'''::tsquery)\n                    Index Searches: 1\n                    Buffers: shared hit=204\nPlanning:\n  Buffers: shared hit=1\nPlanning Time: 0.205 ms\nExecution Time: 2.339 ms"
+    }
+  ],
+  "hybrid_diagnostic_plans": [
+    "Limit  (cost=3471.57..3471.58 rows=5 width=773) (actual time=308.694..308.703 rows=5.00 loops=1)\n  Buffers: shared hit=808 read=300\n  I/O Timings: shared read=240.439\n  ->  Sort  (cost=3471.57..3471.59 rows=6 width=773) (actual time=308.693..308.700 rows=5.00 loops=1)\n        Sort Key: (LEAST(1.0, (sum((1.0 / ((60 + vector_results.rank))::numeric)) / 0.03278688524590163934))) DESC, chunks.chunk_id\n        Sort Method: quicksort  Memory: 30kB\n        Buffers: shared hit=808 read=300\n        I/O Timings: shared read=240.439\n        ->  Nested Loop Left Join  (cost=3417.28..3471.49 rows=6 width=773) (actual time=303.250..308.665 rows=5.00 loops=1)\n              Buffers: shared hit=805 read=300\n              I/O Timings: shared read=240.439\n              ->  Nested Loop  (cost=3417.00..3469.70 rows=6 width=763) (actual time=301.973..307.369 rows=5.00 loops=1)\n                    Buffers: shared hit=795 read=300\n                    I/O Timings: shared read=240.439\n                    ->  Nested Loop  (cost=3416.72..3467.17 rows=6 width=715) (actual time=301.285..306.646 rows=5.00 loops=1)\n                          Buffers: shared hit=780 read=300\n                          I/O Timings: shared read=240.439\n                          ->  GroupAggregate  (cost=3416.30..3416.51 rows=6 width=56) (actual time=298.078..298.107 rows=5.00 loops=1)\n                                Group Key: vector_results.chunk_id\n                                Buffers: shared hit=769 read=291\n                                I/O Timings: shared read=231.980\n                                ->  Sort  (cost=3416.30..3416.32 rows=6 width=32) (actual time=298.062..298.070 rows=5.00 loops=1)\n                                      Sort Key: vector_results.chunk_id\n                                      Sort Method: quicksort  Memory: 25kB\n                                      Buffers: shared hit=769 read=291\n                                      I/O Timings: shared read=231.980\n                                      ->  Append  (cost=2597.94..3416.23 rows=6 width=32) (actual time=295.132..298.059 rows=5.00 loops=1)\n                                            Buffers: shared hit=769 read=291\n                                            I/O Timings: shared read=231.980\n                                            ->  Subquery Scan on vector_results  (cost=2597.94..2627.87 rows=5 width=32) (actual time=295.131..295.139 rows=5.00 loops=1)\n                                                  Buffers: shared hit=543 read=291\n                                                  I/O Timings: shared read=231.980\n                                                  ->  Limit  (cost=2597.94..2627.82 rows=5 width=48) (actual time=295.129..295.135 rows=5.00 loops=1)\n                                                        Buffers: shared hit=543 read=291\n                                                        I/O Timings: shared read=231.980\n                                                        ->  WindowAgg  (cost=2597.94..376129.68 rows=62508 width=48) (actual time=295.129..295.133 rows=5.00 loops=1)\n                                                              Window: w1 AS (ORDER BY ((chunks_1.embedding <=> '<existing corpus embedding omitted>'::vector)), chunks_1.chunk_id ROWS UNBOUNDED PRECEDING)\n                                                              Storage: Memory  Maximum Storage: 17kB\n                                                              Buffers: shared hit=543 read=291\n                                                              I/O Timings: shared read=231.980\n                                                              ->  Incremental Sort  (cost=2591.97..374410.71 rows=62508 width=42) (actual time=295.116..295.117 rows=5.00 loops=1)\n                                                                    Sort Key: ((chunks_1.embedding <=> '<existing corpus embedding omitted>'::vector)), chunks_1.chunk_id\n                                                                    Presorted Key: ((chunks_1.embedding <=> '<existing corpus embedding omitted>'::vector))\n                                                                    Full-sort Groups: 1  Sort Method: quicksort  Average Memory: 27kB  Peak Memory: 27kB\n                                                                    Buffers: shared hit=543 read=291\n                                                                    I/O Timings: shared read=231.980\n                                                                    ->  Index Scan using github_issue_chunks_embedding_hnsw_idx on github_issue_chunks chunks_1  (cost=2585.96..371633.87 rows=62508 width=42) (actual time=235.481..295.054 rows=33.00 loops=1)\n                                                                          Order By: (embedding <=> '<existing corpus embedding omitted>'::vector)\n                                                                          Filter: (embedding IS NOT NULL)\n                                                                          Index Searches: 0\n                                                                          Buffers: shared hit=543 read=291\n                                                                          I/O Timings: shared read=231.980\n                                            ->  Subquery Scan on text_results  (cost=788.29..788.33 rows=1 width=32) (actual time=2.913..2.915 rows=0.00 loops=1)\n                                                  Buffers: shared hit=226\n                                                  ->  Limit  (cost=788.29..788.32 rows=1 width=28) (actual time=2.912..2.914 rows=0.00 loops=1)\n                                                        Buffers: shared hit=226\n                                                        ->  WindowAgg  (cost=788.29..788.32 rows=1 width=28) (actual time=2.911..2.913 rows=0.00 loops=1)\n                                                              Window: w1 AS (ORDER BY (ts_rank_cd(chunks_2.search_vector, '''could'' & ''reason'' & ''receiv'' & ''405'' & ''method'' & ''allow'' & ''error'' & ''tri'' & ''access'' & ''/predict'' & ''endpoint'''::tsquery)), chunks_2.chunk_id ROWS UNBOUNDED PRECEDING)\n                                                              Buffers: shared hit=226\n                                                              ->  Sort  (cost=788.29..788.30 rows=1 width=20) (actual time=2.909..2.911 rows=0.00 loops=1)\n                                                                    Sort Key: (ts_rank_cd(chunks_2.search_vector, '''could'' & ''reason'' & ''receiv'' & ''405'' & ''method'' & ''allow'' & ''error'' & ''tri'' & ''access'' & ''/predict'' & ''endpoint'''::tsquery)) DESC, chunks_2.chunk_id\n                                                                    Sort Method: quicksort  Memory: 25kB\n                                                                    Buffers: shared hit=226\n                                                                    ->  Bitmap Heap Scan on github_issue_chunks chunks_2  (cost=784.27..788.28 rows=1 width=20) (actual time=2.898..2.899 rows=0.00 loops=1)\n                                                                          Recheck Cond: (search_vector @@ '''could'' & ''reason'' & ''receiv'' & ''405'' & ''method'' & ''allow'' & ''error'' & ''tri'' & ''access'' & ''/predict'' & ''endpoint'''::tsquery)\n                                                                          Buffers: shared hit=226\n                                                                          ->  Bitmap Index Scan on github_issue_chunks_search_vector_gin_idx  (cost=0.00..784.27 rows=1 width=0) (actual time=2.888..2.889 rows=0.00 loops=1)\n                                                                                Index Cond: (search_vector @@ '''could'' & ''reason'' & ''receiv'' & ''405'' & ''method'' & ''allow'' & ''error'' & ''tri'' & ''access'' & ''/predict'' & ''endpoint'''::tsquery)\n                                                                                Index Searches: 1\n                                                                                Buffers: shared hit=226\n                          ->  Index Scan using github_issue_chunks_pkey on github_issue_chunks chunks  (cost=0.41..8.43 rows=1 width=675) (actual time=1.705..1.705 rows=1.00 loops=5)\n                                Index Cond: (chunk_id = vector_results.chunk_id)\n                                Index Searches: 5\n                                Buffers: shared hit=11 read=9\n                                I/O Timings: shared read=8.458\n                    ->  Index Scan using github_issues_clean_repo_issue_unique on github_issues_clean issues  (cost=0.29..0.42 rows=1 width=73) (actual time=0.142..0.142 rows=1.00 loops=5)\n                          Index Cond: ((repository = chunks.repository) AND (issue_number = chunks.issue_number))\n                          Index Searches: 5\n                          Buffers: shared hit=15\n              ->  Index Scan using github_issue_classifications_pkey on github_issue_classifications classifications  (cost=0.27..0.30 rows=1 width=35) (actual time=0.257..0.257 rows=0.00 loops=5)\n                    Index Cond: ((repository = chunks.repository) AND (issue_number = chunks.issue_number) AND (classification_method = 'heuristic'::text) AND (classifier_version = 'heuristic-v1'::text))\n                    Index Searches: 5\n                    Buffers: shared hit=10\nPlanning:\n  Buffers: shared hit=332 read=16\n  I/O Timings: shared read=13.801\nPlanning Time: 20.308 ms\nExecution Time: 310.339 ms",
+    "Limit  (cost=3484.54..3484.55 rows=5 width=773) (actual time=4.268..4.274 rows=5.00 loops=1)\n  Buffers: shared hit=1088\n  ->  Sort  (cost=3484.54..3484.55 rows=6 width=773) (actual time=4.267..4.272 rows=5.00 loops=1)\n        Sort Key: (LEAST(1.0, (sum((1.0 / ((60 + vector_results.rank))::numeric)) / 0.03278688524590163934))) DESC, chunks.chunk_id\n        Sort Method: quicksort  Memory: 30kB\n        Buffers: shared hit=1088\n        ->  Nested Loop Left Join  (cost=3430.24..3484.46 rows=6 width=773) (actual time=4.204..4.260 rows=5.00 loops=1)\n              Buffers: shared hit=1088\n              ->  Nested Loop  (cost=3429.97..3482.67 rows=6 width=763) (actual time=4.194..4.240 rows=5.00 loops=1)\n                    Buffers: shared hit=1078\n                    ->  Nested Loop  (cost=3429.69..3480.14 rows=6 width=715) (actual time=4.175..4.209 rows=5.00 loops=1)\n                          Buffers: shared hit=1063\n                          ->  GroupAggregate  (cost=3429.27..3429.48 rows=6 width=56) (actual time=4.158..4.170 rows=5.00 loops=1)\n                                Group Key: vector_results.chunk_id\n                                Buffers: shared hit=1043\n                                ->  Sort  (cost=3429.27..3429.29 rows=6 width=32) (actual time=4.142..4.146 rows=5.00 loops=1)\n                                      Sort Key: vector_results.chunk_id\n                                      Sort Method: quicksort  Memory: 25kB\n                                      Buffers: shared hit=1043\n                                      ->  Append  (cost=2597.94..3429.19 rows=6 width=32) (actual time=1.374..4.141 rows=5.00 loops=1)\n                                            Buffers: shared hit=1043\n                                            ->  Subquery Scan on vector_results  (cost=2597.94..2627.87 rows=5 width=32) (actual time=1.373..1.378 rows=5.00 loops=1)\n                                                  Buffers: shared hit=828\n                                                  ->  Limit  (cost=2597.94..2627.82 rows=5 width=48) (actual time=1.372..1.376 rows=5.00 loops=1)\n                                                        Buffers: shared hit=828\n                                                        ->  WindowAgg  (cost=2597.94..376129.68 rows=62508 width=48) (actual time=1.372..1.374 rows=5.00 loops=1)\n                                                              Window: w1 AS (ORDER BY ((chunks_1.embedding <=> '<existing corpus embedding omitted>'::vector)), chunks_1.chunk_id ROWS UNBOUNDED PRECEDING)\n                                                              Storage: Memory  Maximum Storage: 17kB\n                                                              Buffers: shared hit=828\n                                                              ->  Incremental Sort  (cost=2591.97..374410.71 rows=62508 width=42) (actual time=1.365..1.366 rows=5.00 loops=1)\n                                                                    Sort Key: ((chunks_1.embedding <=> '<existing corpus embedding omitted>'::vector)), chunks_1.chunk_id\n                                                                    Presorted Key: ((chunks_1.embedding <=> '<existing corpus embedding omitted>'::vector))\n                                                                    Full-sort Groups: 1  Sort Method: quicksort  Average Memory: 27kB  Peak Memory: 27kB\n                                                                    Buffers: shared hit=828\n                                                                    ->  Index Scan using github_issue_chunks_embedding_hnsw_idx on github_issue_chunks chunks_1  (cost=2585.96..371633.87 rows=62508 width=42) (actual time=1.100..1.350 rows=33.00 loops=1)\n                                                                          Order By: (embedding <=> '<existing corpus embedding omitted>'::vector)\n                                                                          Filter: (embedding IS NOT NULL)\n                                                                          Index Searches: 0\n                                                                          Buffers: shared hit=828\n                                            ->  Subquery Scan on text_results  (cost=801.26..801.30 rows=1 width=32) (actual time=2.758..2.759 rows=0.00 loops=1)\n                                                  Buffers: shared hit=215\n                                                  ->  Limit  (cost=801.26..801.29 rows=1 width=28) (actual time=2.758..2.759 rows=0.00 loops=1)\n                                                        Buffers: shared hit=215\n                                                        ->  WindowAgg  (cost=801.26..801.29 rows=1 width=28) (actual time=2.757..2.757 rows=0.00 loops=1)\n                                                              Window: w1 AS (ORDER BY (ts_rank_cd(chunks_2.search_vector, '''recommend'' & ''way'' & ''dump'' & ''set'' & ''starlette.config'' & ''without'' & ''expos'' & ''sensit'' & ''inform'' & ''like'' & ''jwt'' & ''secret'''::tsquery)), chunks_2.chunk_id ROWS UNBOUNDED PRECEDING)\n                                                              Buffers: shared hit=215\n                                                              ->  Sort  (cost=801.26..801.27 rows=1 width=20) (actual time=2.755..2.755 rows=0.00 loops=1)\n                                                                    Sort Key: (ts_rank_cd(chunks_2.search_vector, '''recommend'' & ''way'' & ''dump'' & ''set'' & ''starlette.config'' & ''without'' & ''expos'' & ''sensit'' & ''inform'' & ''like'' & ''jwt'' & ''secret'''::tsquery)) DESC, chunks_2.chunk_id\n                                                                    Sort Method: quicksort  Memory: 25kB\n                                                                    Buffers: shared hit=215\n                                                                    ->  Bitmap Heap Scan on github_issue_chunks chunks_2  (cost=797.24..801.25 rows=1 width=20) (actual time=2.750..2.750 rows=0.00 loops=1)\n                                                                          Recheck Cond: (search_vector @@ '''recommend'' & ''way'' & ''dump'' & ''set'' & ''starlette.config'' & ''without'' & ''expos'' & ''sensit'' & ''inform'' & ''like'' & ''jwt'' & ''secret'''::tsquery)\n                                                                          Buffers: shared hit=215\n                                                                          ->  Bitmap Index Scan on github_issue_chunks_search_vector_gin_idx  (cost=0.00..797.23 rows=1 width=0) (actual time=2.736..2.736 rows=0.00 loops=1)\n                                                                                Index Cond: (search_vector @@ '''recommend'' & ''way'' & ''dump'' & ''set'' & ''starlette.config'' & ''without'' & ''expos'' & ''sensit'' & ''inform'' & ''like'' & ''jwt'' & ''secret'''::tsquery)\n                                                                                Index Searches: 1\n                                                                                Buffers: shared hit=215\n                          ->  Index Scan using github_issue_chunks_pkey on github_issue_chunks chunks  (cost=0.41..8.43 rows=1 width=675) (actual time=0.006..0.006 rows=1.00 loops=5)\n                                Index Cond: (chunk_id = vector_results.chunk_id)\n                                Index Searches: 5\n                                Buffers: shared hit=20\n                    ->  Index Scan using github_issues_clean_repo_issue_unique on github_issues_clean issues  (cost=0.29..0.42 rows=1 width=73) (actual time=0.005..0.005 rows=1.00 loops=5)\n                          Index Cond: ((repository = chunks.repository) AND (issue_number = chunks.issue_number))\n                          Index Searches: 5\n                          Buffers: shared hit=15\n              ->  Index Scan using github_issue_classifications_pkey on github_issue_classifications classifications  (cost=0.27..0.30 rows=1 width=35) (actual time=0.003..0.003 rows=0.00 loops=5)\n                    Index Cond: ((repository = chunks.repository) AND (issue_number = chunks.issue_number) AND (classification_method = 'heuristic'::text) AND (classifier_version = 'heuristic-v1'::text))\n                    Index Searches: 5\n                    Buffers: shared hit=10\nPlanning:\n  Buffers: shared hit=2\nPlanning Time: 1.077 ms\nExecution Time: 4.392 ms",
+    "Limit  (cost=3445.64..3445.65 rows=5 width=773) (actual time=3.786..3.792 rows=5.00 loops=1)\n  Buffers: shared hit=1077\n  ->  Sort  (cost=3445.64..3445.65 rows=6 width=773) (actual time=3.785..3.790 rows=5.00 loops=1)\n        Sort Key: (LEAST(1.0, (sum((1.0 / ((60 + vector_results.rank))::numeric)) / 0.03278688524590163934))) DESC, chunks.chunk_id\n        Sort Method: quicksort  Memory: 30kB\n        Buffers: shared hit=1077\n        ->  Nested Loop Left Join  (cost=3391.34..3445.56 rows=6 width=773) (actual time=3.725..3.780 rows=5.00 loops=1)\n              Buffers: shared hit=1077\n              ->  Nested Loop  (cost=3391.07..3443.77 rows=6 width=763) (actual time=3.714..3.760 rows=5.00 loops=1)\n                    Buffers: shared hit=1067\n                    ->  Nested Loop  (cost=3390.78..3441.23 rows=6 width=715) (actual time=3.696..3.729 rows=5.00 loops=1)\n                          Buffers: shared hit=1052\n                          ->  GroupAggregate  (cost=3390.37..3390.58 rows=6 width=56) (actual time=3.681..3.692 rows=5.00 loops=1)\n                                Group Key: vector_results.chunk_id\n                                Buffers: shared hit=1032\n                                ->  Sort  (cost=3390.37..3390.38 rows=6 width=32) (actual time=3.666..3.670 rows=5.00 loops=1)\n                                      Sort Key: vector_results.chunk_id\n                                      Sort Method: quicksort  Memory: 25kB\n                                      Buffers: shared hit=1032\n                                      ->  Append  (cost=2597.94..3390.29 rows=6 width=32) (actual time=1.343..3.665 rows=5.00 loops=1)\n                                            Buffers: shared hit=1032\n                                            ->  Subquery Scan on vector_results  (cost=2597.94..2627.87 rows=5 width=32) (actual time=1.342..1.347 rows=5.00 loops=1)\n                                                  Buffers: shared hit=828\n                                                  ->  Limit  (cost=2597.94..2627.82 rows=5 width=48) (actual time=1.341..1.345 rows=5.00 loops=1)\n                                                        Buffers: shared hit=828\n                                                        ->  WindowAgg  (cost=2597.94..376129.68 rows=62508 width=48) (actual time=1.340..1.343 rows=5.00 loops=1)\n                                                              Window: w1 AS (ORDER BY ((chunks_1.embedding <=> '<existing corpus embedding omitted>'::vector)), chunks_1.chunk_id ROWS UNBOUNDED PRECEDING)\n                                                              Storage: Memory  Maximum Storage: 17kB\n                                                              Buffers: shared hit=828\n                                                              ->  Incremental Sort  (cost=2591.97..374410.71 rows=62508 width=42) (actual time=1.334..1.335 rows=5.00 loops=1)\n                                                                    Sort Key: ((chunks_1.embedding <=> '<existing corpus embedding omitted>'::vector)), chunks_1.chunk_id\n                                                                    Presorted Key: ((chunks_1.embedding <=> '<existing corpus embedding omitted>'::vector))\n                                                                    Full-sort Groups: 1  Sort Method: quicksort  Average Memory: 27kB  Peak Memory: 27kB\n                                                                    Buffers: shared hit=828\n                                                                    ->  Index Scan using github_issue_chunks_embedding_hnsw_idx on github_issue_chunks chunks_1  (cost=2585.96..371633.87 rows=62508 width=42) (actual time=1.063..1.317 rows=33.00 loops=1)\n                                                                          Order By: (embedding <=> '<existing corpus embedding omitted>'::vector)\n                                                                          Filter: (embedding IS NOT NULL)\n                                                                          Index Searches: 0\n                                                                          Buffers: shared hit=828\n                                            ->  Subquery Scan on text_results  (cost=762.36..762.39 rows=1 width=32) (actual time=2.313..2.314 rows=0.00 loops=1)\n                                                  Buffers: shared hit=204\n                                                  ->  Limit  (cost=762.36..762.38 rows=1 width=28) (actual time=2.312..2.313 rows=0.00 loops=1)\n                                                        Buffers: shared hit=204\n                                                        ->  WindowAgg  (cost=762.36..762.38 rows=1 width=28) (actual time=2.311..2.312 rows=0.00 loops=1)\n                                                              Window: w1 AS (ORDER BY (ts_rank_cd(chunks_2.search_vector, '''recommend'' & ''workaround'' & ''depend'' & ''issu'' & ''graphen'' & ''aniso8601'' & ''instal'' & ''starlett'' & ''full'''::tsquery)), chunks_2.chunk_id ROWS UNBOUNDED PRECEDING)\n                                                              Buffers: shared hit=204\n                                                              ->  Sort  (cost=762.36..762.36 rows=1 width=20) (actual time=2.310..2.311 rows=0.00 loops=1)\n                                                                    Sort Key: (ts_rank_cd(chunks_2.search_vector, '''recommend'' & ''workaround'' & ''depend'' & ''issu'' & ''graphen'' & ''aniso8601'' & ''instal'' & ''starlett'' & ''full'''::tsquery)) DESC, chunks_2.chunk_id\n                                                                    Sort Method: quicksort  Memory: 25kB\n                                                                    Buffers: shared hit=204\n                                                                    ->  Bitmap Heap Scan on github_issue_chunks chunks_2  (cost=758.33..762.35 rows=1 width=20) (actual time=2.305..2.305 rows=0.00 loops=1)\n                                                                          Recheck Cond: (search_vector @@ '''recommend'' & ''workaround'' & ''depend'' & ''issu'' & ''graphen'' & ''aniso8601'' & ''instal'' & ''starlett'' & ''full'''::tsquery)\n                                                                          Buffers: shared hit=204\n                                                                          ->  Bitmap Index Scan on github_issue_chunks_search_vector_gin_idx  (cost=0.00..758.33 rows=1 width=0) (actual time=2.291..2.291 rows=0.00 loops=1)\n                                                                                Index Cond: (search_vector @@ '''recommend'' & ''workaround'' & ''depend'' & ''issu'' & ''graphen'' & ''aniso8601'' & ''instal'' & ''starlett'' & ''full'''::tsquery)\n                                                                                Index Searches: 1\n                                                                                Buffers: shared hit=204\n                          ->  Index Scan using github_issue_chunks_pkey on github_issue_chunks chunks  (cost=0.41..8.43 rows=1 width=675) (actual time=0.006..0.006 rows=1.00 loops=5)\n                                Index Cond: (chunk_id = vector_results.chunk_id)\n                                Index Searches: 5\n                                Buffers: shared hit=20\n                    ->  Index Scan using github_issues_clean_repo_issue_unique on github_issues_clean issues  (cost=0.29..0.42 rows=1 width=73) (actual time=0.005..0.005 rows=1.00 loops=5)\n                          Index Cond: ((repository = chunks.repository) AND (issue_number = chunks.issue_number))\n                          Index Searches: 5\n                          Buffers: shared hit=15\n              ->  Index Scan using github_issue_classifications_pkey on github_issue_classifications classifications  (cost=0.27..0.30 rows=1 width=35) (actual time=0.003..0.003 rows=0.00 loops=5)\n                    Index Cond: ((repository = chunks.repository) AND (issue_number = chunks.issue_number) AND (classification_method = 'heuristic'::text) AND (classifier_version = 'heuristic-v1'::text))\n                    Index Searches: 5\n                    Buffers: shared hit=10\nPlanning:\n  Buffers: shared hit=2\nPlanning Time: 1.042 ms\nExecution Time: 3.899 ms"
+  ]
+}
