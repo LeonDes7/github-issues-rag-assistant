@@ -100,6 +100,20 @@ SELECT repository, issue_number, title, body, github_url, comments,
 FROM public.github_issues_clean
 ORDER BY repository, issue_number
 """
+PENDING_ISSUES_QUERY = """
+SELECT repository, issue_number, title, body, github_url, comments,
+       resolution_text, resolution_confidence, content_hash
+FROM public.github_issues_clean AS issue
+WHERE EXISTS (
+    SELECT 1
+    FROM public.github_issue_chunks AS chunks
+    WHERE chunks.repository = issue.repository
+      AND chunks.issue_number = issue.issue_number
+      AND chunks.content_hash = issue.content_hash
+      AND chunks.embedding IS NULL
+)
+ORDER BY repository, issue_number
+"""
 
 UPSERT_CHUNK_SQL = f"""
 INSERT INTO {TABLE_NAME} AS existing (
@@ -310,12 +324,22 @@ def load_issue_rows(
     connection: psycopg.Connection[Any],
     limit: int | None,
     changed_only: bool = True,
+    repositories: list[str] | None = None,
+    pending_only: bool = False,
 ) -> list[dict[str, Any]]:
-    query = ISSUES_QUERY if changed_only else ALL_ISSUES_QUERY
-    parameters: tuple[int, ...] = ()
+    if pending_only:
+        base_query = PENDING_ISSUES_QUERY
+    else:
+        base_query = ISSUES_QUERY if changed_only else ALL_ISSUES_QUERY
+    query = f"SELECT * FROM ({base_query}) AS selected_issues"
+    parameters: list[Any] = []
+    if repositories:
+        query += "\nWHERE repository = ANY(%s)"
+        parameters.append(repositories)
+    query += "\nORDER BY repository, issue_number"
     if limit is not None:
         query += "\nLIMIT %s"
-        parameters = (limit,)
+        parameters.append(limit)
     with connection.cursor() as cursor:
         cursor.execute(query, parameters)
         columns = [description.name for description in cursor.description]
@@ -355,9 +379,9 @@ def persist_chunk_rows(
     chunks: list[IssueChunk],
 ) -> None:
     with connection.cursor() as cursor:
-        for chunk in chunks:
-            cursor.execute(
-                UPSERT_CHUNK_SQL,
+        cursor.executemany(
+            UPSERT_CHUNK_SQL,
+            (
                 (
                     chunk.chunk_id,
                     chunk.repository,
@@ -367,8 +391,10 @@ def persist_chunk_rows(
                     chunk.chunk_text,
                     chunk.source_url,
                     chunk.content_hash,
-                ),
+                )
+                for chunk in chunks
             )
+        )
     connection.commit()
 
 
@@ -436,20 +462,31 @@ def embed_pending_chunks(
             raise RuntimeError(
                 "OpenAI returned a different number of embeddings than inputs"
             )
-        with connection.cursor() as cursor:
-            for item in response.data:
-                vector = item.embedding
-                if len(vector) != VECTOR_DIMENSIONS:
-                    raise RuntimeError(
-                        f"Expected {VECTOR_DIMENSIONS} embedding dimensions, "
-                        f"received {len(vector)}"
-                    )
-                vector_literal = "[" + ",".join(str(value) for value in vector) + "]"
-                cursor.execute(
-                    f"UPDATE {TABLE_NAME} SET embedding = %s::vector "
-                    "WHERE chunk_id = %s AND embedding IS NULL",
-                    (vector_literal, batch[item.index]["chunk_id"]),
+        updates = []
+        for item in response.data:
+            vector = item.embedding
+            if len(vector) != VECTOR_DIMENSIONS:
+                raise RuntimeError(
+                    f"Expected {VECTOR_DIMENSIONS} embedding dimensions, "
+                    f"received {len(vector)}"
                 )
+            vector_literal = "[" + ",".join(str(value) for value in vector) + "]"
+            updates.append((batch[item.index]["chunk_id"], vector_literal))
+        values_sql = ", ".join(
+            ["(%s::uuid, %s::vector)"] * len(updates)
+        )
+        parameters = [value for update in updates for value in update]
+        with connection.cursor() as cursor:
+            cursor.execute(
+                f"""
+                UPDATE {TABLE_NAME} AS target
+                SET embedding = batch.embedding
+                FROM (VALUES {values_sql}) AS batch(chunk_id, embedding)
+                WHERE target.chunk_id = batch.chunk_id
+                  AND target.embedding IS NULL
+                """,
+                parameters,
+            )
         connection.commit()
     return tokens_used, api_calls, failed_chunks
 
@@ -457,34 +494,95 @@ def embed_pending_chunks(
 def count_existing_embeddings(
     connection: psycopg.Connection[Any],
     chunks: list[IssueChunk],
-) -> tuple[int, int]:
+) -> tuple[int, int, int, int]:
     if not chunks:
-        return 0, 0
+        return 0, 0, 0, 0
     unique_chunks = list({chunk.chunk_id: chunk for chunk in chunks}.values())
-    values_sql = ", ".join(["(%s, %s)"] * len(unique_chunks))
-    parameters = [
-        value
-        for chunk in unique_chunks
-        for value in (chunk.chunk_id, chunk.chunk_text)
-    ]
-    query = f"""
-        WITH desired(chunk_id, chunk_text) AS (VALUES {values_sql})
+    existing_rows = 0
+    stored_embeddings = 0
+    embedded_rows = 0
+    reusable_tokens = 0
+    batch_size = 5000
+    query_template = """
+        WITH desired(chunk_id, chunk_text, content_hash, token_count)
+        AS (VALUES {values_sql})
         SELECT COUNT(existing.chunk_id),
+               COUNT(existing.embedding),
                COUNT(existing.chunk_id) FILTER (
                    WHERE existing.embedding IS NOT NULL
                      AND existing.chunk_text = desired.chunk_text
+                     AND existing.content_hash = desired.content_hash
+               ),
+               COALESCE(
+                   SUM(desired.token_count) FILTER (
+                       WHERE existing.embedding IS NOT NULL
+                         AND existing.chunk_text = desired.chunk_text
+                         AND existing.content_hash = desired.content_hash
+                   ),
+                   0
                )
         FROM desired
-        LEFT JOIN {TABLE_NAME} AS existing USING (chunk_id)
+        LEFT JOIN {table_name} AS existing USING (chunk_id)
     """
     try:
         with connection.cursor() as cursor:
-            cursor.execute(query, parameters)
-            existing_rows, embedded_rows = cursor.fetchone()
-            return existing_rows, embedded_rows
+            for batch_start in range(0, len(unique_chunks), batch_size):
+                batch = unique_chunks[batch_start : batch_start + batch_size]
+                values_sql = ", ".join(["(%s, %s, %s, %s)"] * len(batch))
+                parameters = [
+                    value
+                    for chunk in batch
+                    for value in (
+                        chunk.chunk_id,
+                        chunk.chunk_text,
+                        chunk.content_hash,
+                        chunk.token_count,
+                    )
+                ]
+                query = query_template.format(
+                    values_sql=values_sql,
+                    table_name=TABLE_NAME,
+                )
+                cursor.execute(query, parameters)
+                (
+                    batch_existing,
+                    batch_stored_embeddings,
+                    batch_embedded,
+                    batch_reusable_tokens,
+                ) = cursor.fetchone()
+                existing_rows += batch_existing
+                stored_embeddings += batch_stored_embeddings
+                embedded_rows += batch_embedded
+                reusable_tokens += batch_reusable_tokens
+            return (
+                existing_rows,
+                stored_embeddings,
+                embedded_rows,
+                reusable_tokens,
+            )
+    except psycopg.errors.UndefinedColumn:
+        connection.rollback()
+        stored_embeddings = 0
+        existing_rows = 0
+        with connection.cursor() as cursor:
+            for batch_start in range(0, len(unique_chunks), batch_size):
+                batch = unique_chunks[batch_start : batch_start + batch_size]
+                values_sql = ", ".join(["(%s)"] * len(batch))
+                query = f"""
+                    WITH desired(chunk_id) AS (VALUES {values_sql})
+                    SELECT COUNT(existing.chunk_id),
+                           COUNT(existing.embedding)
+                    FROM desired
+                    LEFT JOIN {TABLE_NAME} AS existing USING (chunk_id)
+                """
+                cursor.execute(query, [chunk.chunk_id for chunk in batch])
+                batch_existing, batch_stored_embeddings = cursor.fetchone()
+                existing_rows += batch_existing
+                stored_embeddings += batch_stored_embeddings
+        return existing_rows, stored_embeddings, 0, 0
     except psycopg.errors.UndefinedTable:
         connection.rollback()
-        return 0, 0
+        return 0, 0, 0, 0
 
 
 def summarize_chunks(chunks: list[IssueChunk]) -> dict[str, Any]:
@@ -561,7 +659,12 @@ def similarity_search_examples(
     ]
 
 
-def table_totals(connection: psycopg.Connection[Any]) -> dict[str, Any]:
+def table_totals(
+    connection: psycopg.Connection[Any],
+    repositories: list[str] | None = None,
+) -> dict[str, Any]:
+    filter_sql = "WHERE repository = ANY(%s)" if repositories else ""
+    parameters = (repositories,) if repositories else ()
     with connection.cursor() as cursor:
         cursor.execute(
             f"""
@@ -569,16 +672,20 @@ def table_totals(connection: psycopg.Connection[Any]) -> dict[str, Any]:
                    COUNT(*),
                    COUNT(embedding)
             FROM {TABLE_NAME}
-            """
+            {filter_sql}
+            """,
+            parameters,
         )
         issues, chunks, embeddings = cursor.fetchone()
         cursor.execute(
             f"""
             SELECT chunk_type, COUNT(*), COUNT(embedding)
             FROM {TABLE_NAME}
+            {filter_sql}
             GROUP BY chunk_type
             ORDER BY chunk_type
-            """
+            """,
+            parameters,
         )
         by_type = {
             chunk_type: {"chunks": chunk_count, "embeddings": embedding_count}
@@ -595,14 +702,52 @@ def table_totals(connection: psycopg.Connection[Any]) -> dict[str, Any]:
 def run_embedding(
     limit: int | None = 25,
     dry_run: bool = False,
+    repositories: list[str] | None = None,
 ) -> dict[str, Any]:
     settings = required_environment()
+    if repositories is not None and (
+        not repositories or any(not repository.strip() for repository in repositories)
+    ):
+        raise ValueError("repositories must contain non-empty repository names")
     with psycopg.connect(**database_options(settings)) as connection:
         if dry_run:
-            rows = load_issue_rows(connection, limit, changed_only=False)
+            rows = load_issue_rows(
+                connection,
+                limit,
+                changed_only=False,
+                repositories=repositories,
+            )
+            changed_rows: list[dict[str, Any]] = []
         else:
             prepare_chunk_table(connection)
-            rows = load_issue_rows(connection, limit, changed_only=True)
+            changed_rows = load_issue_rows(
+                connection,
+                limit,
+                changed_only=True,
+                repositories=repositories,
+            )
+            pending_limit = (
+                None if limit is None else max(0, limit - len(changed_rows))
+            )
+            pending_rows = (
+                load_issue_rows(
+                    connection,
+                    pending_limit,
+                    repositories=repositories,
+                    pending_only=True,
+                )
+                if pending_limit is None or pending_limit > 0
+                else []
+            )
+            changed_ids = {
+                (row["repository"], row["issue_number"])
+                for row in changed_rows
+            }
+            rows = changed_rows + [
+                row
+                for row in pending_rows
+                if (row["repository"], row["issue_number"]) not in changed_ids
+            ]
         chunks = build_issue_chunks(rows)
         estimate = summarize_chunks(chunks)
         result: dict[str, Any] = {
@@ -611,24 +756,42 @@ def run_embedding(
             "model": MODEL,
             **estimate,
         }
+        if repositories:
+            result["repositories"] = repositories
         if dry_run:
             if connection.execute(
                 "SELECT to_regclass(%s)",
                 (TABLE_NAME,),
             ).fetchone()[0]:
-                existing_rows, embedded_rows = count_existing_embeddings(
-                    connection,
-                    chunks,
-                )
+                (
+                    existing_rows,
+                    stored_embeddings,
+                    embedded_rows,
+                    reusable_tokens,
+                ) = count_existing_embeddings(connection, chunks)
                 result["existing_chunk_rows"] = existing_rows
-                result["existing_embeddings"] = embedded_rows
+                result["existing_embeddings"] = stored_embeddings
+                result["reusable_embeddings"] = embedded_rows
                 result["estimated_pending_chunks"] = max(
                     0,
                     estimate["chunk_count"] - embedded_rows,
                 )
+                result["estimated_pending_input_tokens"] = max(
+                    0,
+                    estimate["estimated_input_tokens"] - reusable_tokens,
+                )
                 result["estimated_embedding_api_calls"] = (
                     result["estimated_pending_chunks"] + EMBEDDING_BATCH_SIZE - 1
                 ) // EMBEDDING_BATCH_SIZE
+                result["estimated_full_corpus_cost_usd"] = estimate[
+                    "estimated_cost_usd"
+                ]
+                result["estimated_cost_usd"] = round(
+                    result["estimated_pending_input_tokens"]
+                    * EMBEDDING_COST_PER_MILLION_TOKENS_USD
+                    / 1_000_000,
+                    8,
+                )
             result["dry_run"] = True
             return result
 
@@ -643,13 +806,13 @@ def run_embedding(
                     "skipped_chunks_already_embedded": 0,
                     "input_tokens_used": 0,
                     "actual_embedding_api_calls": 0,
-                    "table_totals": table_totals(connection),
+                    "table_totals": table_totals(connection, repositories),
                     "similarity_search_examples": [],
                 }
             )
             return result
 
-        delete_issue_chunks(connection, rows)
+        delete_issue_chunks(connection, changed_rows)
         persist_chunk_rows(connection, chunks)
         pending = get_pending_chunks(connection, chunks)
         client = OpenAI(api_key=settings["OPENAI_API_KEY"], max_retries=0)
@@ -676,7 +839,7 @@ def run_embedding(
                 "cost_rate_usd_per_million_tokens": (
                     EMBEDDING_COST_PER_MILLION_TOKENS_USD
                 ),
-                "table_totals": table_totals(connection),
+                "table_totals": table_totals(connection, repositories),
                 "similarity_search_examples": similarity_search_examples(
                     connection
                 ),
@@ -696,15 +859,44 @@ def main() -> None:
         help="Maximum clean issues to process (default: 25)",
     )
     parser.add_argument(
+        "--all",
+        action="store_true",
+        help="Process all matching issues instead of the default 25",
+    )
+    parser.add_argument(
         "--dry-run",
         action="store_true",
         help="Estimate chunk counts/tokens without writes or OpenAI requests",
     )
+    parser.add_argument(
+        "--repos",
+        help="Comma-separated repository names to include (defaults to all)",
+    )
     args = parser.parse_args()
     if args.limit < 1:
         parser.error("--limit must be a positive integer")
+    repositories = (
+        [
+            repository.strip()
+            for repository in args.repos.split(",")
+            if repository.strip()
+        ]
+        if args.repos
+        else None
+    )
+    if args.repos and not repositories:
+        parser.error("--repos must contain at least one repository")
     try:
-        print(json.dumps(run_embedding(args.limit, args.dry_run), indent=2))
+        print(
+            json.dumps(
+                run_embedding(
+                    None if args.all else args.limit,
+                    args.dry_run,
+                    repositories,
+                ),
+                indent=2,
+            )
+        )
     except (psycopg.Error, ValueError, RuntimeError) as exc:
         raise SystemExit(f"Chunking/embedding failed: {exc}") from exc
 

@@ -85,6 +85,129 @@ class IssueChunkEmbeddingTests(unittest.TestCase):
         self.assertEqual(summary["estimated_embedding_api_calls"], 1)
         self.assertGreaterEqual(summary["estimated_cost_usd"], 0)
 
+    def test_existing_embedding_count_batches_below_postgres_parameter_limit(self):
+        connection = MagicMock()
+        cursor = connection.cursor.return_value.__enter__.return_value
+        cursor.fetchone.side_effect = [
+            (5000, 5000, 4900, 9800),
+            (1, 1, 1, 2),
+        ]
+        chunks = [
+            embedder.IssueChunk(
+                chunk_id=uuid.uuid4(),
+                repository="tiangolo/fastapi",
+                issue_number=index + 1,
+                chunk_index=0,
+                chunk_type="issue_body",
+                chunk_text="Issue text",
+                source_url="https://github.com/tiangolo/fastapi/issues/1",
+                content_hash="hash",
+                token_count=2,
+            )
+            for index in range(5001)
+        ]
+
+        (
+            existing,
+            stored_embeddings,
+            reusable,
+            reusable_tokens,
+        ) = embedder.count_existing_embeddings(connection, chunks)
+
+        self.assertEqual((existing, stored_embeddings, reusable), (5001, 5001, 4901))
+        self.assertEqual(reusable_tokens, 9802)
+        self.assertEqual(cursor.execute.call_count, 2)
+        self.assertTrue(
+            all(
+                len(call.args[1]) <= 20000
+                for call in cursor.execute.call_args_list
+            )
+        )
+        self.assertIn(
+            "existing.content_hash = desired.content_hash",
+            cursor.execute.call_args.args[0],
+        )
+
+    def test_load_issue_rows_can_filter_repositories(self):
+        connection = MagicMock()
+        cursor = connection.cursor.return_value.__enter__.return_value
+        cursor.description = []
+        cursor.fetchall.return_value = []
+
+        rows = embedder.load_issue_rows(
+            connection,
+            limit=10,
+            changed_only=False,
+            repositories=["tiangolo/fastapi", "encode/starlette"],
+        )
+
+        self.assertEqual(rows, [])
+        query, parameters = cursor.execute.call_args.args
+        self.assertIn("WHERE repository = ANY(%s)", query)
+        self.assertEqual(
+            parameters,
+            [["tiangolo/fastapi", "encode/starlette"], 10],
+        )
+
+    def test_persists_chunk_rows_with_batched_executemany(self):
+        connection = MagicMock()
+        chunks = embedder.build_issue_chunks([issue_row()])
+
+        embedder.persist_chunk_rows(connection, chunks)
+
+        cursor = connection.cursor.return_value.__enter__.return_value
+        cursor.executemany.assert_called_once()
+        query, parameters = cursor.executemany.call_args.args
+        self.assertEqual(query, embedder.UPSERT_CHUNK_SQL)
+        self.assertEqual(len(list(parameters)), len(chunks))
+        connection.commit.assert_called_once()
+
+    def test_stores_embedding_batch_with_single_update(self):
+        connection = MagicMock()
+        client = MagicMock()
+        pending = [
+            {"chunk_id": uuid.uuid4(), "chunk_text": "First issue"},
+            {"chunk_id": uuid.uuid4(), "chunk_text": "Second issue"},
+        ]
+        response = client.embeddings.create.return_value
+        response.usage.prompt_tokens = 12
+        response.data = [
+            MagicMock(index=0, embedding=[0.1] * embedder.VECTOR_DIMENSIONS),
+            MagicMock(index=1, embedding=[0.2] * embedder.VECTOR_DIMENSIONS),
+        ]
+
+        tokens, api_calls, failed = embedder.embed_pending_chunks(
+            connection,
+            client,
+            pending,
+        )
+
+        self.assertEqual((tokens, api_calls, failed), (12, 1, 0))
+        cursor = connection.cursor.return_value.__enter__.return_value
+        cursor.execute.assert_called_once()
+        query, parameters = cursor.execute.call_args.args
+        self.assertIn("FROM (VALUES", query)
+        self.assertEqual(len(parameters), 4)
+        connection.commit.assert_called_once()
+
+    def test_pending_issue_selection_includes_null_embeddings_only(self):
+        connection = MagicMock()
+        cursor = connection.cursor.return_value.__enter__.return_value
+        cursor.description = []
+        cursor.fetchall.return_value = []
+
+        embedder.load_issue_rows(
+            connection,
+            limit=None,
+            repositories=["tiangolo/fastapi"],
+            pending_only=True,
+        )
+
+        query, parameters = cursor.execute.call_args.args
+        self.assertIn("chunks.embedding IS NULL", query)
+        self.assertIn("chunks.content_hash = issue.content_hash", query)
+        self.assertEqual(parameters, [["tiangolo/fastapi"]])
+
     def test_similarity_results_are_cross_issue_and_do_not_return_chunk_text(self):
         connection = MagicMock()
         cursor = connection.cursor.return_value.__enter__.return_value
