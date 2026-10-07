@@ -363,6 +363,10 @@ class ApiTests(unittest.TestCase):
                                     retrieval_mode=mode, query_text="middleware")
                 sql, parameters = cursor.execute.call_args.args
                 self.assertEqual(sql.count("chunks.repository = ANY(%s)"), expected_count)
+                # Every candidate branch applies the scope before its own LIMIT.
+                candidate_queries = sql.split("LIMIT %s")[:expected_count]
+                for candidate_query in candidate_queries:
+                    self.assertIn("chunks.repository = ANY(%s)", candidate_query)
                 self.assertEqual(sum(p == repositories for p in parameters), expected_count)
                 self.assertNotIn("fastapi/fastapi", repositories)
 
