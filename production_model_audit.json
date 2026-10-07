@@ -1,0 +1,13 @@
+{
+  "region": "us-east-2",
+  "function": "github-rag-api",
+  "generation_model_override": "gpt-4o-mini",
+  "embedding_model_override": "text-embedding-3-small",
+  "image_uri": "918897410856.dkr.ecr.us-east-2.amazonaws.com/github-rag-api@sha256:ec8bf244716b7cf4f8e3300f6edccd5682138bd48f7a000411ae752e701849b5",
+  "last_modified": "2026-10-05T11:26:17.000+0000",
+  "deployed_default_generation_model": "gpt-4o-mini",
+  "deployed_prompt_template": "You are a trustworthy assistant for GitHub issues. Answer the user\u2019s question only using the retrieved issue excerpts below.\n\nRules:\n- Do not invent facts, fixes, commands, or citations.\n- If the retrieved evidence is insufficient, say that clearly.\n- Treat heuristic resolution chunks as low-confidence evidence.\n- Cite every factual claim with [1], [2], and so on, matching the supplied sources.\n- Keep the answer concise and technical.\n\nRetrieved evidence:\n{retrieved_chunks}",
+  "source_layer_sha256_verified": true,
+  "source_layer_digest": "sha256:30605b6282db933089f8fa3e891b49dc2a850dc2679b80a3ec46697e2cc211de",
+  "deployed_prompt_matches_current_repo": true
+}
