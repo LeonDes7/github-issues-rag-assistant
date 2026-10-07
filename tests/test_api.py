@@ -326,12 +326,43 @@ class ApiTests(unittest.TestCase):
             # configuration loader here, without reading local credentials.
             loader = self.settings_patch.temp_original
             self.assertEqual(loader()["RAG_HNSW_EF_SEARCH"], 100)
+            self.assertEqual(loader()["RAG_REPOSITORIES"], ["tiangolo/fastapi", "encode/starlette", "pydantic/pydantic"])
+            os.environ["RAG_REPOSITORIES"] = "encode/starlette, pydantic/pydantic,encode/starlette"
+            self.assertEqual(loader()["RAG_REPOSITORIES"], ["encode/starlette", "pydantic/pydantic"])
+            os.environ["RAG_REPOSITORIES"] = " , "
+            with self.assertRaisesRegex(RuntimeError, "RAG_REPOSITORIES"):
+                loader()
+            del os.environ["RAG_REPOSITORIES"]
             os.environ["RAG_HNSW_EF_SEARCH"] = "40"
             self.assertEqual(loader()["RAG_HNSW_EF_SEARCH"], 40)
             for value in ("bad", "0", "1001"):
                 os.environ["RAG_HNSW_EF_SEARCH"] = value
                 with self.subTest(value=value), self.assertRaisesRegex(RuntimeError, "RAG_HNSW_EF_SEARCH"):
                     loader()
+
+    def test_repository_scope_filters_vector_and_both_hybrid_branches(self):
+        repositories = ["tiangolo/fastapi", "encode/starlette", "pydantic/pydantic"]
+        for mode, expected_count in (("vector", 1), ("hybrid", 2)):
+            with self.subTest(mode=mode):
+                connection = MagicMock()
+                cursor = connection.cursor.return_value.__enter__.return_value
+                cursor.fetchall.return_value = []
+                api.retrieve_chunks(connection, [0.01] * api.VECTOR_DIMENSIONS, 5,
+                                    retrieval_mode=mode, query_text="middleware")
+                sql, parameters = cursor.execute.call_args.args
+                self.assertEqual(sql.count("chunks.repository = ANY(%s)"), expected_count)
+                self.assertEqual(sum(p == repositories for p in parameters), expected_count)
+                self.assertNotIn("fastapi/fastapi", repositories)
+
+    def test_repository_scope_configuration_and_empty_scope_rejection(self):
+        self.settings["RAG_REPOSITORIES"] = ["encode/starlette"]
+        connection = MagicMock()
+        cursor = connection.cursor.return_value.__enter__.return_value
+        cursor.fetchall.return_value = []
+        api.retrieve_chunks(connection, [0.01] * api.VECTOR_DIMENSIONS, 5)
+        self.assertIn(["encode/starlette"], cursor.execute.call_args.args[1])
+        with self.assertRaises(ValueError):
+            api.retrieve_chunks(connection, [0.01] * api.VECTOR_DIMENSIONS, 5, repositories=[])
 
     def test_ask_uses_hybrid_retrieval_when_configured(self):
         self.settings["RAG_RETRIEVAL_MODE"] = "hybrid"

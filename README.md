@@ -218,6 +218,10 @@ Set `OPENAI_API_KEY`, `API_AUTH_TOKEN`, `OPENAI_EMBEDDING_MODEL`,
 set it to `40` to reproduce the original search depth. Retrieval applies this
 with `SET LOCAL` inside each query's transaction, independently of the RDS
 parameter group. The setting resets when the transaction ends.
+`RAG_REPOSITORIES` restricts both vector and full-text candidates before their
+limits. It defaults to `GITHUB_REPOS`, or to the three original repository names
+when neither is set. The example selects `tiangolo/fastapi`, `encode/starlette`,
+and `pydantic/pydantic`; alias rows remain stored but are excluded from retrieval.
 `API_AUTH_TOKEN` is required for `/ask`; use a high-entropy token and do not
 check it into source control.
 The default embedding model is `text-embedding-3-small`; the default

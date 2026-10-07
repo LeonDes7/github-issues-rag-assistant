@@ -159,6 +159,14 @@ def load_settings() -> dict[str, Any]:
         raise RuntimeError("RAG_HNSW_EF_SEARCH must be an integer") from exc
     if not 1 <= hnsw_ef_search <= 1000:
         raise RuntimeError("RAG_HNSW_EF_SEARCH must be between 1 and 1000")
+    repositories = list(dict.fromkeys(
+        repo.strip() for repo in os.getenv(
+            "RAG_REPOSITORIES",
+            os.getenv("GITHUB_REPOS", "tiangolo/fastapi,encode/starlette,pydantic/pydantic"),
+        ).split(",") if repo.strip()
+    ))
+    if not repositories:
+        raise RuntimeError("RAG_REPOSITORIES must contain at least one repository")
     confidence_threshold = _float_setting(
         "RAG_CONFIDENCE_THRESHOLD",
         DEFAULT_CONFIDENCE_THRESHOLD,
@@ -175,6 +183,7 @@ def load_settings() -> dict[str, Any]:
         "CORS_ALLOWED_ORIGINS": origins,
         "RAG_RETRIEVAL_MODE": retrieval_mode,
         "RAG_HNSW_EF_SEARCH": hnsw_ef_search,
+        "RAG_REPOSITORIES": repositories,
         "RAG_CONFIDENCE_THRESHOLD": confidence_threshold,
         "OPENAI_EMBEDDING_COST_PER_MILLION_TOKENS_USD": _float_setting(
             "OPENAI_EMBEDDING_COST_PER_MILLION_TOKENS_USD",
@@ -318,7 +327,15 @@ def retrieve_chunks(
     retrieval_mode: str = "vector",
     query_text: str | None = None,
     hnsw_ef_search: int | None = None,
+    repositories: list[str] | None = None,
 ) -> list[dict[str, Any]]:
+    repositories = repositories if repositories is not None else get_settings().get(
+        "RAG_REPOSITORIES", ["tiangolo/fastapi", "encode/starlette", "pydantic/pydantic"]
+    )
+    if not isinstance(repositories, list) or not repositories or any(
+        not isinstance(repo, str) or not repo.strip() for repo in repositories
+    ):
+        raise ValueError("repositories must be a non-empty list of repository names")
     ef_search = (
         get_settings().get("RAG_HNSW_EF_SEARCH", 100)
         if hnsw_ef_search is None else hnsw_ef_search
@@ -343,10 +360,11 @@ def retrieve_chunks(
              AND classifications.classification_method = 'heuristic'
              AND classifications.classifier_version = 'heuristic-v1'
             WHERE chunks.embedding IS NOT NULL
+              AND chunks.repository = ANY(%s)
             ORDER BY chunks.embedding <=> %s::vector
             LIMIT %s
         """
-        parameters = (vector_literal, vector_literal, vector_literal, top_k)
+        parameters = (vector_literal, vector_literal, repositories, vector_literal, top_k)
     elif retrieval_mode == "hybrid":
         if not query_text or not query_text.strip():
             raise ValueError("query_text is required for hybrid retrieval")
@@ -363,6 +381,7 @@ def retrieve_chunks(
                        ) AS rank
                 FROM public.github_issue_chunks AS chunks
                 WHERE chunks.embedding IS NOT NULL
+                  AND chunks.repository = ANY(%s)
                 ORDER BY chunks.embedding <=> %s::vector
                 LIMIT %s
             ),
@@ -376,6 +395,7 @@ def retrieve_chunks(
                 FROM public.github_issue_chunks AS chunks
                 CROSS JOIN search_query
                 WHERE chunks.search_vector @@ search_query.query
+                  AND chunks.repository = ANY(%s)
                 ORDER BY ts_rank_cd(chunks.search_vector, search_query.query) DESC,
                          chunks.chunk_id
                 LIMIT %s
@@ -419,8 +439,10 @@ def retrieve_chunks(
             query_text,
             vector_literal,
             vector_literal,
+            repositories,
             vector_literal,
             top_k,
+            repositories,
             top_k,
             top_k,
         )
