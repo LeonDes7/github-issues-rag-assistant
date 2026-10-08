@@ -14,7 +14,8 @@ The API endpoint is:
 `https://w3qqwb25w0.execute-api.us-east-2.amazonaws.com`
 `/ask` requires bearer authentication; `/health` is public.
 The Streamlit interface calls the API from server-side Python.
-The backend remediation is deployed; the Streamlit remediation patch remains local.
+The backend remediation is deployed. Streamlit safeguards are committed and pushed,
+but public rollout is not independently verified.
 
 ## Architecture
 
@@ -55,7 +56,7 @@ python -m pip install -e .
 python -m unittest discover -s tests -q
 ```
 
-The current local checkpoint has **101 passing tests**.
+The current local checkpoint has **104 passing tests**.
 Copy setting names from `.env.example` into a private local `.env` as needed.
 Do not commit credentials, connection strings or `.streamlit/secrets.toml`.
 Prefer IAM roles or an AWS profile to long-lived static access keys.
@@ -137,7 +138,7 @@ Setting-name references and masked examples are not proof of a credential leak.
 
 ## Retrieval and abstention evidence
 
-On the original 45 generated, manually reviewed answerable cases, final retrieval
+On the original 45 generated answerable cases, not yet human-verified, final retrieval
 scored **Hit@5 0.9333, Recall@5 0.9333 and MRR 0.8389**.
 This is a small evaluation, not a general accuracy guarantee.
 The earlier vector/hybrid baseline both scored 0.8000/0.8000/0.7526.
