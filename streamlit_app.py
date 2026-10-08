@@ -10,6 +10,9 @@ from requests import RequestException
 from streamlit.errors import StreamlitSecretNotFoundError
 
 from rag_assistant.ui_client import RagApiError, ask_api
+from rag_assistant.redaction import safe_display_payload
+from rag_assistant.demo_guard import reserve_question
+import sqlite3
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent
@@ -25,6 +28,7 @@ def _setting(name: str, default: str = "") -> str:
 
 
 def _show_result(result: dict[str, Any]) -> None:
+    result = safe_display_payload(result)
     answer = result.get("answer")
     if not isinstance(answer, str) or not answer.strip():
         st.warning("The API returned no answer.")
@@ -61,7 +65,11 @@ def _show_result(result: dict[str, Any]) -> None:
             else:
                 st.info("No stored category prediction is available for the top citation.")
 
-        st.subheader("GitHub citations")
+        st.subheader("Retrieved GitHub sources")
+        st.caption(
+            "These sources were retrieved for your question. Their presence does "
+            "not establish an answer when the evidence is insufficient."
+        )
         for index, citation in enumerate(citations, start=1):
             if not isinstance(citation, dict):
                 continue
@@ -128,6 +136,14 @@ def main() -> None:
     if submitted:
         if not question.strip():
             st.warning("Enter a question before selecting Ask.")
+            return
+        try:
+            limit_message = reserve_question(st.session_state, PROJECT_ROOT / "artifacts/demo_quota.sqlite3")
+        except (sqlite3.Error, OSError):
+            st.warning("The demo is temporarily unavailable. Please try again later.")
+            return
+        if limit_message:
+            st.info(limit_message)
             return
         try:
             with st.spinner("Searching GitHub issue evidence and drafting an answer…"):
