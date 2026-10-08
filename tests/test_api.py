@@ -33,6 +33,12 @@ def chunk(
 
 class ApiTests(unittest.TestCase):
     def setUp(self):
+        original_encoder = api.tiktoken.encoding_for_model
+        encoder_patch = patch.object(api.tiktoken, "encoding_for_model", side_effect=lambda model: original_encoder(
+            "gpt-4o-mini" if model == "test-generation-model" else model
+        ))
+        encoder_patch.start()
+        self.addCleanup(encoder_patch.stop)
         api.get_settings.cache_clear()
         self.settings = {
             "RAG_CONTEXT_MODE": "chunks",
@@ -131,6 +137,7 @@ class ApiTests(unittest.TestCase):
         )
         generation_request = self.openai_client.chat.completions.create.call_args.kwargs
         self.assertEqual(generation_request["model"], "test-generation-model")
+        self.assertEqual(generation_request["max_completion_tokens"], 512)
         self.assertIn(result_chunk["chunk_text"], generation_request["messages"][0]["content"])
         self.assertEqual(
             generation_request["messages"][1],
@@ -147,6 +154,111 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(blank.status_code, 422)
         self.assertEqual(oversized_top_k.status_code, 422)
         self.openai_client.embeddings.create.assert_not_called()
+
+    def test_generation_passes_configured_output_token_limit(self):
+        self.settings["OPENAI_GENERATION_MAX_OUTPUT_TOKENS"] = 128
+        self.openai_client.chat.completions.create.return_value.choices = [
+            MagicMock(message=MagicMock(content="Supported answer. [1]"))
+        ]
+        api.generate_grounded_answer_with_usage(
+            self.openai_client, "test-generation-model", "question", [chunk()]
+        )
+        self.assertEqual(
+            self.openai_client.chat.completions.create.call_args.kwargs["max_completion_tokens"], 128
+        )
+
+    def test_openai_client_passes_zero_or_configured_retry_limit(self):
+        for retries in (None, 0, 2):
+            with self.subTest(retries=retries):
+                self.settings.pop("OPENAI_MAX_RETRIES", None)
+                if retries is not None:
+                    self.settings["OPENAI_MAX_RETRIES"] = retries
+                with patch.object(api, "OpenAI") as constructor:
+                    api.get_openai_client()
+                constructor.assert_called_once_with(
+                    api_key="test-api-key", max_retries=0 if retries is None else retries
+                )
+
+    def test_output_and_retry_environment_defaults_overrides_and_validation(self):
+        environment = {key: "test-value" for key in (
+            "OPENAI_API_KEY", "PGHOST", "PGDATABASE", "PGUSER", "PGPASSWORD", "API_AUTH_TOKEN"
+        )}
+        with patch.dict(os.environ, environment, clear=True), patch.object(api, "load_dotenv"), patch.object(api, "_load_runtime_secrets", return_value={}):
+            loader = self.settings_patch.temp_original
+            self.assertEqual(loader()["OPENAI_GENERATION_MAX_OUTPUT_TOKENS"], 512)
+            self.assertEqual(loader()["OPENAI_MAX_RETRIES"], 0)
+            for name, valid, invalid in (
+                ("OPENAI_GENERATION_MAX_OUTPUT_TOKENS", "128", ("0", "-1", "16385", "1.5", "true", "")),
+                ("OPENAI_MAX_RETRIES", "2", ("-1", "11", "1.5", "true", "")),
+                ("RAG_MAX_GENERATION_INPUT_TOKENS", "12000", ("0", "-1", "120001", "1.5", "true", "")),
+            ):
+                os.environ[name] = valid
+                self.assertEqual(loader()[name], int(valid))
+                for value in invalid:
+                    with self.subTest(name=name, value=value), self.assertRaisesRegex(RuntimeError, name):
+                        os.environ[name] = value
+                        loader()
+                del os.environ[name]
+
+    def test_generation_budget_trims_excerpts_preserving_all_source_ids(self):
+        sources = [chunk(issue_number=i, text="Unicode Ω 漢字 and JSON \"quotes\". " * 1000) for i in (1, 2, 3)]
+        prepared = api.prepare_generation_messages("gpt-4o-mini", "question", sources, 1500)
+        self.assertIsNotNone(prepared)
+        messages, sent_texts = prepared
+        self.assertLessEqual(api.generation_input_token_count("gpt-4o-mini", messages), 1500)
+        supplied = json.loads(messages[0]["content"].split("Retrieved evidence:\n", 1)[1])
+        self.assertEqual([s["citation"] for s in supplied], ["[1]", "[2]", "[3]"])
+        for actual, original in zip(supplied, sources):
+            self.assertEqual(actual["source_url"], original["source_url"])
+            self.assertEqual(actual["issue_number"], original["issue_number"])
+            self.assertTrue(original["chunk_text"].startswith(actual["excerpt"]))
+            self.assertTrue(actual["excerpt_truncated"])
+        self.assertEqual(sent_texts, [s["excerpt"] for s in supplied])
+        self.assertGreater(len(sources[0]["chunk_text"]), len(sent_texts[0]))
+
+    def test_generation_budget_preserves_full_prompt_when_it_fits(self):
+        source = chunk()
+        messages, texts = api.prepare_generation_messages("gpt-4o-mini", "question", [source], 12000)
+        supplied = json.loads(messages[0]["content"].split("Retrieved evidence:\n", 1)[1])
+        self.assertEqual(texts, [source["chunk_text"]])
+        self.assertNotIn("excerpt_truncated", supplied[0])
+
+    def test_impossible_prompt_budget_abstains_without_generation_and_keeps_api_sources(self):
+        self.settings["RAG_MAX_GENERATION_INPUT_TOKENS"] = 1
+        self.openai_client.embeddings.create.return_value.data = [MagicMock(embedding=[0.01] * api.VECTOR_DIMENSIONS)]
+        with patch.object(api, "retrieve_chunks", return_value=[chunk()]):
+            response = self.client.post("/ask", json={"question": "question"})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["answer"], api.MODEL_ABSTENTION_ANSWER)
+        self.assertEqual(response.json()["citations"][0]["source_url"], chunk()["source_url"])
+        self.openai_client.chat.completions.create.assert_not_called()
+
+    def test_generation_sdk_receives_bounded_prompt_and_cleanup_uses_only_sent_text(self):
+        self.settings["RAG_MAX_GENERATION_INPUT_TOKENS"] = 1200
+        source = chunk(text="related text " * 2000 + "\nsecret_tail_command()")
+        self.openai_client.chat.completions.create.return_value.choices = [MagicMock(message=MagicMock(
+            content="Example:\n```python\nsecret_tail_command()\n```\n[1]"
+        ))]
+        answer, _, _ = api.generate_grounded_answer_with_usage(self.openai_client, "test-generation-model", "question", [source])
+        messages = self.openai_client.chat.completions.create.call_args.kwargs["messages"]
+        self.assertLessEqual(api.generation_input_token_count("gpt-4o-mini", messages), 1200)
+        self.assertNotIn("secret_tail_command", messages[0]["content"])
+        self.assertNotIn("secret_tail_command", answer)
+
+    def test_truncated_generation_context_keeps_structured_api_sources_in_order(self):
+        self.settings["RAG_MAX_GENERATION_INPUT_TOKENS"] = 1500
+        sources = [chunk(issue_number=i, text="evidence " * 3000) for i in (12, 13)]
+        self.openai_client.embeddings.create.return_value.data = [MagicMock(embedding=[0.01] * api.VECTOR_DIMENSIONS)]
+        self.openai_client.chat.completions.create.return_value.choices = [MagicMock(message=MagicMock(content=api.ABSTENTION_MARKER))]
+        with patch.object(api, "retrieve_chunks", return_value=sources):
+            response = self.client.post("/ask", json={"question": "question"})
+        self.assertEqual(response.status_code, 200)
+        body = response.json()
+        self.assertEqual(body["answer"], api.MODEL_ABSTENTION_ANSWER)
+        self.assertEqual([s["issue_number"] for s in body["citations"]], [12, 13])
+        self.assertEqual([s["source_url"] for s in body["citations"]], [s["source_url"] for s in sources])
+        messages = self.openai_client.chat.completions.create.call_args.kwargs["messages"]
+        self.assertLessEqual(api.generation_input_token_count("gpt-4o-mini", messages), 1500)
 
     def test_ask_requires_matching_bearer_token(self):
         self.client.headers.pop("Authorization")
@@ -209,6 +321,7 @@ class ApiTests(unittest.TestCase):
             )
 
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["answer"], api.LOW_EVIDENCE_ANSWER)
         self.assertEqual(response.json()["citations"], [])
         self.assertEqual(
             response.json()["retrieval_metadata"]["retrieved_count"],
@@ -230,9 +343,67 @@ class ApiTests(unittest.TestCase):
             )
 
         self.assertEqual(response.status_code, 200)
-        self.assertIn("isn't enough evidence", response.json()["answer"])
+        self.assertEqual(response.json()["answer"], api.LOW_EVIDENCE_ANSWER)
         self.assertEqual(response.json()["performance"]["llm_latency_ms"], 0)
         self.openai_client.chat.completions.create.assert_not_called()
+
+    def test_generation_prompt_requires_concise_abstention_and_exact_citation_support(self):
+        sources = [
+            chunk(issue_number=2074, text="Do you have any resource that can be accessed by only one process?"),
+            chunk(issue_number=3008, chunk_type="heuristic_resolution",
+                  text="Subclass the UvicornWorker and pass the configuration yourself."),
+        ]
+        answer = "The retrieved excerpts do not establish cross-worker OAuth2 revocation within 30 seconds."
+        self.openai_client.chat.completions.create.return_value.choices = [
+            MagicMock(message=MagicMock(content=answer))
+        ]
+        self.openai_client.chat.completions.create.return_value.usage = None
+
+        result, input_tokens, output_tokens = api.generate_grounded_answer_with_usage(
+            self.openai_client, "test-generation-model",
+            "How can OAuth2 revoke a WebSocket across four workers within 30 seconds?",
+            sources,
+        )
+
+        prompt = self.openai_client.chat.completions.create.call_args.kwargs["messages"][0]["content"]
+        for requirement in (
+            "output only [INSUFFICIENT_EVIDENCE]",
+            "do not write any optional factual claim or evidence summary",
+            "not an exhaustive absence of evidence in the corpus",
+            "Verify each claim against its exact cited excerpt",
+            "neighboring source is not support",
+            "Split claims when different excerpts support different parts",
+            "omit any unsupported part",
+            "A plain statement of insufficient retrieved evidence does not need a citation",
+            "Treat heuristic resolution chunks as low-confidence evidence",
+        ):
+            with self.subTest(requirement=requirement):
+                self.assertIn(requirement, prompt)
+        supplied = json.loads(prompt.split("Retrieved evidence:\n", 1)[1])
+        self.assertEqual([source["citation"] for source in supplied], ["[1]", "[2]"])
+        for source, original in zip(supplied, sources):
+            self.assertEqual(source["excerpt"], original["chunk_text"])
+            self.assertEqual(source["source_url"], original["source_url"])
+            self.assertEqual(source["issue_number"], original["issue_number"])
+        self.assertEqual(result, api.MODEL_ABSTENTION_ANSWER)
+        self.assertEqual((input_tokens, output_tokens), (0, 0))
+
+    def test_ask_preserves_model_abstention_after_cutoff_pass_without_adding_claims(self):
+        answer = "The retrieved excerpts do not establish cross-worker OAuth2 revocation within 30 seconds."
+        self.openai_client.embeddings.create.return_value.data = [
+            MagicMock(embedding=[0.01] * api.VECTOR_DIMENSIONS)
+        ]
+        self.openai_client.chat.completions.create.return_value.choices = [
+            MagicMock(message=MagicMock(content=answer))
+        ]
+        with patch.object(api, "retrieve_chunks", return_value=[chunk(similarity=0.63)]):
+            response = self.client.post("/ask", json={"question": "How can OAuth2 revoke a WebSocket across four workers within 30 seconds?"})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["answer"], api.MODEL_ABSTENTION_ANSWER)
+        self.assertEqual(len(response.json()["citations"]), 1)
+        self.assertEqual(response.json()["citations"][0]["source_url"], chunk()["source_url"])
+        self.openai_client.chat.completions.create.assert_called_once()
 
     def test_ask_issue_mode_fetches_thirty_and_generates_with_distinct_issues(self):
         self.settings["RAG_CONTEXT_MODE"] = "issues"
@@ -441,6 +612,55 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(cleaned, "Findings:")
         self.assertNotRegex(cleaned, r"(?m)^\s*(?:[-+*]|\d+[.)])\s*$")
         self.assertNotIn("```", cleaned)
+
+    def test_explicit_abstention_discards_all_model_prose_and_keeps_usage(self):
+        for answer in (
+            api.ABSTENTION_MARKER,
+            "  " + api.ABSTENTION_MARKER + "\nRelated workers guarantee durability [1].",
+            api.ABSTENTION_MARKER + "\n```python\napp.add_middleware(MyMiddleware)\n``` [2]",
+        ):
+            with self.subTest(answer=answer):
+                self.openai_client.chat.completions.create.return_value.choices = [
+                    MagicMock(message=MagicMock(content=answer))
+                ]
+                self.openai_client.chat.completions.create.return_value.usage = MagicMock(
+                    prompt_tokens=123, completion_tokens=45
+                )
+                result = api.generate_grounded_answer_with_usage(
+                    self.openai_client, "test-generation-model", "question", [chunk()]
+                )
+                self.assertEqual(result, (api.MODEL_ABSTENTION_ANSWER, 123, 45))
+                self.assertNotIn("[", result[0])
+
+    def test_legacy_abstention_discards_auxiliary_claims(self):
+        for opening in (
+            "Insufficient retrieved evidence to answer.",
+            "I cannot determine a supported method.",
+            "I can’t provide the requested guarantee.",
+            "- There is no evidence in the retrieved issues of this configuration.",
+            "The retrieved excerpts do not establish this guarantee.",
+        ):
+            with self.subTest(opening=opening):
+                self.assertEqual(
+                    api.finalize_generated_answer(opening + "\nUnrelated claim [1].", []),
+                    api.MODEL_ABSTENTION_ANSWER,
+                )
+
+    def test_supported_answers_keep_existing_cleanup_and_citations(self):
+        evidence = ["app.add_middleware(MyMiddleware)"]
+        for answer in (
+            "Add middleware. [1]",
+            "No, this excerpt says custom validations are not encoded. [1]",
+            "Use the documented setup. [1] Additional evidence is insufficient for other workloads.",
+            "The issue quotes 'I cannot determine the cause' and documents the fix. [1]",
+            "Use:\n```python\napp.add_middleware(MyMiddleware)\n```\n[1]",
+            "Use:\n```python\nunknown()\n```\n[1]",
+        ):
+            with self.subTest(answer=answer):
+                self.assertEqual(
+                    api.finalize_generated_answer(answer, evidence),
+                    api.clean_generated_answer(answer, evidence),
+                )
 
     def test_generated_empty_list_answer_uses_clear_evidence_fallback(self):
         malformed = "- \n* \n```python\n```"

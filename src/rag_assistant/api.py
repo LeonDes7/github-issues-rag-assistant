@@ -7,6 +7,7 @@ import os
 import re
 import secrets
 import time
+import tiktoken
 from collections.abc import Generator
 from functools import lru_cache
 from pathlib import Path
@@ -20,11 +21,18 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from openai import OpenAI, OpenAIError
 from pydantic import BaseModel, ConfigDict, Field, field_validator
+from rag_assistant.redaction import (
+    UNSAFE_SETTINGS_ANSWER, UNSAFE_SETTINGS_PATTERN, redact_sensitive_text, safe_excerpt,
+)
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_EMBEDDING_MODEL = "text-embedding-3-small"
 DEFAULT_GENERATION_MODEL = "gpt-4o-mini"
+DEFAULT_GENERATION_MAX_OUTPUT_TOKENS = 512
+DEFAULT_OPENAI_MAX_RETRIES = 0
+DEFAULT_MAX_GENERATION_INPUT_TOKENS = 12000
+GENERATION_FRAMING_TOKEN_RESERVE = 512
 DEFAULT_CORS_ORIGINS = "http://localhost:8501,http://127.0.0.1:8501"
 VECTOR_DIMENSIONS = 1536
 DEFAULT_CONFIDENCE_THRESHOLD = 0.5370554072220923
@@ -34,16 +42,21 @@ DEFAULT_GENERATION_OUTPUT_COST_PER_MILLION_TOKENS_USD = 0.60
 LOW_EVIDENCE_ANSWER = (
     "There isn't enough evidence in the indexed issues to answer this question."
 )
+ABSTENTION_MARKER = "[INSUFFICIENT_EVIDENCE]"
+MODEL_ABSTENTION_ANSWER = "The retrieved excerpts do not provide enough evidence to answer this question."
 LOGGER = logging.getLogger(__name__)
 bearer_scheme = HTTPBearer(auto_error=False)
 
 GROUNDED_ANSWER_PROMPT = """You are a trustworthy assistant for GitHub issues. Answer the user’s question only using the retrieved issue excerpts below.
 
 Rules:
+- When you decide the retrieved evidence is insufficient, output only [INSUFFICIENT_EVIDENCE]. The API supplies the abstention message. Do not append explanations, summaries, factual claims, or citations to this marker. For a supported answer, use the normal answer format below without a marker.
 - Do not invent facts, fixes, commands, or citations.
-- If the retrieved evidence is insufficient, say that clearly.
+- Do not infer a solution or guarantee from related topics. On abstention, do not write any optional factual claim or evidence summary; use only the marker.
+- Describe limitations of the retrieved excerpts, not an exhaustive absence of evidence in the corpus or proof that the requested behavior is impossible.
 - Treat heuristic resolution chunks as low-confidence evidence.
-- Cite every factual claim with [1], [2], and so on, matching the supplied sources.
+- An excerpt marked excerpt_truncated is incomplete; do not infer facts from its omitted text or treat an empty excerpt's metadata as evidence of a solution.
+- Cite every factual evidence claim with [1], [2], and so on, matching the supplied sources. Verify each claim against its exact cited excerpt; a shared topic, issue title, similarity score, or neighboring source is not support. Split claims when different excerpts support different parts, and omit any unsupported part. A plain statement of insufficient retrieved evidence does not need a citation.
 - Keep the answer concise and technical.
 
 Retrieved evidence:
@@ -183,6 +196,15 @@ def load_settings() -> dict[str, Any]:
         "PGSSLMODE": os.getenv("PGSSLMODE", "require"),
         "OPENAI_EMBEDDING_MODEL": embedding_model,
         "OPENAI_GENERATION_MODEL": generation_model,
+        "OPENAI_GENERATION_MAX_OUTPUT_TOKENS": _integer_setting(
+            "OPENAI_GENERATION_MAX_OUTPUT_TOKENS", DEFAULT_GENERATION_MAX_OUTPUT_TOKENS, 1, 16384
+        ),
+        "OPENAI_MAX_RETRIES": _integer_setting(
+            "OPENAI_MAX_RETRIES", DEFAULT_OPENAI_MAX_RETRIES, 0, 10
+        ),
+        "RAG_MAX_GENERATION_INPUT_TOKENS": _integer_setting(
+            "RAG_MAX_GENERATION_INPUT_TOKENS", DEFAULT_MAX_GENERATION_INPUT_TOKENS, 1, 120000
+        ),
         "CORS_ALLOWED_ORIGINS": origins,
         "RAG_RETRIEVAL_MODE": retrieval_mode,
         "RAG_HNSW_EF_SEARCH": hnsw_ef_search,
@@ -202,6 +224,17 @@ def load_settings() -> dict[str, Any]:
             DEFAULT_GENERATION_OUTPUT_COST_PER_MILLION_TOKENS_USD,
         ),
     }
+
+
+def _integer_setting(name: str, default: int, minimum: int, maximum: int) -> int:
+    raw = os.getenv(name, str(default))
+    try:
+        value = int(raw)
+    except ValueError as exc:
+        raise RuntimeError(f"{name} must be an integer") from exc
+    if not minimum <= value <= maximum:
+        raise RuntimeError(f"{name} must be between {minimum} and {maximum}")
+    return value
 
 
 def _float_setting(name: str, default: float) -> float:
@@ -289,7 +322,10 @@ def get_settings() -> dict[str, Any]:
 
 def get_openai_client() -> OpenAI:
     settings = get_settings()
-    return OpenAI(api_key=settings["OPENAI_API_KEY"], max_retries=2)
+    return OpenAI(
+        api_key=settings["OPENAI_API_KEY"],
+        max_retries=settings.get("OPENAI_MAX_RETRIES", DEFAULT_OPENAI_MAX_RETRIES),
+    )
 
 
 def require_bearer_token(
@@ -511,35 +547,73 @@ def generate_grounded_answer(
     return answer
 
 
+def generation_input_token_count(model: str, messages: list[dict[str, str]]) -> int:
+    """Count complete message text/roles, with conservative chat framing reserve."""
+    encoder = tiktoken.encoding_for_model(model)
+    return GENERATION_FRAMING_TOKEN_RESERVE + sum(
+        len(encoder.encode(message[key], disallowed_special=()))
+        for message in messages for key in ("role", "content")
+    )
+
+
+def prepare_generation_messages(model: str, question: str, retrieved: list[dict[str, Any]], limit: int):
+    """Trim only excerpts; preserve source metadata, identifiers and ordering."""
+    evidence = [
+        {"citation": f"[{i}]", **{key: c[key] for key in (
+            "repository", "issue_number", "issue_url", "source_url", "chunk_type", "similarity_score"
+        )}, "excerpt": safe_excerpt(c["chunk_text"])}
+        for i, c in enumerate(retrieved, 1)
+    ]
+    def messages(items):
+        return [{"role": "system", "content": GROUNDED_ANSWER_PROMPT.format(
+            retrieved_chunks=json.dumps(items, ensure_ascii=False))},
+            {"role": "user", "content": question}]
+    full = messages(evidence)
+    if generation_input_token_count(model, full) <= limit:
+        return full, [item["excerpt"] for item in evidence]
+    # Keep all sources even if an excerpt becomes empty. Truncation is explicit
+    # so titles/metadata and partial excerpts cannot be mistaken for full text.
+    def shortened(size):
+        return [{**item, "excerpt": item["excerpt"][:size],
+                 "excerpt_truncated": len(item["excerpt"]) > size} for item in evidence]
+    best = shortened(0)
+    if generation_input_token_count(model, messages(best)) > limit:
+        return None  # Instructions/question/source metadata cannot safely fit.
+    low, high = 0, max((len(item["excerpt"]) for item in evidence), default=0)
+    while low <= high:
+        middle = (low + high) // 2
+        candidate = shortened(middle)
+        if generation_input_token_count(model, messages(candidate)) <= limit:
+            best = candidate
+            low = middle + 1
+        else:
+            high = middle - 1
+    final = messages(best)
+    assert generation_input_token_count(model, final) <= limit
+    return final, [item["excerpt"] for item in best]
+
+
 def generate_grounded_answer_with_usage(
     client: OpenAI,
     model: str,
     question: str,
     retrieved: list[dict[str, Any]],
 ) -> tuple[str, int, int]:
-    evidence = [
-        {
-            "citation": f"[{index}]",
-            "repository": chunk["repository"],
-            "issue_number": chunk["issue_number"],
-            "issue_url": chunk["issue_url"],
-            "source_url": chunk["source_url"],
-            "chunk_type": chunk["chunk_type"],
-            "similarity_score": chunk["similarity_score"],
-            "excerpt": chunk["chunk_text"],
-        }
-        for index, chunk in enumerate(retrieved, start=1)
-    ]
-    system_prompt = GROUNDED_ANSWER_PROMPT.format(
-        retrieved_chunks=json.dumps(evidence, ensure_ascii=False)
+    prepared = prepare_generation_messages(
+        model, question, retrieved, get_settings().get(
+            "RAG_MAX_GENERATION_INPUT_TOKENS", DEFAULT_MAX_GENERATION_INPUT_TOKENS
+        )
     )
+    if prepared is None:
+        return MODEL_ABSTENTION_ANSWER, 0, 0
+    messages, sent_evidence = prepared
     response = client.chat.completions.create(
         model=model,
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": question},
-        ],
+        messages=messages,
         temperature=0,
+        max_completion_tokens=get_settings().get(
+            "OPENAI_GENERATION_MAX_OUTPUT_TOKENS", DEFAULT_GENERATION_MAX_OUTPUT_TOKENS
+        ),
     )
     answer = response.choices[0].message.content
     if not answer or not answer.strip():
@@ -548,9 +622,9 @@ def generate_grounded_answer_with_usage(
     prompt_tokens = getattr(usage, "prompt_tokens", 0) if usage else 0
     completion_tokens = getattr(usage, "completion_tokens", 0) if usage else 0
     return (
-        clean_generated_answer(
+        finalize_generated_answer(
             answer.strip(),
-            [chunk["chunk_text"] for chunk in retrieved],
+            sent_evidence,
         ),
         prompt_tokens if isinstance(prompt_tokens, int) else 0,
         completion_tokens if isinstance(completion_tokens, int) else 0,
@@ -559,6 +633,31 @@ def generate_grounded_answer_with_usage(
 
 def _normalized_code(value: str) -> str:
     return re.sub(r"\s+", " ", value).strip()
+
+
+def finalize_generated_answer(answer: str, evidence: list[str]) -> str:
+    """Replace a model's abstention decision; never render its accompanying prose."""
+    stripped = answer.strip()
+    if stripped.startswith(ABSTENTION_MARKER):
+        return MODEL_ABSTENTION_ANSWER
+    # Compatibility with earlier plain-text abstentions. Only recognize an
+    # opening decision, not phrases in quoted evidence or later caveats.
+    opening = re.sub(r"^[\s*#>\-]+", "", stripped).replace("’", "'")
+    if re.match(
+        r"(?:insufficient (?:retrieved )?evidence\b|"
+        r"(?:I|We) (?:cannot|can't|can not|am unable to|are unable to) "
+        r"(?:answer|determine|identify|provide)\b|"
+        r"(?:The )?retrieved (?:evidence|excerpts) (?:is insufficient|"
+        r"do(?:es)? not (?:establish|contain|provide|support))\b|"
+        r"There is (?:no|not enough|insufficient) evidence in the retrieved\b|"
+        r"Based on the retrieved excerpts, there is no explicit mention\b)",
+        opening,
+        re.IGNORECASE,
+    ):
+        return MODEL_ABSTENTION_ANSWER
+    if UNSAFE_SETTINGS_PATTERN.search(stripped):
+        return UNSAFE_SETTINGS_ANSWER
+    return redact_sensitive_text(clean_generated_answer(stripped, evidence))
 
 
 def clean_generated_answer(answer: str, evidence: list[str]) -> str:
