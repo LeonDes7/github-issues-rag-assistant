@@ -1,0 +1,117 @@
+{
+  "region": "us-east-2",
+  "lambda": {
+    "FunctionArn": "arn:aws:lambda:us-east-2:918897410856:function:github-rag-api",
+    "Role": "arn:aws:iam::918897410856:role/github-rag-lambda-execution",
+    "MemorySize": 1024,
+    "Timeout": 90,
+    "Architectures": [
+      "x86_64"
+    ],
+    "LastModified": "2026-10-05T11:26:17.000+0000",
+    "RevisionId": "e34152f6-6add-49ac-aed5-ea7773d75454",
+    "VpcConfig": {
+      "SubnetIds": [
+        "subnet-02970a3628abe0a1e",
+        "subnet-08624d3bb13fc2619"
+      ],
+      "SecurityGroupIds": [
+        "sg-09328f537d896d8b4"
+      ],
+      "VpcId": "vpc-005161e9ccd247f58",
+      "Ipv6AllowedForDualStack": false
+    }
+  },
+  "current_image_uri": "918897410856.dkr.ecr.us-east-2.amazonaws.com/github-rag-api@sha256:ec8bf244716b7cf4f8e3300f6edccd5682138bd48f7a000411ae752e701849b5",
+  "nonsecret_environment": {
+    "RAG_SECRETS_ARN": "arn:aws:secretsmanager:us-east-2:918897410856:secret:github-rag/dev/api-runtime-F1L5s9",
+    "OPENAI_GENERATION_MODEL": "gpt-4o-mini",
+    "OPENAI_EMBEDDING_MODEL": "text-embedding-3-small"
+  },
+  "ecr": {
+    "repositoryArn": "arn:aws:ecr:us-east-2:918897410856:repository/github-rag-api",
+    "repositoryUri": "918897410856.dkr.ecr.us-east-2.amazonaws.com/github-rag-api",
+    "imageTagMutability": "MUTABLE",
+    "imageScanningConfiguration": {
+      "scanOnPush": true
+    },
+    "encryptionConfiguration": {
+      "encryptionType": "AES256"
+    }
+  },
+  "ecr_images": [
+    {
+      "digest": "sha256:531f58a03675464292aba24464535a9130868022382da7c96b95971283d3f75c",
+      "tags": [],
+      "compressed_bytes": 216144368
+    },
+    {
+      "digest": "sha256:c613be2ed63e7223cae38afb05e3c0ff4b0aa85d43fc86f1f17a2b6c0e7f7c60",
+      "tags": [],
+      "compressed_bytes": 1240
+    },
+    {
+      "digest": "sha256:1bf0e8992f85bd3821da2586e2111f6938b2013a4272d2a2d1c239ca0ba6ea19",
+      "tags": [
+        "dev-20261005-lambda"
+      ],
+      "compressed_bytes": 216144368
+    },
+    {
+      "digest": "sha256:ec8bf244716b7cf4f8e3300f6edccd5682138bd48f7a000411ae752e701849b5",
+      "tags": [
+        "streamlit-category-20261005"
+      ],
+      "compressed_bytes": 216147543
+    },
+    {
+      "digest": "sha256:055bd4dd2ce9b7bdf3a945f8fd4ff375090e2fcfa2c45b01a599bb71c1c017eb",
+      "tags": [
+        "dev-20261005"
+      ],
+      "compressed_bytes": 216144368
+    }
+  ],
+  "api": {
+    "id": "w3qqwb25w0",
+    "name": "github-rag-api-dev",
+    "endpoint": "https://w3qqwb25w0.execute-api.us-east-2.amazonaws.com",
+    "routes": [
+      {
+        "key": "POST /ask",
+        "target": "integrations/dgaicxp"
+      },
+      {
+        "key": "GET /health",
+        "target": "integrations/dgaicxp"
+      }
+    ],
+    "integrations": [
+      {
+        "id": "dgaicxp",
+        "uri": "arn:aws:lambda:us-east-2:918897410856:function:github-rag-api"
+      }
+    ]
+  },
+  "existing_nat_gateways": [
+    {
+      "id": "nat-097cf07818b8577a9",
+      "state": "available",
+      "subnet": "subnet-0769c27ce21678466"
+    }
+  ],
+  "existing_vpc_endpoints": [],
+  "rds": {
+    "arn": "arn:aws:rds:us-east-2:918897410856:db:github-rag-db",
+    "class": "db.t4g.micro",
+    "status": "available",
+    "multi_az": false,
+    "storage": "gp2"
+  },
+  "log_group": "/aws/lambda/github-rag-api",
+  "ecr_lifecycle_policy": null,
+  "registry_scanning": {
+    "scanType": "BASIC",
+    "rules": []
+  }
+}

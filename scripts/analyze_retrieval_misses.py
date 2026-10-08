@@ -13,8 +13,8 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def main():
-    cases = {c["case_id"]: c for c in evaluate.load_cases(ROOT / "evaluation_cases.generated.jsonl")}
-    baseline = json.loads((ROOT / "retrieval_comparison_results.json").read_text())
+    cases = {c["case_id"]: c for c in evaluate.load_cases(ROOT / "evaluation/evaluation_cases.generated.jsonl")}
+    baseline = json.loads((ROOT / "docs/experiments/retrieval/retrieval_comparison_results.json").read_text())
     misses = [r for r in baseline["case_results"]["vector"] if r["retrieval_metrics"]["applicable"] and not r["retrieval_metrics"]["hit_at_k"]]
     output = []
     with psycopg.connect(**evaluate.database_options(api.get_settings()), row_factory=dict_row) as conn:
@@ -54,7 +54,7 @@ def main():
             print(json.dumps({"case_id": case["case_id"], "question": case["question"], "gold": gold,
                               "top5": result["retrieved_issues"],
                               "lexical": {m: {k: v for k, v in r.items() if k in {"candidate_count", "gold_best_chunk_rank", "gold_best_chunk"}} for m, r in lexical.items()}}, default=str))
-    (ROOT / "retrieval_miss_evidence.json").write_text(json.dumps(output, indent=2, default=str) + "\n", encoding="utf-8")
+    (ROOT / "docs/experiments/retrieval/retrieval_miss_evidence.json").write_text(json.dumps(output, indent=2, default=str) + "\n", encoding="utf-8")
 
 
 if __name__ == "__main__":

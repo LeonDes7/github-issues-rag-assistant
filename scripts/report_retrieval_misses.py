@@ -19,7 +19,7 @@ CAUSES = {
 
 
 def main():
-    evidence = json.loads((ROOT / "retrieval_miss_evidence.json").read_text())
+    evidence = json.loads((ROOT / "docs/experiments/retrieval/retrieval_miss_evidence.json").read_text())
     lines = ["# Checkpoint 2: nine retrieval misses", "",
              "Baseline top-five issue lists are preserved in order, including repeated issues (each position is a chunk). Live top-five issue lists reproduce all nine misses. Ranks below are chunk ranks, not deduplicated issue ranks. Exact ranks use fresh cached question embeddings and an exhaustive cosine-distance count; approximate ranks use the production query with LIMIT 100 and are a separate diagnostic, not the original LIMIT 5 ranking. No generation calls or application changes were made.", "",
              "## Rank and lexical summary", "",
@@ -55,7 +55,7 @@ def main():
               ".\\.venv\\Scripts\\python.exe scripts/report_retrieval_misses.py",
               ".\\.venv\\Scripts\\python.exe -m unittest discover -s tests", "```", "",
               "The rank script reuses ignored .question_embeddings.json. Without that cache it stops unless --approved-embedding-run is explicitly supplied after cost approval. This run used 1,211 embedding input tokens, estimated $0.00002422 at the repository-recorded $0.02/million rate; no chat model was used. Re-running the evidence collector resets rank fields; re-run the rank script afterward.", ""]
-    (ROOT / "retrieval_miss_analysis.md").write_text("\n".join(lines), encoding="utf-8")
+    (ROOT / "docs/experiments/retrieval/retrieval_miss_analysis.md").write_text("\n".join(lines), encoding="utf-8")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,38 @@
+{
+  "status": "approval_pending_not_executed",
+  "region": "us-east-2",
+  "lambda_name": "github-rag-api",
+  "ecr_repository": "918897410856.dkr.ecr.us-east-2.amazonaws.com/github-rag-api",
+  "checks": [
+    {
+      "method": "GET",
+      "path": "/health"
+    },
+    {
+      "method": "POST",
+      "path": "/ask",
+      "body": {
+        "question": "What is the recommended way to dump settings in starlette.config without exposing sensitive information like JWT secrets?",
+        "top_k": 5
+      }
+    }
+  ],
+  "generation_model": "gpt-4o-mini",
+  "embedding_model": "text-embedding-3-small",
+  "max_generation_input_tokens": 12000,
+  "max_generation_output_tokens": 512,
+  "embedding_tokens": 20,
+  "openai_retries": 0,
+  "openai_maximum_usd": "0.00210760",
+  "proposed_hard_openai_cap_usd": "0.00210760",
+  "aws_execution_estimate_usd": "0.000254388197510",
+  "previous_compressed_image_bytes": 216247900,
+  "added_ecr_storage_at_previous_size_usd_per_month": "0.02162479",
+  "ecr_planning_allowance_bytes": 250000000,
+  "ecr_planning_allowance_usd_per_month": "0.025",
+  "new_infrastructure": false,
+  "database_writes": false,
+  "retain_existing_images": true,
+  "stop_on_check_failure": true,
+  "details": "remediation_deployment_preflight.md"
+}

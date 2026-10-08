@@ -46,11 +46,11 @@ def main():
     # Evidence text serialization uses ensure_ascii=False in the API prompt.
     input_bound_per_call = 5 * max_bytes * 6 + 5000
     audit["cost_estimate"] = {"embedding_model": "text-embedding-3-small", "embedding_input_tokens": tokens, "embedding_rate_usd_per_million": 0.02, "estimated_embedding_cost_usd": tokens * 0.02 / 1e6, "generation_model_if_cutoff_passed": "gpt-5-nano", "max_generation_calls": 15, "max_completion_tokens_per_call": 1200, "generation_input_rate_usd_per_million": 0.05, "generation_output_rate_usd_per_million": 0.4, "max_chunk_utf8_bytes": max_bytes, "conservative_input_token_bound_per_call": input_bound_per_call, "conservative_all_pass_cost_bound_usd": (tokens * 0.02 + 15 * input_bound_per_call * 0.05 + 15 * 1200 * 0.4) / 1e6, "generation_only_for_false_accepts": True}
-    previous = json.loads((ROOT / "context_comparison_answers.json").read_text())
+    previous = json.loads((ROOT / "docs/experiments/context/context_comparison_answers.json").read_text())
     mean_prompt = sum(a["prompt_tokens"] for a in previous["answers"]) / len(previous["answers"])
     audit["cost_estimate"].update({"estimated_all_pass_cost_usd_using_previous_mean_prompt_and_output_cap": tokens * 0.02 / 1e6 + 15 * (mean_prompt * 0.05 + 1200 * 0.4) / 1e6, "previous_mean_prompt_tokens": mean_prompt, "proposed_run_budget_usd": 0.02, "budget_enforcement": "Before each generation call, count its actual prepared prompt locally and reserve its maximum output cost. Stop if the remaining approved budget is insufficient; do not retry or request more spend automatically."})
-    (ROOT / "heldout_unanswerable_cases.jsonl").write_text("".join(json.dumps(c, ensure_ascii=False) + "\n" for c in cases), encoding="utf-8")
-    (ROOT / "heldout_unanswerable_preflight.json").write_text(json.dumps(audit, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    (ROOT / "evaluation/heldout_unanswerable_cases.jsonl").write_text("".join(json.dumps(c, ensure_ascii=False) + "\n" for c in cases), encoding="utf-8")
+    (ROOT / "docs/experiments/abstention/heldout_unanswerable_preflight.json").write_text(json.dumps(audit, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(json.dumps(audit["cost_estimate"], indent=2))
 
 

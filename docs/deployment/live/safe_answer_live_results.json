@@ -1,0 +1,125 @@
+{
+  "status": "passed",
+  "started_at_utc": "2026-10-08T13:41:05.068256+00:00",
+  "hard_openai_cap_usd": "0.00210756",
+  "request_count": 1,
+  "retries": 0,
+  "plan": {
+    "status": "prepared_only_approval_pending",
+    "region": "us-east-2",
+    "endpoint": "https://w3qqwb25w0.execute-api.us-east-2.amazonaws.com/ask",
+    "method": "POST",
+    "request_count": 1,
+    "body": {
+      "question": "What problem did the reporter observe when sending larger base64-encoded video frames over a WebSocket?",
+      "top_k": 5
+    },
+    "case_id": "generated-tiangolo-fastapi-2071",
+    "prior_local_outcomes": [
+      "answered",
+      "answered",
+      "answered",
+      "answered",
+      "answered"
+    ],
+    "embedding_model": "text-embedding-3-small",
+    "generation_model": "gpt-4o-mini",
+    "embedding_tokens": 18,
+    "max_generation_input_tokens": 12000,
+    "max_generation_output_tokens": 512,
+    "retries": 0,
+    "proposed_hard_openai_cap_usd": "0.00210756",
+    "build_push_deploy": false,
+    "configuration_changes": false,
+    "database_writes": false,
+    "extra_health_or_warmup_calls": 0,
+    "stop_on_failure_no_retry": true
+  },
+  "actual_token_cost_usd": "0.00019041",
+  "openai_usage_unknown": false,
+  "http_status": 200,
+  "client_latency_ms": 8784.480400150642,
+  "raw_response": "{\"answer\":\"The reporter observed that when sending larger base64-encoded video frames over a WebSocket, the client gets disconnected. This issue occurred while trying to transfer video from the client to the server for processing in real-time [1].\",\"citations\":[{\"repository\":\"tiangolo/fastapi\",\"issue_number\":2071,\"issue_url\":\"https://github.com/fastapi/fastapi/issues/2071\",\"source_url\":\"https://github.com/fastapi/fastapi/issues/2071\",\"chunk_type\":\"issue_body\",\"similarity_score\":0.6679700277722731,\"retrieval_score\":0.6679700277722731,\"predicted_category\":null,\"classification_confidence\":null},{\"repository\":\"encode/starlette\",\"issue_number\":407,\"issue_url\":\"https://github.com/Kludex/starlette/issues/407\",\"source_url\":\"https://github.com/Kludex/starlette/issues/407#issuecomment-466677753\",\"chunk_type\":\"comment\",\"similarity_score\":0.5612204952012038,\"retrieval_score\":0.5612204952012038,\"predicted_category\":null,\"classification_confidence\":null},{\"repository\":\"encode/starlette\",\"issue_number\":1369,\"issue_url\":\"https://github.com/Kludex/starlette/issues/1369\",\"source_url\":\"https://github.com/Kludex/starlette/issues/1369#issuecomment-1028834412\",\"chunk_type\":\"comment\",\"similarity_score\":0.5333609386959923,\"retrieval_score\":0.5333609386959923,\"predicted_category\":null,\"classification_confidence\":null},{\"repository\":\"tiangolo/fastapi\",\"issue_number\":2445,\"issue_url\":\"https://github.com/fastapi/fastapi/issues/2445\",\"source_url\":\"https://github.com/fastapi/fastapi/issues/2445#issuecomment-736553090\",\"chunk_type\":\"comment\",\"similarity_score\":0.5229196662956296,\"retrieval_score\":0.5229196662956296,\"predicted_category\":null,\"classification_confidence\":null},{\"repository\":\"encode/starlette\",\"issue_number\":940,\"issue_url\":\"https://github.com/Kludex/starlette/issues/940\",\"source_url\":\"https://github.com/Kludex/starlette/issues/940#issuecomment-626699379\",\"chunk_type\":\"comment\",\"similarity_score\":0.5216216729678885,\"retrieval_score\":0.5216216729678885,\"predicted_category\":null,\"classification_confidence\":null}],\"retrieval_metadata\":{\"top_k\":5,\"retrieved_count\":5,\"embedding_model\":\"text-embedding-3-small\",\"generation_model\":\"gpt-4o-mini\",\"retrieval_mode\":\"vector\",\"confidence_threshold\":0.5370554072220923},\"performance\":{\"retrieval_latency_ms\":3055.232,\"llm_latency_ms\":2577.707,\"total_latency_ms\":5632.96,\"embedding_tokens\":18,\"generation_prompt_tokens\":1087,\"generation_completion_tokens\":45,\"estimated_cost_usd\":0.00019041}}",
+  "api_response": {
+    "answer": "The reporter observed that when sending larger base64-encoded video frames over a WebSocket, the client gets disconnected. This issue occurred while trying to transfer video from the client to the server for processing in real-time [1].",
+    "citations": [
+      {
+        "repository": "tiangolo/fastapi",
+        "issue_number": 2071,
+        "issue_url": "https://github.com/fastapi/fastapi/issues/2071",
+        "source_url": "https://github.com/fastapi/fastapi/issues/2071",
+        "chunk_type": "issue_body",
+        "similarity_score": 0.6679700277722731,
+        "retrieval_score": 0.6679700277722731,
+        "predicted_category": null,
+        "classification_confidence": null
+      },
+      {
+        "repository": "encode/starlette",
+        "issue_number": 407,
+        "issue_url": "https://github.com/Kludex/starlette/issues/407",
+        "source_url": "https://github.com/Kludex/starlette/issues/407#issuecomment-466677753",
+        "chunk_type": "comment",
+        "similarity_score": 0.5612204952012038,
+        "retrieval_score": 0.5612204952012038,
+        "predicted_category": null,
+        "classification_confidence": null
+      },
+      {
+        "repository": "encode/starlette",
+        "issue_number": 1369,
+        "issue_url": "https://github.com/Kludex/starlette/issues/1369",
+        "source_url": "https://github.com/Kludex/starlette/issues/1369#issuecomment-1028834412",
+        "chunk_type": "comment",
+        "similarity_score": 0.5333609386959923,
+        "retrieval_score": 0.5333609386959923,
+        "predicted_category": null,
+        "classification_confidence": null
+      },
+      {
+        "repository": "tiangolo/fastapi",
+        "issue_number": 2445,
+        "issue_url": "https://github.com/fastapi/fastapi/issues/2445",
+        "source_url": "https://github.com/fastapi/fastapi/issues/2445#issuecomment-736553090",
+        "chunk_type": "comment",
+        "similarity_score": 0.5229196662956296,
+        "retrieval_score": 0.5229196662956296,
+        "predicted_category": null,
+        "classification_confidence": null
+      },
+      {
+        "repository": "encode/starlette",
+        "issue_number": 940,
+        "issue_url": "https://github.com/Kludex/starlette/issues/940",
+        "source_url": "https://github.com/Kludex/starlette/issues/940#issuecomment-626699379",
+        "chunk_type": "comment",
+        "similarity_score": 0.5216216729678885,
+        "retrieval_score": 0.5216216729678885,
+        "predicted_category": null,
+        "classification_confidence": null
+      }
+    ],
+    "retrieval_metadata": {
+      "top_k": 5,
+      "retrieved_count": 5,
+      "embedding_model": "text-embedding-3-small",
+      "generation_model": "gpt-4o-mini",
+      "retrieval_mode": "vector",
+      "confidence_threshold": 0.5370554072220923
+    },
+    "performance": {
+      "retrieval_latency_ms": 3055.232,
+      "llm_latency_ms": 2577.707,
+      "total_latency_ms": 5632.96,
+      "embedding_tokens": 18,
+      "generation_prompt_tokens": 1087,
+      "generation_completion_tokens": 45,
+      "estimated_cost_usd": 0.00019041
+    }
+  },
+  "outcome": "answered",
+  "support_review": "Returned fact matches manually verified case and prior local source-grounded answers: larger base64 video frames disconnected the WebSocket client.",
+  "finished_at_utc": "2026-10-08T13:41:13.858713+00:00",
+  "aws_billed_cost_usd": null,
+  "cost_note": "API token usage priced at standard uncached rates; cached billing breakdown and AWS actual billed cost are unavailable."
+}

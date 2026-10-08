@@ -11,8 +11,8 @@ from rag_assistant import api, evaluate
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_CASES = PROJECT_ROOT / "evaluation_cases.generated.jsonl"
-DEFAULT_OUTPUT = PROJECT_ROOT / "confidence_calibration_results.json"
+DEFAULT_CASES = PROJECT_ROOT / "evaluation/evaluation_cases.generated.jsonl"
+DEFAULT_OUTPUT = PROJECT_ROOT / "docs/experiments/retrieval/confidence_calibration_results.json"
 
 
 def select_threshold(

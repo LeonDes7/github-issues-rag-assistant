@@ -1,0 +1,51 @@
+{
+  "status": "prepared_only_input_budget_controls_not_deployed",
+  "region": "us-east-2",
+  "questions": [
+    "What is the recommended way to dump settings in starlette.config without exposing sensitive information like JWT secrets?",
+    "What is the latest stable Python release today?"
+  ],
+  "top_k": 5,
+  "retrieval_settings_unchanged": {
+    "ef_search": 100,
+    "fetch": 30,
+    "collapse_distinct_issues": 5,
+    "threshold": 0.5370554072220923,
+    "repositories": [
+      "tiangolo/fastapi",
+      "encode/starlette",
+      "pydantic/pydantic"
+    ]
+  },
+  "proposed_generation_max_output_tokens": 512,
+  "proposed_max_retries": 0,
+  "sdk_parameters": {
+    "max_completion_tokens": 512,
+    "max_retries": 0
+  },
+  "maximum_embedding_calls": 2,
+  "maximum_generation_calls": 2,
+  "embedding_tokens_fixed_questions": 29,
+  "worst_case_generation_input_tokens": 24000,
+  "worst_case_generation_output_tokens": 1024,
+  "conservative_openai_ceiling_usd": "0.00421498",
+  "saved_context_one_generation_output_cap_cost_usd": "0.00048508",
+  "cost_note": "Two fixed questions; no manual HTTP retries or SDK retries; at most two embedding calls and two generation calls. Each final system/user prompt is tokenizer-counted including JSON, metadata, role text and a conservative 512-token framing reserve, bounded to 12000; each generation output bounded to 512. No tool messages or images. All input charged at uncached standard rate. Both requests may generate; cutoff refusal is not assumed.",
+  "previous_live_cap_usd": "0.01",
+  "fits_previous_cap_without_input_bound": true,
+  "conditional_note": "The <=12000 bound is now enforced in local API code. Requires deploying and verifying these settings before any smoke test. It is not a account-wide or future-traffic dollar budget.",
+  "aws_incremental_smoke_estimate_usd": "0.000361087835205078125",
+  "aws_added_image_retention_assumption_usd_per_month": "0.025",
+  "existing_resources_updated_on_future_approval": [
+    "ECR github-rag-api: one additional image, retain existing images",
+    "Lambda github-rag-api: code image reference; optionally explicit environment values for only the two new controls, preserving all other keys"
+  ],
+  "infrastructure_created": false,
+  "deployment_requirements": "On separate explicit approval only: build/push one image to existing us-east-2 ECR, update existing Lambda code, preserve all other settings/resources/images; verify effective RAG_MAX_GENERATION_INPUT_TOKENS=12000, OPENAI_GENERATION_MAX_OUTPUT_TOKENS=512 and OPENAI_MAX_RETRIES=0. Abort if overrides differ. Exact two questions/top_k=5; no HTTP retry. No deployment or API calls now.",
+  "measured_latency_status": "Existing local and health-only live results are historical, from code before these new controls. No latency/quality claim for capped code.",
+  "api_source_sha256": "c8d7e73b0faffdcb0eb322b3c1d8a922145430b1c92efc28c5b8d3bbb2f1c325",
+  "proposed_generation_max_input_tokens": 12000,
+  "generation_input_framing_reserve_tokens": 512,
+  "fits_previous_cap_with_enforced_input_bound": true,
+  "tests_passed": 93
+}

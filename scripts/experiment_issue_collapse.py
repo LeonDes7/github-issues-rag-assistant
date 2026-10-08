@@ -49,7 +49,7 @@ def summary(rows):
 
 
 def render(report):
-    a = json.loads((ROOT / "index_recall_experiment.json").read_text())
+    a = json.loads((ROOT / "docs/experiments/retrieval/index_recall_experiment.json").read_text())
     original = next(e for e in a["experiments"] if e["ef_search"] == 40)
     modes = list(report["summaries"])
     lines = ["# Experiment B: issue-level collapse", "", report["production_context"], "",
@@ -86,7 +86,7 @@ def render(report):
         for rows in report["case_results"].values() for row in rows if row["answerable"]
     )
     lines += [f"A reporting-only alias-equivalence check found {alias_duplicates} answerable contexts whose unique-issue count was inflated by the alias. Retrieval and evaluation matching were not changed.", ""]
-    quality_path = ROOT / "data_quality_checkpoint_b.json"
+    quality_path = ROOT / "docs/corpus/data_quality_checkpoint_b.json"
     if quality_path.exists() and quality_path.stat().st_size:
         # PowerShell redirection may produce UTF-16 depending on shell version.
         raw = quality_path.read_bytes()
@@ -99,15 +99,15 @@ def render(report):
               ".\\.venv\\Scripts\\python.exe scripts/run_quality_report.py",
               ".\\.venv\\Scripts\\python.exe -m unittest discover -s tests", "```", "",
               "Configure RAG_HNSW_EF_SEARCH=40 to compare the old API default; omit it or set 100 for the accepted setting. The benchmark explicitly fixes 100 and uses the existing ignored embedding cache. SET LOCAL is transaction-scoped; a live autocommit check confirmed the session returns to 40 after both default-100 and override-40 queries. The deployed Lambda has not been updated.", ""]
-    (ROOT / "issue_collapse_experiment.md").write_text("\n".join(lines), encoding="utf-8")
+    (ROOT / "docs/experiments/retrieval/issue_collapse_experiment.md").write_text("\n".join(lines), encoding="utf-8")
 
 
 def main():
-    cases = evaluate.load_cases(ROOT / "evaluation_cases.generated.jsonl")
+    cases = evaluate.load_cases(ROOT / "evaluation/evaluation_cases.generated.jsonl")
     cache = json.loads((ROOT / ".question_embeddings.json").read_text())
     if cache["model"] != "text-embedding-3-small" or cache["questions"] != {c["case_id"]: c["question"] for c in cases}:
         raise RuntimeError("Cache does not match evaluation cases")
-    cutoff = json.loads((ROOT / "confidence_calibration_results.json").read_text())["threshold_selection"]["recommended_threshold"]
+    cutoff = json.loads((ROOT / "docs/experiments/retrieval/confidence_calibration_results.json").read_text())["threshold_selection"]["recommended_threshold"]
     modes = {"A: HNSW100, five chunks": [], "B: HNSW100, 30 chunks collapsed to five issues": []}
     report = {"started_at": datetime.now(timezone.utc).isoformat(), "ef_search": 100,
               "candidate_chunks": 30, "cutoff": cutoff, "cutoff_retuned": False, "openai_calls": 0,
@@ -148,7 +148,7 @@ def main():
     report["gained_hits"] = [a["case_id"] for b, a in zip(before, after) if a["answerable"] and a["metrics"]["hit_at_k"] > b["metrics"]["hit_at_k"]]
     report["lost_hits"] = [a["case_id"] for b, a in zip(before, after) if a["answerable"] and a["metrics"]["hit_at_k"] < b["metrics"]["hit_at_k"]]
     report["finished_at"] = datetime.now(timezone.utc).isoformat()
-    (ROOT / "issue_collapse_experiment.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+    (ROOT / "docs/experiments/retrieval/issue_collapse_experiment.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     render(report)
     print(json.dumps({"summaries": report["summaries"], "gained_hits": report["gained_hits"], "lost_hits": report["lost_hits"]}, indent=2), flush=True)
 

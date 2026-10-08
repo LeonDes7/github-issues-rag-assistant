@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def main():
-    receipt = json.loads((ROOT / "alias_archive_receipt.json").read_text())
+    receipt = json.loads((ROOT / "docs/corpus/alias_archive_receipt.json").read_text())
     directory = ROOT / receipt["archive_path"]
     manifest_path = directory / "manifest.json"
     manifest = json.loads(manifest_path.read_text())
@@ -22,8 +22,8 @@ def main():
         counts = {table: conn.execute(sql.SQL("SELECT count(*) FROM public.{} WHERE repository=%s").format(sql.Identifier(table)), ("fastapi/fastapi",)).fetchone()[0] for table in receipt["rows"]}
     assert counts == receipt["rows"]
     receipt["database_counts_verified_after_archive"] = counts
-    (ROOT / "alias_archive_receipt.json").write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
-    audit_path = ROOT / "pipeline_scope_audit.json"
+    (ROOT / "docs/corpus/alias_archive_receipt.json").write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
+    audit_path = ROOT / "docs/corpus/pipeline_scope_audit.json"
     audit = json.loads(audit_path.read_text())
     events = boto3.client("events", region_name="us-east-2")
     scheduled = []

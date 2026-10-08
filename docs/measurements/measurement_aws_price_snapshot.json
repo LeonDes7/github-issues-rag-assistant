@@ -1,0 +1,7 @@
+[
+  {
+    "description": "$ 0.016 per RDS db.t4g.micro Single-AZ instance hour (or partial hour) running PostgreSQL",
+    "unit": "Hrs",
+    "usd": "0.0160000000"
+  }
+]

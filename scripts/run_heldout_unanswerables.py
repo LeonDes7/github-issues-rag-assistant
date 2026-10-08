@@ -26,14 +26,14 @@ def main():
     args = parser.parse_args()
     if not 0 < args.approved_budget_usd <= 0.02:
         raise RuntimeError("Budget must be positive and at most $0.02")
-    output = ROOT / "heldout_unanswerable_results.json"
+    output = ROOT / "docs/experiments/abstention/heldout_unanswerable_results.json"
     cache_path = ROOT / ".heldout_question_embeddings.json"
     if output.exists() or cache_path.exists():
         raise RuntimeError("Existing output/cache: refusing automatic repeated paid run")
-    cases_path = ROOT / "heldout_unanswerable_cases.jsonl"
+    cases_path = ROOT / "evaluation/heldout_unanswerable_cases.jsonl"
     raw = cases_path.read_bytes()
     cases = [json.loads(line) for line in raw.decode("utf-8").splitlines() if line]
-    preflight = json.loads((ROOT / "heldout_unanswerable_preflight.json").read_text(encoding="utf-8"))
+    preflight = json.loads((ROOT / "docs/experiments/abstention/heldout_unanswerable_preflight.json").read_text(encoding="utf-8"))
     assert len(cases) == 15 and [c["question"] for c in cases] == [c["question"] for c in preflight["cases"]]
     settings = api.get_settings()
     for key, value in preflight["retrieval_settings"].items():

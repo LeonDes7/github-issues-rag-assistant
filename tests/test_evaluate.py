@@ -15,7 +15,7 @@ def retrieved(repository, issue_number, issue_url=None):
 
 class EvaluationTests(unittest.TestCase):
     def test_initial_cases_are_small_and_provenance_labeled(self):
-        cases = evaluate.load_cases(Path("evaluation_cases.jsonl"))
+        cases = evaluate.load_cases(Path("evaluation/evaluation_cases.jsonl"))
 
         self.assertEqual(len(cases), 10)
         self.assertEqual(

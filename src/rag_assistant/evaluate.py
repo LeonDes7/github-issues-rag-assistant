@@ -17,7 +17,7 @@ from rag_assistant import api
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_CASES_PATH = PROJECT_ROOT / "evaluation_cases.jsonl"
+DEFAULT_CASES_PATH = PROJECT_ROOT / "evaluation/evaluation_cases.jsonl"
 RUNS_TABLE = "public.rag_evaluation_runs"
 RESULTS_TABLE = "public.rag_evaluation_case_results"
 ABSTENTION_PATTERN = re.compile(

@@ -46,7 +46,7 @@ def main():
     (directory / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     receipt = {"archive_path": str(directory.relative_to(root)), "rows": expected, "total_rows": sum(expected.values()),
                "database_rows_retained": True, "credential_scan_passed": True, "roundtrip_verified": True, "files": manifest["files"]}
-    (root / "alias_archive_receipt.json").write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
+    (root / "docs/corpus/alias_archive_receipt.json").write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(receipt, indent=2))
 
 

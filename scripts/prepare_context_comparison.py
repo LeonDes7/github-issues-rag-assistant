@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def main():
     settings = api.get_settings()
-    cases = evaluate.load_cases(ROOT / "evaluation_cases.generated.jsonl")
+    cases = evaluate.load_cases(ROOT / "evaluation/evaluation_cases.generated.jsonl")
     cache = json.loads((ROOT / ".question_embeddings.json").read_text())
     wanted = {("tiangolo/fastapi", n) for n in (5108, 2071, 618)} | {("encode/starlette", n) for n in (408, 542, 383)} | {("pydantic/pydantic", n) for n in (4999, 4108, 7461, 8499)}
     chosen = [c for c in cases if c["expected_issues"] and (c["expected_issues"][0]["repository"], c["expected_issues"][0]["issue_number"]) in wanted]
@@ -44,7 +44,7 @@ def main():
     report["estimated_input_tokens"] = total_tokens
     report["estimated_cost_usd_at_400_output_tokens_per_call"] = (total_tokens * 0.05 + 20 * 400 * 0.4) / 1e6
     report["estimated_max_cost_usd_at_output_cap"] = (total_tokens * 0.05 + 20 * 1200 * 0.4) / 1e6
-    (ROOT / "context_comparison_inputs.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+    (ROOT / "docs/experiments/context/context_comparison_inputs.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({k: v for k, v in report.items() if k != "cases"}, indent=2))
     # Models retrieval checks access without generating tokens.
     client = OpenAI(api_key=settings["OPENAI_API_KEY"], max_retries=0)

@@ -1,514 +1,213 @@
 # Trustworthy RAG Assistant for GitHub Issues
 
-An evidence-grounded assistant for questions about closed FastAPI, Starlette,
-and Pydantic issues. It retrieves embedded issue discussions from PostgreSQL,
-generates answers from the retrieved evidence, and returns clickable GitHub
-citations. The Streamlit demo calls the authenticated API from server-side
-code; credentials belong in deployment secrets, never in this repository.
+An evidence-grounded assistant for closed FastAPI, Starlette and Pydantic issues.
+It retrieves PostgreSQL issue discussions, answers from the retrieved evidence,
+and returns GitHub source links. Unsupported questions can be refused.
 
-## Demo
+## Current status
 
-The Community Cloud UI uses the deployed API endpoint
-`https://w3qqwb25w0.execute-api.us-east-2.amazonaws.com`. After deployment,
-ask a question to see the answer, the top retrieved issue's predicted
-bug/feature/usage category and confidence, source links, and retrieval
-diagnostics. The category prediction describes the retrieved issue, not the
-question, and heuristic confidence is not ground truth.
+The existing `github-rag-api` Lambda in `us-east-2` is deployed and smoke-tested.
+Health, safe model abstention and a supported cited answer passed on 2026-10-08.
+These checks establish behavior for their individual cases, not general accuracy.
 
-## Project layout
+The API endpoint is:
+`https://w3qqwb25w0.execute-api.us-east-2.amazonaws.com`
+`/ask` requires bearer authentication; `/health` is public.
+The Streamlit interface calls the API from server-side Python.
+The backend remediation is deployed; the Streamlit remediation patch remains local.
 
-- `streamlit_app.py` — Community Cloud-compatible question and citation UI.
-- `src/rag_assistant/` — ingestion, cleaning, embeddings, API, evaluation,
-  and issue classification modules.
-- `tests/` — focused unit tests for data handling and application behavior.
-- `evaluation_cases.jsonl` and `classification_cases.jsonl` — small,
-  version-controlled evaluation fixtures.
+## Architecture
 
-The stages are documented below in their build order. Running ingestion,
-database, embedding, or evaluation commands requires the relevant private
-credentials and configured AWS/RDS resources.
+1. GitHub closed issues and comments are stored unchanged in S3 Bronze.
+2. Clean issue records are upserted into PostgreSQL Silver.
+3. Issue/comment chunks and embeddings form the Gold retrieval corpus.
+4. FastAPI retrieves evidence, applies confidence/safety controls and generates answers.
+5. Mangum serves the API through Lambda and API Gateway; Streamlit displays results.
 
-## Initial setup
+Pull requests are excluded. Issues without comments are retained.
+Heuristic resolutions select eligible maintainer comments before closure.
+They are low-confidence clues, not verified ground truth.
 
-1. Create and activate a virtual environment.
-2. Install the project with `python -m pip install -e .`.
-3. Fill in the local `.env` file. It is ignored by Git; do not commit or share it.
-4. Run the RDS connection check with `python -m rag_assistant.check_db_connection`.
+The recorded corpus contains **9,555 issues, 43,535 comments and 63,002 chunks**.
+Data-quality checks passed; 276 duplicate Bronze rows were deduplicated.
+Fourteen issues without chunkable content were expected not to appear in Gold.
+Duplicate/alias auditing is complete; alias rows remain stored, without deletion.
+Retrieval is restricted to the three configured repository names.
 
-The check connects with SSL required, runs
-`CREATE EXTENSION IF NOT EXISTS vector;`, and exits with an error if the
-configuration, connection, or extension setup fails. The AWS and API settings
-are reserved for later ingestion work and are not used by this check.
+## Repository layout
 
-Prefer AWS IAM roles or a configured AWS profile over long-lived static access
-keys when those options are available.
+| Path | Purpose |
+|---|---|
+| `src/rag_assistant/` | API, ingestion, cleaning, embeddings, evaluation, classification |
+| `streamlit_app.py` | Streamlit UI and source links |
+| `scripts/` | Explicitly invoked maintenance, experiment and verification tools |
+| `tests/` | Local unit tests using mocks where services would otherwise be required |
+| `evaluation/` | Reviewed evaluation fixtures and review CSV |
+| [docs/](docs/README.md) | Detailed reports, preflights, operations and historical evidence |
+| `artifacts/` | Ignored disposable outputs from future runs |
 
-## Step 1: GitHub Issues to the S3 Bronze layer
+## Local setup and tests
 
-The ingestion command collects all closed issues from the configured public
-repositories via the GitHub REST API. Pull requests are excluded, each issue's
-comments are fetched across all pages, and issues without comments are retained
-with an empty comment list. Raw GitHub issue and comment response objects are
-stored unchanged as one JSON object per S3 key. The default repositories are
-`tiangolo/fastapi`, `encode/starlette`, and `pydantic/pydantic`.
-
-Set `GITHUB_TOKEN`, `GITHUB_REPOS`, `AWS_ACCESS_KEY_ID`,
-`AWS_SECRET_ACCESS_KEY`, `AWS_DEFAULT_REGION`, and `S3_BUCKET` in the local
-`.env` file. `AWS_SESSION_TOKEN` is optional. Separate repository names with
-commas and omit spaces where possible. The token is sent only to
-`api.github.com`; AWS credentials are used only by the S3 client. `.env` is
-ignored by Git.
-
-Run from the project root after installing dependencies:
-
-```powershell
-python -m rag_assistant.ingest_github_issues
-```
-
-The default is an unbounded historical backfill. Optional command-line or
-environment limits (`--target-records-per-repo`,
-`--max-entries-to-scan-per-repo`) are available only for deliberately partial
-runs. Requests use GitHub's pagination links, bounded retries with exponential
-backoff, and primary/secondary rate-limit handling based on response headers.
-
-Each issue is written immediately, so a failed run resumes by skipping
-already-present S3 objects rather than repeating comment downloads. The stable
-keys are:
-
-```text
-bronze/github/repo=tiangolo__fastapi/issue=<number>.json
-bronze/github/repo=tiangolo__fastapi/runs/<timestamp>/manifest.json
-```
-
-The manifest reports scanned issues, pull requests skipped, resumed issues,
-uploaded issues, and downloaded comments. Existing timestamped Bronze JSONL
-objects remain readable by the loader.
-
-## Step 2: Clean the selected Bronze data and load RDS
-
-The loader discovers per-issue objects under each repository prefix and also
-accepts the earlier selected Bronze JSONL objects; it does not modify Bronze.
-
-The loader uses the AWS and PostgreSQL settings already configured in `.env`.
-It creates `public.github_issues_clean`, with a unique constraint on
-`(repository, issue_number)`, and uses PostgreSQL upserts so reruns update
-changed records rather than adding duplicates or rewriting unchanged rows.
-Each clean issue stores a content hash and GitHub `updated_at`; the hash covers
-the material used to build its chunks. Labels, comments, and author
-associations are stored as JSONB; issue/comment text is normalized while
-retaining Markdown and code formatting. The raw API response remains available
-unchanged in S3 Bronze.
-
-`resolution_text` is selected from the latest non-empty comment by an
-`OWNER`, `MEMBER`, or `COLLABORATOR` posted strictly before issue closure.
-`resolution_heuristic` records how that text was selected and
-`resolution_confidence` is deliberately `low`: it is a clue, not guaranteed
-ground truth. Missing closure dates or eligible comments leave the resolution
-empty and are included in validation counts.
-
-Run the focused tests and, when ready, load the three specified objects from
-the project root:
-
-```powershell
-python -m unittest discover -s tests -p "test_load_bronze_to_rds.py" -v
-python -m rag_assistant.load_bronze_to_rds
-```
-
-The load prints inserted and updated row counts, the total table row count,
-rejected/duplicate record counts, and validation summaries for missing bodies
-and heuristic resolutions. Records missing repository, a positive issue
-number, or a valid GitHub URL (and duplicate repository/issue keys) are
-rejected rather than loaded.
-
-## Step 3: Chunking and embeddings for Gold retrieval
-
-The embedding step reads `public.github_issues_clean` (schema verified before
-implementation), creates contextual token-sized chunks from issue bodies and
-individual comments, and separately labels a stored heuristic resolution when
-one exists. Each chunk includes repository, issue number, and title context;
-Markdown/code fences are kept together when they fit the chunk limit. Existing
-Bronze objects remain untouched.
-
-Set `OPENAI_API_KEY` in the local `.env` file. The script creates
-`public.github_issue_chunks` with a composite foreign key to the clean issue
-table, a vector(1536) embedding, a unique chunk identity, and an HNSW cosine
-similarity index. It uses `text-embedding-3-small` in batches of 100 and stores
-only missing embeddings. Re-running on unchanged text reuses the existing
-embedding; changed text resets only that chunk's embedding. Embedding batches
-are retried for transient connection, rate-limit, and server errors.
-
-Preview the first 25 issues without writing rows or calling OpenAI. To preview
-the complete requested three-repository corpus, use `--all`. The CLI supports
-`--repos` to restrict the run:
-
-```powershell
-python -m rag_assistant.embed_issue_chunks --all --dry-run --repos tiangolo/fastapi,encode/starlette,pydantic/pydantic
-```
-
-Review the pending chunk count, token count, and estimated cost before
-embedding. The estimate excludes chunks with reusable embeddings and checks
-content hashes; existing-chunk checks are batched to stay within PostgreSQL's
-parameter limit. Run the full embedding pass for the three repositories with:
-
-```powershell
-python -m rag_assistant.embed_issue_chunks --all --repos tiangolo/fastapi,encode/starlette,pydantic/pydantic
-```
-
-The report includes chunk counts by type, estimated/actual API calls and
-tokens, an approximate cost at USD 0.02 per million input tokens (verify
-current OpenAI pricing before relying on this estimate), failed/skipped
-embeddings, and an example nearest-neighbor similarity result without
-printing chunk text. `--limit` can be increased after reviewing the test
-result.
-
-## Incremental daily pipeline
-
-Run the complete Bronze-to-Gold flow locally with:
-
-```powershell
-python -m rag_assistant.incremental_pipeline
-```
-
-The pipeline creates `public.github_ingestion_watermarks`, calls GitHub with
-each repository's last successful `updated_at` watermark, loads Bronze
-idempotently, embeds only issues whose content hash differs from Gold, and
-runs data-quality checks after each layer before advancing watermarks. A
-standalone report can be run against an already populated Bronze/Silver/Gold
-pipeline:
-
-```powershell
-python -m rag_assistant.data_quality
-```
-
-Malformed Bronze JSON, Silver key/null/duplicate/comment-shape violations,
-missing Gold embeddings, wrong vector dimensions, orphan chunks, and
-unexplained count differences fail loudly. Dedupe/rejection counts and issues
-without chunkable content are called out in the layer reports as expected
-drops. AWS SDK credentials are
-optional when running with an IAM role; `AWS_DEFAULT_REGION` and `S3_BUCKET`
-are still required. The ingestion Lambda entry point is
-`rag_assistant.ingestion_lambda_handler.handler`. Deploy a dedicated ingestion
-Lambda from the existing ECR image with its image command set to that handler;
-the existing API Lambda keeps `rag_assistant.lambda_handler.handler`.
-
-Create the daily 03:00 UTC EventBridge Scheduler rule after creating a role
-that trusts `scheduler.amazonaws.com` and can invoke the ingestion Lambda:
-
-```powershell
-.\scripts\create_daily_ingestion_schedule.ps1 `
-  -LambdaArn "arn:aws:lambda:us-east-2:123456789012:function:github-rag-ingestion" `
-  -ScheduleRoleArn "arn:aws:iam::123456789012:role/github-rag-scheduler" `
-  -Region "us-east-2"
-```
-
-## Step 4: Local FastAPI retrieval and generation API
-
-The local API exposes `GET /health` to verify PostgreSQL connectivity and
-`POST /ask` to embed a question, retrieve issue chunks using vector-only or
-hybrid pgvector/full-text search, and generate a concise answer grounded only
-in those retrieved excerpts. Citation metadata is built from retrieved
-database rows, not from model-generated source URLs. Heuristic-resolution
-chunks remain labeled low-confidence evidence in the prompt.
-
-Set `OPENAI_API_KEY`, `API_AUTH_TOKEN`, `OPENAI_EMBEDDING_MODEL`,
-`OPENAI_GENERATION_MODEL`, `RAG_RETRIEVAL_MODE`, and optionally
-`CORS_ALLOWED_ORIGINS` in `.env`. `RAG_RETRIEVAL_MODE` accepts `vector`
-(default) or `hybrid`.
-`RAG_HNSW_EF_SEARCH` defaults to `100` and accepts integers from 1 to 1000;
-set it to `40` to reproduce the original search depth. Retrieval applies this
-with `SET LOCAL` inside each query's transaction, independently of the RDS
-parameter group. The setting resets when the transaction ends.
-`RAG_REPOSITORIES` restricts both vector and full-text candidates before their
-limits. It defaults to `GITHUB_REPOS`, or to the three original repository names
-when neither is set. The example selects `tiangolo/fastapi`, `encode/starlette`,
-and `pydantic/pydantic`; alias rows remain stored but are excluded from retrieval.
-`API_AUTH_TOKEN` is required for `/ask`; use a high-entropy token and do not
-check it into source control.
-The default embedding model is `text-embedding-3-small`; the default
-generation model is `gpt-4o-mini`. By default, CORS allows only local
-Streamlit development origins at `localhost:8501` and `127.0.0.1:8501`.
-Override CORS by supplying a comma-separated list of exact origins.
-
-Install updated dependencies and start the local server from the project root:
+Create a virtual environment, then install from the repository root:
 
 ```powershell
 python -m pip install -e .
+python -m unittest discover -s tests -q
+```
+
+The current local checkpoint has **101 passing tests**.
+Copy setting names from `.env.example` into a private local `.env` as needed.
+Do not commit credentials, connection strings or `.streamlit/secrets.toml`.
+Prefer IAM roles or an AWS profile to long-lived static access keys.
+
+Running the API requires authorized PostgreSQL and OpenAI access:
+
+```powershell
 python -m uvicorn rag_assistant.api:app --host 127.0.0.1 --port 8000
 ```
 
-Check database health:
+For the local UI, install the extra and use a separate terminal:
 
 ```powershell
-Invoke-RestMethod http://127.0.0.1:8000/health
+python -m pip install -e ".[ui]"
+python -m streamlit run streamlit_app.py
 ```
 
-Ask a question (the default `top_k` is 5; valid values are 1 through 20):
-the terminal must already have `API_AUTH_TOKEN` in its environment for this
-example. The FastAPI and Streamlit processes load `.env` themselves; PowerShell
-does not automatically import it. Set the token through a protected local
-environment mechanism and do not echo it.
+Tests are local; ingestion, evaluation, embedding and deployment commands can
+make paid calls, write data or change infrastructure. Review their scope first.
+The database connection setup command creates the vector extension if missing;
+it is not a read-only health check.
+
+## API usage
+
+`GET /health` checks PostgreSQL connectivity.
+`POST /ask` takes a nonblank question of at most 4,000 characters.
+The default `top_k` is 5; valid values are 1 through 20.
+
+With the bearer token already set through a private environment mechanism:
 
 ```powershell
 Invoke-RestMethod -Method Post `
   -Uri http://127.0.0.1:8000/ask `
   -Headers @{ Authorization = "Bearer $env:API_AUTH_TOKEN" } `
   -ContentType 'application/json' `
-  -Body '{"question":"How do I configure middleware?","top_k":5}'
+  -Body '{"question":"What problem did the reporter observe when sending larger base64-encoded video frames over a WebSocket?","top_k":5}'
 ```
 
-The JSON response contains `answer`, a `citations` array with repository,
-issue number, issue URL, source URL, chunk type, cosine similarity, and the
-mode-specific retrieval score, plus `retrieval_metadata` including requested
-`top_k`, retrieved count, and retrieval mode.
-Questions must contain non-whitespace text and be no longer than 4,000
-characters. Do not expose `.env` or commit credentials.
+PowerShell does not automatically load `.env`; do not echo the token.
+FastAPI and local Streamlit load `.env` themselves.
+The JSON response includes `answer`, structured `citations`,
+`retrieval_metadata` and `performance` with latency/token/cost information.
+Source URLs and metadata come from retrieved rows, not model-created URLs.
+Classification/confidence describes the retrieved issue, not the user's question.
+Heuristic classification and lexical grounding checks are estimates.
 
-If the top retrieval score is below `RAG_CONFIDENCE_THRESHOLD`, the API
-returns “There isn't enough evidence in the indexed issues to answer this
-question.” without making a generation request. The default cutoff is
-`0.5370554072220923`, calibrated against the generated 60-case evaluation set
-in vector mode. On that small calibration set, it correctly refused all 15
-unanswerable questions and wrongly refused 4 of 45 answerable questions
-(41 correctly passed through). Treat this as a preliminary estimate; expand
-the unanswerable set and recalibrate if the corpus or retrieval mode changes:
+## Production settings and safeguards
 
-```powershell
-python scripts/calibrate_confidence.py `
-  --cases evaluation_cases.generated.jsonl `
-  --mode vector
-```
+| Control | Current setting |
+|---|---|
+| Repositories | `tiangolo/fastapi`, `encode/starlette`, `pydantic/pydantic` |
+| Embeddings | `text-embedding-3-small`, 1,536 dimensions |
+| Generation | `gpt-4o-mini` |
+| Retrieval | Vector, `ef_search=100`, fetch 30, collapse to five distinct issues |
+| Confidence cutoff | `0.5370554072220923` |
+| Generation input | `RAG_MAX_GENERATION_INPUT_TOKENS=12000` |
+| Generation output | `OPENAI_GENERATION_MAX_OUTPUT_TOKENS=512` |
+| OpenAI retries | `OPENAI_MAX_RETRIES=0` |
 
-The calibration report selects the cutoff with maximum balanced accuracy,
-reports correctly refused and wrongly refused counts, and saves the complete
-score list to `confidence_calibration_results.json`. The selected value is
-also the API default and the example `.env` value.
+Below the cutoff, no generation call is made. The fixed answer is:
+?There isn't enough evidence in the indexed issues to answer this question.?
+A model insufficient-evidence decision returns only:
+?The retrieved excerpts do not provide enough evidence to answer this question.?
+Model-written side claims and inline citations are discarded on that path.
+Retrieved sources remain separate; their presence does not prove the unavailable answer.
 
-Each API request also logs retrieval, generation, and total latency, token
-usage, refusal status, and estimated cost to the application log. The
-generation/embedding token rates are configurable in `.env`; defaults are
-rough estimates and should be checked against current OpenAI pricing. To
-measure p50/p95 latency and average estimated cost over the eval questions:
+The input budget counts system/user messages with the model tokenizer and a
+512-token framing reserve. Excerpts can be clipped while source IDs, ordering
+and metadata remain intact; clipped text is marked incomplete.
+If instructions/question/source metadata cannot fit, generation is skipped.
+Unsupported tokenizer mappings fail before generation.
+Output limits can truncate an answer; token limits are not an aggregate dollar budget.
 
-```powershell
-python scripts/measure_rag_performance.py `
-  --cases evaluation_cases.generated.jsonl
-```
+Recognizable literal credentials are redacted before generation and in answers.
+The known unsafe settings-dump pattern is removed from fenced evidence and
+withheld if generated. Source links and citation metadata remain available.
+This is pattern-based protection, not complete credential or unsafe-code detection.
+Setting-name references and masked examples are not proof of a credential leak.
 
-The detailed sample results are written to `rag_performance_results.json`.
-The 2026-10-07 vector-mode run over all 60 cases measured p50 latency of
-1.896 s, p95 of 3.817 s, average estimated cost of $0.000216/query, and
-19 refusals (15 expected unanswerables plus 4 wrongly refused answerables).
-These latency and cost figures are run-specific estimates, not service-level
-guarantees.
+## Retrieval and abstention evidence
 
-## Step 6: Local RAG evaluation
+On the original 45 generated, manually reviewed answerable cases, final retrieval
+scored **Hit@5 0.9333, Recall@5 0.9333 and MRR 0.8389**.
+This is a small evaluation, not a general accuracy guarantee.
+The earlier vector/hybrid baseline both scored 0.8000/0.8000/0.7526.
+Full case evidence is in [retrieval reports](docs/experiments/retrieval/issue_collapse_experiment.md).
 
-`evaluation_cases.jsonl` is a small, version-controlled held-out suite of 10
-cases selected from the current corpus. Each case is labeled
-`manually_verified`, `heuristic`, or `unresolved`, with a note describing the
-label. Cases marked `heuristic` rely on the extracted maintainer-comment
-resolution and are reported separately; that signal is uncertain and is not
-treated as guaranteed ground truth. Unresolved cases intentionally expect an
-abstention.
+The small original calibration refused 15/15 unanswerables and wrongly refused
+4/45 answerables (41 passed). The harder held-out set refused only **1/15**
+at the fixed rounded 0.537 cutoff. Do not treat that cutoff as generally robust.
+Generation abstained on the remaining 14, with one auxiliary citation
+misattribution in the original run and no unsupported requested solution.
+A later 14-case frozen-context replay verified fixed abstentions and separate
+sources through the local API with mocked dependencies; it did not test live retrieval.
+See [held-out review](docs/experiments/abstention/heldout_unanswerable_results_review.md)
+and [final regression](docs/experiments/abstention/final_abstention_regression_comparison.md).
 
-Build a 60-case set (15 randomly sampled closed issues per repository, plus
-15 deliberately unanswerable questions) and a review-friendly CSV with:
+## Historical local latency and cost
 
-```powershell
-python scripts/build_evaluation_set.py --seed 42
-```
+The final local measurement used 60 requests: 12 queries over five serial rounds,
+read-only RDS, production models, no warmups and no retries.
+It predates deployed input/output controls and redaction remediation.
 
-This uses the configured Postgres corpus and generation model. It writes
-`evaluation_cases.generated.jsonl` and `evaluation_cases.review.csv`; review
-the issue IDs and questions against each source issue before marking cases
-`manually_verified` in the JSONL. The checked-in run output contains the
-manually reviewed 45 answerable cases and 15 off-topic cases.
+| Outcome | Requests | Local p50 | Local p95 | Mean token cost/query |
+|---|---:|---:|---:|---:|
+| Answered | 25 | 2.047 s | 4.815 s | $0.000257734 |
+| Cutoff-refused | 30 | 0.399 s | 1.227 s | $0.000000217 |
+| Model-abstained | 5 | 1.301 s | 1.803 s | $0.000161840 |
 
-Run the generated set locally with top-5 retrieval:
+Total recorded token cost: **$0.00725905**, below the $0.03 approved cap.
+Costs use API usage and cached-input rates, not reconciled invoices.
+Small repeated samples give descriptive percentiles, especially five abstentions.
+Client totals include local test-client/checkpoint overhead; setup is separate.
+These are **local current-code measurements, not deployed Lambda latency**.
+The older 60-case run measured p50 1.896 s, p95 3.817 s,
+$0.000216/query and 19 refusals; it predates final distinct-issue retrieval.
+See [measurement report](docs/measurements/final_latency_cost_report.md).
 
-```powershell
-python -m rag_assistant.evaluate `
-  --cases evaluation_cases.generated.jsonl `
-  --top-k 5
-```
+## Live verification
 
-The command calls the local retrieval/generation components, prints a concise
-metrics summary and up to five failure examples, and stores run metadata and
-per-case outputs in `public.rag_evaluation_runs` and
-`public.rag_evaluation_case_results`. Stored metadata includes UTC timestamps,
-embedding and generation model names, `top_k`, case counts, and metrics.
-Retrieval Hit@k, Recall@k, and MRR are computed over every answerable case,
-with both full-set and per-repository breakdowns. Verification-status
-breakdowns remain available so generated, not-yet-reviewed labels are clearly
-distinguished from manually verified cases.
+Current remediation image: **216,254,880 compressed bytes**.
+Digest: `sha256:3ee06641a7814eec96ed08c553ab7a15fdb82095e5f0ef983636d2c6f1855330`.
+Only the existing Ohio Lambda code image was updated; prior images were retained.
 
-Generation evaluation records appropriate abstention, valid citation
-references, and whether factual sentences have cited evidence with lexical
-overlap. Lexical grounding is an automated screening heuristic, not factual
-verification. LLM-as-judge scoring is optional:
+| Check | Verified outcome | Client time | Token cost |
+|---|---|---:|---:|
+| Remediation `/health` | HTTP 200, database reachable | 3.919 s | $0 |
+| Settings-dump `/ask` | Fixed safe model abstention, five separate sources | 5.725 s | $0.00021760 |
+| Safe video-frame `/ask` | Supported disconnect answer citing FastAPI #2071 | 8.784 s | $0.00019041 |
 
-```powershell
-python -m rag_assistant.evaluate --top-k 5 --judge
-```
+These are individual live smoke observations, not live p50/p95 or billed durations.
+Standard uncached usage costs exclude invoice/cache reconciliation; AWS billed costs
+are unavailable. No retries, infrastructure creation or database writes occurred.
+The earlier settings answer was an unsafe recommendation, not a literal credential.
+Historical failed/skipped checks and the prior $0.00025453 deployment remain recorded.
+See [remediation](docs/deployment/live/remediation_deployment_live_report.md),
+[supported answer](docs/deployment/live/safe_answer_live_report.md),
+and [security review](docs/security/live_answer_secret_review.md).
 
-Judge results are labeled automated estimates, not absolute truth. The
-evaluation command does not alter issue or chunk rows.
+## Operations and limitations
 
-Hybrid retrieval combines a pgvector candidate list with English PostgreSQL
-full-text candidates and fuses their ranks with reciprocal rank fusion
-(`k=60`). Gold setup creates a generated `tsvector` and GIN index. Compare both
-modes over the same generated evaluation set without calling the answer
-generation model:
+The development deployment uses existing ECR/Lambda/API Gateway, Secrets Manager,
+a single NAT gateway and single-AZ RDS. This topology is not high availability.
+Retained ECR images, RDS, NAT and public IPv4 can accrue ongoing costs.
+A public UI protects its server-side token but visitors can incur paid API usage.
+Keep credentials private and monitor usage; don't infer an unlimited spending cap.
+The 10-case evaluation and 12-case classification fixtures are small samples.
+Optional judge scores and classification confidence are not human ground truth.
 
-```powershell
-python scripts/compare_retrieval_modes.py `
-  --cases evaluation_cases.generated.jsonl `
-  --top-k 5
-```
+Detailed setup, commands, historical measurements and teardown guidance:
 
-The script prints side-by-side Hit@5, Recall@5, and MRR (or the selected `k`),
-prints per-repository rows, and writes full run data to
-`retrieval_comparison_results.json`.
-On the 45 manually verified answerable cases in the 2026-10-07 baseline,
-vector and hybrid both scored Hit@5 0.8000, Recall@5 0.8000, and MRR 0.7526.
-Per-repository metrics and complete case-level results are in the saved JSON.
-
-The full 2026-10-07 corpus snapshot is recorded in `corpus_snapshot.json`:
-9,555 unique issues, 43,535 comments, and 63,002 embedded chunks. Data-quality
-checks passed; 276 duplicate Bronze rows were deduplicated, and 14 issues with
-no chunkable content were expected not to appear in Gold.
-
-## Step 5: Bug/feature/usage classification
-
-The classification layer assigns each clean issue one category:
-`bug`, `feature`, `usage`, or `unknown`. The transparent heuristic baseline
-uses title/body signals and includes a short rationale and a high/medium/low
-confidence. `unknown` is a valid abstention when signals are weak or
-conflicting. The optional LLM classifier uses the configured generation model
-and the same explicit category definitions; its rationale/confidence is a
-model estimate, not a human label.
-
-The curated, version-controlled `classification_cases.jsonl` file contains 12
-manually reviewed examples, balanced across bug, feature, and usage. Evaluate
-the baseline and LLM on those cases without writing predictions:
-
-```powershell
-python -m rag_assistant.classify --mode both --evaluate-only
-```
-
-Classify all clean issue rows with the heuristic and print its held-out
-evaluation:
-
-```powershell
-python -m rag_assistant.classify --mode heuristic --limit 1000
-```
-
-Persist optional LLM predictions for all issues (makes one model request per
-issue) and compare against the same cases:
-
-```powershell
-python -m rag_assistant.classify --mode llm --limit 1000
-```
-
-`--mode both` runs and persists both classifiers for the selected issues.
-Predictions are stored idempotently in `public.github_issue_classifications`,
-keyed by issue, classification method, and classifier version/model. The
-evaluation output includes accuracy, per-label precision/recall/F1, and a
-confusion matrix. This small labeled sample is a smoke evaluation, not a
-production-quality benchmark; review and expand labels before relying on the
-classifier.
-
-## Streamlit interface and Community Cloud deployment
-
-`streamlit_app.py` calls the authenticated `/ask` API from server-side Python.
-It displays the grounded answer, the predicted category and confidence of the
-top retrieved issue, clickable GitHub citations, and expandable retrieval
-metadata. The category is the stored issue classification, not a
-classification of the user's question. API tokens are read only from
-Streamlit server-side secrets and are never sent to browser code.
-
-For local use, install the UI extra and start the FastAPI server in another
-terminal:
-
-```powershell
-python -m pip install -e ".[ui]"
-python -m uvicorn rag_assistant.api:app --host 127.0.0.1 --port 8000
-python -m streamlit run streamlit_app.py
-```
-
-To deploy on Streamlit Community Cloud:
-
-1. Push the project to a GitHub repository accessible to the Community Cloud
-   account. The root `requirements.txt` installs the application and UI
-   dependencies. Keep `.env`, `.streamlit/secrets.toml`, and all credentials
-   out of the repository.
-2. In Community Cloud, create an app from that repository and select
-   `streamlit_app.py` as the app entry point.
-3. In the app's **Settings → Secrets** panel, configure these server-side
-   secrets (names only; do not put them in source code):
-   - `RAG_API_URL` — use the deployed HTTPS endpoint:
-     `https://w3qqwb25w0.execute-api.us-east-2.amazonaws.com`
-   - `API_AUTH_TOKEN` — the existing bearer token stored in AWS Secrets
-     Manager at `github-rag/dev/api-runtime`. Copy it only through a trusted,
-     private secret-management workflow; never paste it into code, a commit,
-     a URL, or a client-side component.
-4. Save the secrets and redeploy/reboot the app. The app reports a clear
-   missing-secret, invalid-token (401), connection, or backend error without
-   revealing secret values.
-
-For local development only, `.env` remains supported as a fallback. The
-Community Cloud app reads `st.secrets` first. A public Streamlit app can be
-used by anyone with its URL; the API token is protected from visitors but
-requests can incur OpenAI/AWS charges. Monitor API usage and disable the app
-when it is no longer needed.
-
-## Docker and AWS deployment package
-
-`Dockerfile` packages FastAPI as an AWS Lambda container image using Mangum;
-`.dockerignore` explicitly excludes `.env`, virtual environments, and tests.
-Build locally after Docker Desktop is running:
-
-```powershell
-docker build -t trustworthy-rag-assistant .
-```
-
-The Lambda runtime reads `RAG_SECRETS_ARN` and loads the JSON secret from AWS
-Secrets Manager. Store `OPENAI_API_KEY`, `PGPASSWORD`, and `API_AUTH_TOKEN`
-there; include `GITHUB_TOKEN` for the ingestion Lambda. Grant the Lambda
-execution role only `secretsmanager:GetSecretValue` for that secret. Configure
-PostgreSQL host/database/user, model names, S3 bucket/region, and
-`RAG_SECRETS_ARN` as Lambda environment settings. Never place `.env` in the
-image or pass secret values on a command line.
-
-The dev deployment uses ECR repository `github-rag-api`, Lambda function
-`github-rag-api`, HTTP API `github-rag-api-dev`, Secrets Manager secret
-`github-rag/dev/api-runtime`, and execution role
-`github-rag-lambda-execution`. The public API Gateway endpoint is configured
-in the local `.env` as `RAG_API_URL`; `/ask` requires the bearer token while
-`/health` is public and checks PostgreSQL.
-
-Lambda runs in two private subnets in a private VPC security group. Its
-private route table sends outbound traffic through the single development NAT
-gateway in a public subnet. The RDS security group permits PostgreSQL only
-from the Lambda security group and the pre-existing administrator client
-rule. This single-NAT layout is for development, not high availability.
-
-### Removing the development deployment
-
-In the AWS console in `us-east-2`, delete API `github-rag-api-dev` and Lambda
-`github-rag-api` first. To stop the ongoing networking charges, delete the
-development NAT gateway, wait until its state is `Deleted`, then release its
-associated Elastic IP allocation. The NAT gateway and its Elastic IP are the
-ongoing network-cost resources.
-
-After Lambda has been deleted, remove the NAT default route from the
-development private route table, disassociate that table from the two
-development private subnets, then delete the route table and those subnets.
-In the RDS security group, remove only the inbound TCP 5432 rule whose source
-is the Lambda security group; keep the existing administrator client rule.
-Then delete that Lambda security group, ECR repository `github-rag-api`
-(including its images), execution role `github-rag-lambda-execution` and its
-inline policy, log group `/aws/lambda/github-rag-api`, and secret
-`github-rag/dev/api-runtime` if they are no longer needed. Secret deletion
-uses Secrets Manager's recovery window unless force deletion is explicitly
-selected.
+- [Pipeline and classification](docs/operations/pipeline.md)
+- [Evaluation methodology](docs/operations/evaluation.md)
+- [API, UI and deployment operations](docs/operations/deployment.md)
+- [All reports and preflights](docs/README.md)

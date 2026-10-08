@@ -18,7 +18,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--approved-embedding-run", action="store_true")
     args = parser.parse_args()
-    cases = evaluate.load_cases(ROOT / "evaluation_cases.generated.jsonl")
+    cases = evaluate.load_cases(ROOT / "evaluation/evaluation_cases.generated.jsonl")
     model = "text-embedding-3-small"
     if not CACHE.exists():
         if not args.approved_embedding_run:
@@ -39,7 +39,7 @@ def main():
     cache = json.loads(CACHE.read_text())
     if cache["model"] != model or cache["questions"] != {c["case_id"]: c["question"] for c in cases}:
         raise RuntimeError("Embedding cache does not match cases/model")
-    evidence = json.loads((ROOT / "retrieval_miss_evidence.json").read_text())
+    evidence = json.loads((ROOT / "docs/experiments/retrieval/retrieval_miss_evidence.json").read_text())
     with psycopg.connect(**evaluate.database_options(api.get_settings())) as conn:
         conn.execute("SET TRANSACTION READ ONLY")
         for item in evidence:
@@ -67,7 +67,7 @@ def main():
                 (r for r, chunk in enumerate(wider, 1) if chunk["repository"] == gold["repository"]
                  and chunk["issue_number"] == gold["issue_number"]), None)
             print(json.dumps({"case_id": item["case_id"], "exact_vector_gold_rank": rank, "best_chunk": item["exact_vector_gold_chunk"]}), flush=True)
-    (ROOT / "retrieval_miss_evidence.json").write_text(json.dumps(evidence, indent=2, default=str) + "\n", encoding="utf-8")
+    (ROOT / "docs/experiments/retrieval/retrieval_miss_evidence.json").write_text(json.dumps(evidence, indent=2, default=str) + "\n", encoding="utf-8")
 
 
 if __name__ == "__main__":

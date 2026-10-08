@@ -10,7 +10,7 @@ from rag_assistant import api, evaluate
 
 def main():
     root = Path(__file__).resolve().parents[1]
-    cases = evaluate.load_cases(root / "evaluation_cases.generated.jsonl")
+    cases = evaluate.load_cases(root / "evaluation/evaluation_cases.generated.jsonl")
     with psycopg.connect(**evaluate.database_options(api.get_settings())) as connection:
         connection.execute("SET TRANSACTION READ ONLY")
         for case in cases:

@@ -1,0 +1,45 @@
+{
+  "started_at_utc": "2026-10-08T12:51:40.246206+00:00",
+  "region": "us-east-2",
+  "status": "deployed_health_passed_ask_blocked_by_hard_budget",
+  "openai_hard_cap_usd": "0.01",
+  "openai_calls": 0,
+  "actual_openai_token_cost_usd": "0",
+  "checks": [
+    {
+      "method": "GET",
+      "path": "/health",
+      "status_code": 200,
+      "client_latency_ms": 4481.793200131506,
+      "body": "{\"status\":\"ok\",\"database\":\"reachable\"}",
+      "api_gateway_request_id": "E7O_biOyiYcEJ7w="
+    },
+    {
+      "method": "POST",
+      "path": "/ask",
+      "case_id": "generated-encode-starlette-408",
+      "status": "not_called_budget_not_enforceable"
+    },
+    {
+      "method": "POST",
+      "path": "/ask",
+      "case_id": "unanswerable-01",
+      "status": "not_called_budget_not_enforceable"
+    }
+  ],
+  "infrastructure_created": false,
+  "configuration_modified": false,
+  "existing_images_retained": true,
+  "local_tests_passed": 85,
+  "image_uri": "918897410856.dkr.ecr.us-east-2.amazonaws.com/github-rag-api@sha256:f9e04c70616b852c8028e14e835cdb53daf4b3850337d126ca96d3d874ea12a6",
+  "compressed_image_bytes": 216239569,
+  "old_image_uri": "918897410856.dkr.ecr.us-east-2.amazonaws.com/github-rag-api@sha256:ec8bf244716b7cf4f8e3300f6edccd5682138bd48f7a000411ae752e701849b5",
+  "image_pushed": true,
+  "lambda_code_update_requested": true,
+  "lambda_image_updated": true,
+  "lambda_revision": "6919f8b4-283f-4b9e-8b39-0c9409f66e07",
+  "stopped_reason": "Approved image has no server-side token budget guard and permits internal retries. The hard $0.01 aggregate cap cannot be guaranteed; no paid /ask call was made. No configuration, rollback or further deployment authorized.",
+  "finished_at_utc": "2026-10-08T12:52:16.135013+00:00",
+  "aws_actual_cost_usd": null,
+  "aws_cost_note": "Exact billed AWS cost not yet available. Image storage continues; control-plane update/push have no per-call fee. Health invocation/token-free AWS usage is not zero-cost. No inference calls made."
+}

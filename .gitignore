@@ -21,3 +21,6 @@ build/
 .idea/
 .DS_Store
 Thumbs.db
+
+# Disposable future run outputs; reviewed evidence lives in docs/
+artifacts/

@@ -1,0 +1,230 @@
+{
+  "status": "deployed_three_live_checks_passed",
+  "started_at_utc": "2026-10-08T13:16:11.566982+00:00",
+  "region": "us-east-2",
+  "hard_openai_cap_usd": "0.005",
+  "conservative_two_request_ceiling_usd": "0.00421498",
+  "checks": [
+    {
+      "method": "GET",
+      "path": "/health",
+      "http_status": 200,
+      "client_latency_ms": 4622.119200183079,
+      "body": "{\"status\":\"ok\",\"database\":\"reachable\"}"
+    },
+    {
+      "method": "POST",
+      "path": "/ask",
+      "question": "What is the recommended way to dump settings in starlette.config without exposing sensitive information like JWT secrets?",
+      "top_k": 5,
+      "status": "passed",
+      "http_status": 200,
+      "client_latency_ms": 6074.877200182527,
+      "body": "{\"answer\":\"To dump settings in `starlette.config` without exposing sensitive information, you can create an endpoint that returns the settings while masking the secrets. An example implementation is as follows:\\n\\n```python\\n@router.get(\\\"/settings\\\", tags=[\\\"Info\\\"])\\ndef get_settings() -> dict:\\n    dctconfig = dict(settings.config)\\n    return dctconfig\\n```\\n\\nHowever, this approach will show the secrets directly instead of masking them (e.g., showing `Secret('**********')`). Therefore, you may need to implement additional logic to filter out or mask sensitive information before returning the settings [1].\",\"citations\":[{\"repository\":\"encode/starlette\",\"issue_number\":408,\"issue_url\":\"https://github.com/Kludex/starlette/issues/408\",\"source_url\":\"https://github.com/Kludex/starlette/issues/408\",\"chunk_type\":\"issue_body\",\"similarity_score\":0.7589359361091567,\"retrieval_score\":0.7589359361091567,\"predicted_category\":null,\"classification_confidence\":null},{\"repository\":\"encode/starlette\",\"issue_number\":671,\"issue_url\":\"https://github.com/Kludex/starlette/issues/671\",\"source_url\":\"https://github.com/Kludex/starlette/issues/671#issuecomment-541438132\",\"chunk_type\":\"comment\",\"similarity_score\":0.5663459458893597,\"retrieval_score\":0.5663459458893597,\"predicted_category\":null,\"classification_confidence\":null},{\"repository\":\"encode/starlette\",\"issue_number\":763,\"issue_url\":\"https://github.com/Kludex/starlette/issues/763\",\"source_url\":\"https://github.com/Kludex/starlette/issues/763#issuecomment-579716800\",\"chunk_type\":\"comment\",\"similarity_score\":0.563517804850534,\"retrieval_score\":0.563517804850534,\"predicted_category\":null,\"classification_confidence\":null},{\"repository\":\"encode/starlette\",\"issue_number\":391,\"issue_url\":\"https://github.com/Kludex/starlette/issues/391\",\"source_url\":\"https://github.com/Kludex/starlette/issues/391\",\"chunk_type\":\"issue_body\",\"similarity_score\":0.5424426069712605,\"retrieval_score\":0.5424426069712605,\"predicted_category\":null,\"classification_confidence\":null},{\"repository\":\"encode/starlette\",\"issue_number\":914,\"issue_url\":\"https://github.com/Kludex/starlette/issues/914\",\"source_url\":\"https://github.com/Kludex/starlette/issues/914#issuecomment-619471541\",\"chunk_type\":\"comment\",\"similarity_score\":0.541109609889121,\"retrieval_score\":0.541109609889121,\"predicted_category\":null,\"classification_confidence\":null}],\"retrieval_metadata\":{\"top_k\":5,\"retrieved_count\":5,\"embedding_model\":\"text-embedding-3-small\",\"generation_model\":\"gpt-4o-mini\",\"retrieval_mode\":\"vector\",\"confidence_threshold\":0.5370554072220923},\"performance\":{\"retrieval_latency_ms\":2616.096,\"llm_latency_ms\":3240.593,\"total_latency_ms\":5856.709,\"embedding_tokens\":20,\"generation_prompt_tokens\":1213,\"generation_completion_tokens\":120,\"estimated_cost_usd\":0.00025435}}",
+      "api_response": {
+        "answer": "To dump settings in `starlette.config` without exposing sensitive information, you can create an endpoint that returns the settings while masking the secrets. An example implementation is as follows:\n\n```python\n@router.get(\"/settings\", tags=[\"Info\"])\ndef get_settings() -> dict:\n    dctconfig = dict(settings.config)\n    return dctconfig\n```\n\nHowever, this approach will show the secrets directly instead of masking them (e.g., showing `Secret('**********')`). Therefore, you may need to implement additional logic to filter out or mask sensitive information before returning the settings [1].",
+        "citations": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 408,
+            "issue_url": "https://github.com/Kludex/starlette/issues/408",
+            "source_url": "https://github.com/Kludex/starlette/issues/408",
+            "chunk_type": "issue_body",
+            "similarity_score": 0.7589359361091567,
+            "retrieval_score": 0.7589359361091567,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 671,
+            "issue_url": "https://github.com/Kludex/starlette/issues/671",
+            "source_url": "https://github.com/Kludex/starlette/issues/671#issuecomment-541438132",
+            "chunk_type": "comment",
+            "similarity_score": 0.5663459458893597,
+            "retrieval_score": 0.5663459458893597,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 763,
+            "issue_url": "https://github.com/Kludex/starlette/issues/763",
+            "source_url": "https://github.com/Kludex/starlette/issues/763#issuecomment-579716800",
+            "chunk_type": "comment",
+            "similarity_score": 0.563517804850534,
+            "retrieval_score": 0.563517804850534,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 391,
+            "issue_url": "https://github.com/Kludex/starlette/issues/391",
+            "source_url": "https://github.com/Kludex/starlette/issues/391",
+            "chunk_type": "issue_body",
+            "similarity_score": 0.5424426069712605,
+            "retrieval_score": 0.5424426069712605,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 914,
+            "issue_url": "https://github.com/Kludex/starlette/issues/914",
+            "source_url": "https://github.com/Kludex/starlette/issues/914#issuecomment-619471541",
+            "chunk_type": "comment",
+            "similarity_score": 0.541109609889121,
+            "retrieval_score": 0.541109609889121,
+            "predicted_category": null,
+            "classification_confidence": null
+          }
+        ],
+        "retrieval_metadata": {
+          "top_k": 5,
+          "retrieved_count": 5,
+          "embedding_model": "text-embedding-3-small",
+          "generation_model": "gpt-4o-mini",
+          "retrieval_mode": "vector",
+          "confidence_threshold": 0.5370554072220923
+        },
+        "performance": {
+          "retrieval_latency_ms": 2616.096,
+          "llm_latency_ms": 3240.593,
+          "total_latency_ms": 5856.709,
+          "embedding_tokens": 20,
+          "generation_prompt_tokens": 1213,
+          "generation_completion_tokens": 120,
+          "estimated_cost_usd": 0.00025435
+        }
+      },
+      "standard_rate_token_cost_usd": "0.00025435",
+      "outcome": "answered"
+    },
+    {
+      "method": "POST",
+      "path": "/ask",
+      "question": "What is the latest stable Python release today?",
+      "top_k": 5,
+      "status": "passed",
+      "http_status": 200,
+      "client_latency_ms": 911.7138998117298,
+      "body": "{\"answer\":\"There isn't enough evidence in the indexed issues to answer this question.\",\"citations\":[{\"repository\":\"pydantic/pydantic\",\"issue_number\":6666,\"issue_url\":\"https://github.com/pydantic/pydantic/issues/6666\",\"source_url\":\"https://github.com/pydantic/pydantic/issues/6666#issuecomment-1635529961\",\"chunk_type\":\"comment\",\"similarity_score\":0.5128903192429808,\"retrieval_score\":0.5128903192429808,\"predicted_category\":null,\"classification_confidence\":null},{\"repository\":\"pydantic/pydantic\",\"issue_number\":12220,\"issue_url\":\"https://github.com/pydantic/pydantic/issues/12220\",\"source_url\":\"https://github.com/pydantic/pydantic/issues/12220#issuecomment-3377363225\",\"chunk_type\":\"comment\",\"similarity_score\":0.4869215843233694,\"retrieval_score\":0.4869215843233694,\"predicted_category\":null,\"classification_confidence\":null},{\"repository\":\"pydantic/pydantic\",\"issue_number\":8028,\"issue_url\":\"https://github.com/pydantic/pydantic/issues/8028\",\"source_url\":\"https://github.com/pydantic/pydantic/issues/8028#issuecomment-1799121036\",\"chunk_type\":\"comment\",\"similarity_score\":0.47392400077780095,\"retrieval_score\":0.47392400077780095,\"predicted_category\":null,\"classification_confidence\":null},{\"repository\":\"pydantic/pydantic\",\"issue_number\":13173,\"issue_url\":\"https://github.com/pydantic/pydantic/issues/13173\",\"source_url\":\"https://github.com/pydantic/pydantic/issues/13173#issuecomment-5995337922\",\"chunk_type\":\"comment\",\"similarity_score\":0.46944728632194677,\"retrieval_score\":0.46944728632194677,\"predicted_category\":null,\"classification_confidence\":null},{\"repository\":\"pydantic/pydantic\",\"issue_number\":12395,\"issue_url\":\"https://github.com/pydantic/pydantic/issues/12395\",\"source_url\":\"https://github.com/pydantic/pydantic/issues/12395#issuecomment-3402236654\",\"chunk_type\":\"comment\",\"similarity_score\":0.4691144445840928,\"retrieval_score\":0.4691144445840928,\"predicted_category\":null,\"classification_confidence\":null}],\"retrieval_metadata\":{\"top_k\":5,\"retrieved_count\":5,\"embedding_model\":\"text-embedding-3-small\",\"generation_model\":\"gpt-4o-mini\",\"retrieval_mode\":\"vector\",\"confidence_threshold\":0.5370554072220923},\"performance\":{\"retrieval_latency_ms\":820.726,\"llm_latency_ms\":0.0,\"total_latency_ms\":820.742,\"embedding_tokens\":9,\"generation_prompt_tokens\":0,\"generation_completion_tokens\":0,\"estimated_cost_usd\":1.8e-7}}",
+      "api_response": {
+        "answer": "There isn't enough evidence in the indexed issues to answer this question.",
+        "citations": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 6666,
+            "issue_url": "https://github.com/pydantic/pydantic/issues/6666",
+            "source_url": "https://github.com/pydantic/pydantic/issues/6666#issuecomment-1635529961",
+            "chunk_type": "comment",
+            "similarity_score": 0.5128903192429808,
+            "retrieval_score": 0.5128903192429808,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 12220,
+            "issue_url": "https://github.com/pydantic/pydantic/issues/12220",
+            "source_url": "https://github.com/pydantic/pydantic/issues/12220#issuecomment-3377363225",
+            "chunk_type": "comment",
+            "similarity_score": 0.4869215843233694,
+            "retrieval_score": 0.4869215843233694,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8028,
+            "issue_url": "https://github.com/pydantic/pydantic/issues/8028",
+            "source_url": "https://github.com/pydantic/pydantic/issues/8028#issuecomment-1799121036",
+            "chunk_type": "comment",
+            "similarity_score": 0.47392400077780095,
+            "retrieval_score": 0.47392400077780095,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 13173,
+            "issue_url": "https://github.com/pydantic/pydantic/issues/13173",
+            "source_url": "https://github.com/pydantic/pydantic/issues/13173#issuecomment-5995337922",
+            "chunk_type": "comment",
+            "similarity_score": 0.46944728632194677,
+            "retrieval_score": 0.46944728632194677,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 12395,
+            "issue_url": "https://github.com/pydantic/pydantic/issues/12395",
+            "source_url": "https://github.com/pydantic/pydantic/issues/12395#issuecomment-3402236654",
+            "chunk_type": "comment",
+            "similarity_score": 0.4691144445840928,
+            "retrieval_score": 0.4691144445840928,
+            "predicted_category": null,
+            "classification_confidence": null
+          }
+        ],
+        "retrieval_metadata": {
+          "top_k": 5,
+          "retrieved_count": 5,
+          "embedding_model": "text-embedding-3-small",
+          "generation_model": "gpt-4o-mini",
+          "retrieval_mode": "vector",
+          "confidence_threshold": 0.5370554072220923
+        },
+        "performance": {
+          "retrieval_latency_ms": 820.726,
+          "llm_latency_ms": 0.0,
+          "total_latency_ms": 820.742,
+          "embedding_tokens": 9,
+          "generation_prompt_tokens": 0,
+          "generation_completion_tokens": 0,
+          "estimated_cost_usd": 1.8e-07
+        }
+      },
+      "standard_rate_token_cost_usd": "1.8E-7",
+      "outcome": "cutoff_refused"
+    }
+  ],
+  "standard_rate_token_cost_usd": "0.00025453",
+  "openai_usage_unknown": false,
+  "local_tests_passed": 93,
+  "configuration_changed": false,
+  "infrastructure_created": false,
+  "existing_images_retained": true,
+  "image_validation": {
+    "settings": {
+      "OPENAI_GENERATION_MODEL": "gpt-4o-mini",
+      "OPENAI_EMBEDDING_MODEL": "text-embedding-3-small",
+      "RAG_CONTEXT_MODE": "issues",
+      "RAG_RETRIEVAL_MODE": "vector",
+      "RAG_HNSW_EF_SEARCH": 100,
+      "RAG_CONFIDENCE_THRESHOLD": 0.5370554072220923,
+      "RAG_REPOSITORIES": [
+        "tiangolo/fastapi",
+        "encode/starlette",
+        "pydantic/pydantic"
+      ],
+      "GITHUB_REPOS": null,
+      "OPENAI_GENERATION_MAX_OUTPUT_TOKENS": 512,
+      "OPENAI_MAX_RETRIES": 0,
+      "RAG_MAX_GENERATION_INPUT_TOKENS": 12000
+    },
+    "api_sha256": "c8d7e73b0faffdcb0eb322b3c1d8a922145430b1c92efc28c5b8d3bbb2f1c325"
+  },
+  "previous_image_uri": "918897410856.dkr.ecr.us-east-2.amazonaws.com/github-rag-api@sha256:f9e04c70616b852c8028e14e835cdb53daf4b3850337d126ca96d3d874ea12a6",
+  "image_uri": "918897410856.dkr.ecr.us-east-2.amazonaws.com/github-rag-api@sha256:1e08220c4cbff6fbd46ea5f9d191532e7c2cd6c24f09731e556123340e2832e4",
+  "compressed_image_bytes": 216247900,
+  "image_pushed": true,
+  "lambda_code_update_requested": true,
+  "lambda_code_updated": true,
+  "lambda_revision": "29648095-57d4-45db-b004-7a07c6fd3faa",
+  "finished_at_utc": "2026-10-08T13:16:46.014080+00:00",
+  "aws_billed_cost_usd": null,
+  "cost_note": "Actual API-reported token usage priced at standard uncached rates; cached input breakdown is not exposed by current API so cache discounts/invoice cost cannot be reconciled. Unknown failed-call usage flagged separately. AWS billed cost not yet available."
+}

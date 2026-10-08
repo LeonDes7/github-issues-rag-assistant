@@ -45,7 +45,7 @@ def main():
         with patch.object(load_bronze_to_rds, "create_s3_client", return_value=prefetch):
             report = data_quality.run_quality_checks()
     report["read_method"] = "Existing quality checks, eight-worker read-only S3 prefetch; unchanged validation and source order"
-    path = Path(__file__).resolve().parents[1] / "data_quality_scoped_report.json"
+    path = Path(__file__).resolve().parents[1] / "docs/corpus/data_quality_scoped_report.json"
     path.write_text(json.dumps(report, indent=2, default=str) + "\n", encoding="utf-8")
     print(json.dumps(report, indent=2, default=str), flush=True)
 

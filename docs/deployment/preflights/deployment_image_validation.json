@@ -1,0 +1,1 @@
+{"OPENAI_GENERATION_MODEL": "gpt-4o-mini", "OPENAI_EMBEDDING_MODEL": "text-embedding-3-small", "RAG_CONTEXT_MODE": "issues", "RAG_RETRIEVAL_MODE": "vector", "RAG_HNSW_EF_SEARCH": 100, "RAG_CONFIDENCE_THRESHOLD": 0.5370554072220923, "RAG_REPOSITORIES": ["tiangolo/fastapi", "encode/starlette", "pydantic/pydantic"]}

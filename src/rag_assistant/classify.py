@@ -17,7 +17,7 @@ from rag_assistant.evaluate import database_options
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_CASES_PATH = PROJECT_ROOT / "classification_cases.jsonl"
+DEFAULT_CASES_PATH = PROJECT_ROOT / "evaluation/classification_cases.jsonl"
 CLASSIFICATION_TABLE = "public.github_issue_classifications"
 LABELS = {"bug", "feature", "usage", "unknown"}
 CLASSIFIER_VERSION = "heuristic-v1"

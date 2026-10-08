@@ -13,12 +13,12 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--approved-budget-usd", type=float, required=True)
     args = parser.parse_args()
-    prepared = json.loads((ROOT / "context_comparison_inputs.json").read_text())
+    prepared = json.loads((ROOT / "docs/experiments/context/context_comparison_inputs.json").read_text())
     if not 0 < args.approved_budget_usd <= 0.02 or prepared["generation_calls"] != 20 or len(prepared["cases"]) != 10:
         raise RuntimeError("Invalid approved budget or experiment size")
     if prepared["estimated_max_cost_usd_at_output_cap"] > args.approved_budget_usd:
         raise RuntimeError("Prepared run exceeds approved budget")
-    output = ROOT / "context_comparison_answers.json"
+    output = ROOT / "docs/experiments/context/context_comparison_answers.json"
     if output.exists():
         raise RuntimeError("Results already exist; refusing to repeat paid calls")
     client = OpenAI(api_key=api.get_settings()["OPENAI_API_KEY"], max_retries=0, timeout=90)
@@ -46,7 +46,7 @@ def main():
     for case in prepared["cases"]:
         answers = {a["mode"]: a for a in results["answers"] if a["case_id"] == case["case_id"]}
         lines.append(f'| {case["question"].replace("|", "\\|")} | {cell(answers["chunks"])} | {cell(answers["issues"])} |')
-    (ROOT / "context_comparison_answers.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    (ROOT / "docs/experiments/context/context_comparison_answers.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
     print("Measured cost USD:", results["measured_cost_usd"])
 
 

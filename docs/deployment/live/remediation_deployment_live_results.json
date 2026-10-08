@@ -1,0 +1,143 @@
+{
+  "status": "deployed_two_remediation_checks_passed",
+  "started_at_utc": "2026-10-08T13:33:08.261710+00:00",
+  "region": "us-east-2",
+  "hard_openai_cap_usd": "0.00210760",
+  "conservative_one_request_ceiling_usd": "0.00210760",
+  "checks": [
+    {
+      "method": "GET",
+      "path": "/health",
+      "http_status": 200,
+      "client_latency_ms": 3919.0716999582946,
+      "body": "{\"status\":\"ok\",\"database\":\"reachable\"}"
+    },
+    {
+      "method": "POST",
+      "path": "/ask",
+      "question": "What is the recommended way to dump settings in starlette.config without exposing sensitive information like JWT secrets?",
+      "top_k": 5,
+      "status": "passed",
+      "http_status": 200,
+      "client_latency_ms": 5724.616199964657,
+      "body": "{\"answer\":\"The retrieved excerpts do not provide enough evidence to answer this question.\",\"citations\":[{\"repository\":\"encode/starlette\",\"issue_number\":408,\"issue_url\":\"https://github.com/Kludex/starlette/issues/408\",\"source_url\":\"https://github.com/Kludex/starlette/issues/408\",\"chunk_type\":\"issue_body\",\"similarity_score\":0.7589555467332316,\"retrieval_score\":0.7589555467332316,\"predicted_category\":null,\"classification_confidence\":null},{\"repository\":\"encode/starlette\",\"issue_number\":671,\"issue_url\":\"https://github.com/Kludex/starlette/issues/671\",\"source_url\":\"https://github.com/Kludex/starlette/issues/671#issuecomment-541438132\",\"chunk_type\":\"comment\",\"similarity_score\":0.5663356164319139,\"retrieval_score\":0.5663356164319139,\"predicted_category\":null,\"classification_confidence\":null},{\"repository\":\"encode/starlette\",\"issue_number\":763,\"issue_url\":\"https://github.com/Kludex/starlette/issues/763\",\"source_url\":\"https://github.com/Kludex/starlette/issues/763#issuecomment-579716800\",\"chunk_type\":\"comment\",\"similarity_score\":0.5635318933452239,\"retrieval_score\":0.5635318933452239,\"predicted_category\":null,\"classification_confidence\":null},{\"repository\":\"encode/starlette\",\"issue_number\":391,\"issue_url\":\"https://github.com/Kludex/starlette/issues/391\",\"source_url\":\"https://github.com/Kludex/starlette/issues/391\",\"chunk_type\":\"issue_body\",\"similarity_score\":0.5424360556259915,\"retrieval_score\":0.5424360556259915,\"predicted_category\":null,\"classification_confidence\":null},{\"repository\":\"encode/starlette\",\"issue_number\":914,\"issue_url\":\"https://github.com/Kludex/starlette/issues/914\",\"source_url\":\"https://github.com/Kludex/starlette/issues/914#issuecomment-619471541\",\"chunk_type\":\"comment\",\"similarity_score\":0.5410767865140486,\"retrieval_score\":0.5410767865140486,\"predicted_category\":null,\"classification_confidence\":null}],\"retrieval_metadata\":{\"top_k\":5,\"retrieved_count\":5,\"embedding_model\":\"text-embedding-3-small\",\"generation_model\":\"gpt-4o-mini\",\"retrieval_mode\":\"vector\",\"confidence_threshold\":0.5370554072220923},\"performance\":{\"retrieval_latency_ms\":2284.848,\"llm_latency_ms\":3249.119,\"total_latency_ms\":5533.988,\"embedding_tokens\":20,\"generation_prompt_tokens\":1180,\"generation_completion_tokens\":67,\"estimated_cost_usd\":0.0002176}}",
+      "api_response": {
+        "answer": "The retrieved excerpts do not provide enough evidence to answer this question.",
+        "citations": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 408,
+            "issue_url": "https://github.com/Kludex/starlette/issues/408",
+            "source_url": "https://github.com/Kludex/starlette/issues/408",
+            "chunk_type": "issue_body",
+            "similarity_score": 0.7589555467332316,
+            "retrieval_score": 0.7589555467332316,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 671,
+            "issue_url": "https://github.com/Kludex/starlette/issues/671",
+            "source_url": "https://github.com/Kludex/starlette/issues/671#issuecomment-541438132",
+            "chunk_type": "comment",
+            "similarity_score": 0.5663356164319139,
+            "retrieval_score": 0.5663356164319139,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 763,
+            "issue_url": "https://github.com/Kludex/starlette/issues/763",
+            "source_url": "https://github.com/Kludex/starlette/issues/763#issuecomment-579716800",
+            "chunk_type": "comment",
+            "similarity_score": 0.5635318933452239,
+            "retrieval_score": 0.5635318933452239,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 391,
+            "issue_url": "https://github.com/Kludex/starlette/issues/391",
+            "source_url": "https://github.com/Kludex/starlette/issues/391",
+            "chunk_type": "issue_body",
+            "similarity_score": 0.5424360556259915,
+            "retrieval_score": 0.5424360556259915,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 914,
+            "issue_url": "https://github.com/Kludex/starlette/issues/914",
+            "source_url": "https://github.com/Kludex/starlette/issues/914#issuecomment-619471541",
+            "chunk_type": "comment",
+            "similarity_score": 0.5410767865140486,
+            "retrieval_score": 0.5410767865140486,
+            "predicted_category": null,
+            "classification_confidence": null
+          }
+        ],
+        "retrieval_metadata": {
+          "top_k": 5,
+          "retrieved_count": 5,
+          "embedding_model": "text-embedding-3-small",
+          "generation_model": "gpt-4o-mini",
+          "retrieval_mode": "vector",
+          "confidence_threshold": 0.5370554072220923
+        },
+        "performance": {
+          "retrieval_latency_ms": 2284.848,
+          "llm_latency_ms": 3249.119,
+          "total_latency_ms": 5533.988,
+          "embedding_tokens": 20,
+          "generation_prompt_tokens": 1180,
+          "generation_completion_tokens": 67,
+          "estimated_cost_usd": 0.0002176
+        }
+      },
+      "standard_rate_token_cost_usd": "0.0002176",
+      "outcome": "model_abstained",
+      "unsafe_settings_pattern_suppressed": true
+    }
+  ],
+  "standard_rate_token_cost_usd": "0.0002176",
+  "openai_usage_unknown": false,
+  "local_tests_passed": 101,
+  "configuration_changed": false,
+  "infrastructure_created": false,
+  "existing_images_retained": true,
+  "image_validation": {
+    "settings": {
+      "OPENAI_GENERATION_MODEL": "gpt-4o-mini",
+      "OPENAI_EMBEDDING_MODEL": "text-embedding-3-small",
+      "RAG_CONTEXT_MODE": "issues",
+      "RAG_RETRIEVAL_MODE": "vector",
+      "RAG_HNSW_EF_SEARCH": 100,
+      "RAG_CONFIDENCE_THRESHOLD": 0.5370554072220923,
+      "RAG_REPOSITORIES": [
+        "tiangolo/fastapi",
+        "encode/starlette",
+        "pydantic/pydantic"
+      ],
+      "GITHUB_REPOS": null,
+      "OPENAI_GENERATION_MAX_OUTPUT_TOKENS": 512,
+      "OPENAI_MAX_RETRIES": 0,
+      "RAG_MAX_GENERATION_INPUT_TOKENS": 12000
+    },
+    "api_sha256": "054bc3ab00399492809bcb468ed9667b66b40c0c625cfbe957aafb77caef709c",
+    "redaction_sha256": "0f2c7217e5b7e68af0de2d8e75656dfef8f9507c3b55273e121b49023d3bf1c0"
+  },
+  "previous_image_uri": "918897410856.dkr.ecr.us-east-2.amazonaws.com/github-rag-api@sha256:1e08220c4cbff6fbd46ea5f9d191532e7c2cd6c24f09731e556123340e2832e4",
+  "image_uri": "918897410856.dkr.ecr.us-east-2.amazonaws.com/github-rag-api@sha256:3ee06641a7814eec96ed08c553ab7a15fdb82095e5f0ef983636d2c6f1855330",
+  "compressed_image_bytes": 216254880,
+  "image_pushed": true,
+  "lambda_code_update_requested": true,
+  "lambda_code_updated": true,
+  "lambda_revision": "6416f274-f10c-4402-9681-916ef89ffe9b",
+  "finished_at_utc": "2026-10-08T13:33:54.332820+00:00",
+  "aws_billed_cost_usd": null,
+  "cost_note": "Actual API-reported token usage priced at standard uncached rates; cached input breakdown is not exposed by current API so cache discounts/invoice cost cannot be reconciled. Unknown failed-call usage flagged separately. AWS billed cost not yet available."
+}

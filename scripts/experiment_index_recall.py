@@ -130,17 +130,17 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--ef-search", type=int, nargs="+", default=[40, 100, 200, 400])
     parser.add_argument("--skip-exact", action="store_true")
-    parser.add_argument("--output", type=Path, default=ROOT / "index_recall_experiment.json")
+    parser.add_argument("--output", type=Path, default=ROOT / "docs/experiments/retrieval/index_recall_experiment.json")
     args = parser.parse_args()
     if any(v < 1 or v > 1000 for v in args.ef_search):
         parser.error("ef_search must be 1..1000")
-    cases = evaluate.load_cases(ROOT / "evaluation_cases.generated.jsonl")
+    cases = evaluate.load_cases(ROOT / "evaluation/evaluation_cases.generated.jsonl")
     cache = json.loads((ROOT / ".question_embeddings.json").read_text())
     if cache["model"] != "text-embedding-3-small" or cache["questions"] != {c["case_id"]: c["question"] for c in cases}:
         raise RuntimeError("Embedding cache does not match evaluation cases")
     if any(len(cache["vectors"][c["case_id"]]) != api.VECTOR_DIMENSIONS for c in cases):
         raise RuntimeError("Invalid cached vector dimensions")
-    cutoff = json.loads((ROOT / "confidence_calibration_results.json").read_text())["threshold_selection"]["recommended_threshold"]
+    cutoff = json.loads((ROOT / "docs/experiments/retrieval/confidence_calibration_results.json").read_text())["threshold_selection"]["recommended_threshold"]
     variants = [(f"HNSW ef_search={v}", v) for v in args.ef_search]
     if not args.skip_exact:
         variants.append(("Exact scan", None))
@@ -148,7 +148,7 @@ def main():
               "openai_calls": 0, "cutoff_retuned": False,
               "measurement_note": "One timed retrieval per question per setting, interleaved in seeded shuffled setting order. Latency includes the production query, joins, chunk payload transfer, and local decoding over the existing RDS connection; excludes embeddings, generation, connection setup, SET commands, and EXPLAIN. All latency summaries use only the 45 answerable cases. Cache effects and current RDS load apply; this is not an end-to-end API benchmark.",
               "four_misses": ["generated-encode-starlette-1119", "generated-tiangolo-fastapi-2071", "generated-pydantic-pydantic-7461", "generated-pydantic-pydantic-11491"],
-              "historical_baseline": json.loads((ROOT / "retrieval_comparison_results.json").read_text())["metrics"]["vector"],
+              "historical_baseline": json.loads((ROOT / "docs/experiments/retrieval/retrieval_comparison_results.json").read_text())["metrics"]["vector"],
               "experiments": [{"setting": name, "ef_search": ef, "cases": []} for name, ef in variants]}
     rng = random.Random(42)
     with psycopg.connect(**evaluate.database_options(api.get_settings())) as conn:

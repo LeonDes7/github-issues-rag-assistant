@@ -1,0 +1,142 @@
+{
+  "status": "prepared_only_awaiting_measurement_approval",
+  "scope": "Current local API pipeline with production model overrides and approved clean-scope settings; not deployed Lambda performance",
+  "queries": [
+    {
+      "case_id": "generated-encode-starlette-408",
+      "question": "What is the recommended way to dump settings in starlette.config without exposing sensitive information like JWT secrets?",
+      "planned_group": "expected_answered",
+      "embedding_tokens_local_estimate": 20,
+      "generation_input_tokens_saved_context_estimate": 1184
+    },
+    {
+      "case_id": "generated-encode-starlette-542",
+      "question": "What is the recommended workaround for the dependency issue between graphene and aniso8601 when installing starlette[full]?",
+      "planned_group": "expected_answered",
+      "embedding_tokens_local_estimate": 23,
+      "generation_input_tokens_saved_context_estimate": 1513
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-2071",
+      "question": "What problem did the reporter observe when sending larger base64-encoded video frames over a WebSocket?",
+      "planned_group": "expected_answered",
+      "embedding_tokens_local_estimate": 18,
+      "generation_input_tokens_saved_context_estimate": 1055
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-618",
+      "question": "What steps should I take if the automatic reload feature fails to work on Windows 10 when modifying main.py?",
+      "planned_group": "expected_answered",
+      "embedding_tokens_local_estimate": 22,
+      "generation_input_tokens_saved_context_estimate": 3295
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-4999",
+      "question": "What unexpected behavior occurred when the reporter called `.parse_obj()` in an async loop?",
+      "planned_group": "expected_answered",
+      "embedding_tokens_local_estimate": 17,
+      "generation_input_tokens_saved_context_estimate": 2210
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-8499",
+      "question": "What is the workaround for the RecursionError encountered when parsing graph-like data with Pydantic V2?",
+      "planned_group": "expected_answered",
+      "embedding_tokens_local_estimate": 22,
+      "generation_input_tokens_saved_context_estimate": 1040
+    },
+    {
+      "case_id": "unanswerable-01",
+      "question": "What is the latest stable Python release today?",
+      "planned_group": "expected_cutoff_refused",
+      "embedding_tokens_local_estimate": 9
+    },
+    {
+      "case_id": "unanswerable-02",
+      "question": "Which AWS IAM policy should I attach for production access?",
+      "planned_group": "expected_cutoff_refused",
+      "embedding_tokens_local_estimate": 11
+    },
+    {
+      "case_id": "unanswerable-03",
+      "question": "What is the current price of a PostgreSQL RDS instance?",
+      "planned_group": "expected_cutoff_refused",
+      "embedding_tokens_local_estimate": 12
+    },
+    {
+      "case_id": "unanswerable-04",
+      "question": "Can you diagnose my private production server from this repository?",
+      "planned_group": "expected_cutoff_refused",
+      "embedding_tokens_local_estimate": 11
+    },
+    {
+      "case_id": "unanswerable-06",
+      "question": "What is the weather forecast for Tokyo tomorrow?",
+      "planned_group": "expected_cutoff_refused",
+      "embedding_tokens_local_estimate": 9
+    },
+    {
+      "case_id": "unanswerable-11",
+      "question": "Summarize the contents of a file on my personal computer.",
+      "planned_group": "expected_cutoff_refused",
+      "embedding_tokens_local_estimate": 13
+    }
+  ],
+  "rounds": 5,
+  "total_requests": 60,
+  "warmup_requests": 0,
+  "expected_answered_requests": 30,
+  "expected_cutoff_refused_requests": 30,
+  "embedding_calls": 60,
+  "expected_generation_calls": 30,
+  "maximum_generation_calls_if_all_pass": 60,
+  "parallelism": 1,
+  "retries": 0,
+  "schedule": "For round r (0..4), rotate the six paired answered/refused query pairs by r; interleave answered then refused. No adaptive substitutions or extra runs.",
+  "settings": {
+    "OPENAI_GENERATION_MODEL": "gpt-4o-mini",
+    "OPENAI_EMBEDDING_MODEL": "text-embedding-3-small",
+    "VECTOR_DIMENSIONS": 1536,
+    "RAG_RETRIEVAL_MODE": "vector",
+    "RAG_CONTEXT_MODE": "issues",
+    "RAG_HNSW_EF_SEARCH": 100,
+    "FETCH_CANDIDATES": 30,
+    "TOP_K_DISTINCT_ISSUES": 5,
+    "RAG_CONFIDENCE_THRESHOLD": 0.5370554072220923,
+    "RAG_REPOSITORIES": [
+      "tiangolo/fastapi",
+      "encode/starlette",
+      "pydantic/pydantic"
+    ],
+    "temperature": 0,
+    "generation_output_cap": "unchanged production API behavior: no explicit cap; model maximum 16384"
+  },
+  "estimated_embedding_tokens": 935,
+  "estimated_generation_input_tokens": 51485,
+  "assumed_output_tokens_per_answer": 200,
+  "estimated_generation_output_tokens": 6000,
+  "estimated_openai_usd": "0.01134145",
+  "proposed_openai_hard_budget_usd": "0.10",
+  "budget_method": "Reserve exact current input text byte bound plus framing and full model output maximum before each generation; check cumulative actual spend plus reservation <= approved cap; stop without changing generation limits if insufficient. Do not claim 60 completed if stopped.",
+  "aws_estimate": {
+    "lambda_invocation_usd": "0",
+    "api_gateway_usd": "0",
+    "rds_hourly_usd": "0.016",
+    "assumed_window_minutes": 15,
+    "rds_window_allocated_compute_usd": "0.004",
+    "incremental_compute_usd_if_already_running": "0",
+    "assumed_rds_egress_mib": 10,
+    "egress_rate_assumption_usd_per_gib": "0.09",
+    "estimated_egress_usd": "0.00087890625",
+    "allocated_compute_plus_egress_usd": "0.00487890625",
+    "assumptions": "Existing available single-AZ db.t4g.micro PostgreSQL 18.3, 20 GiB gp2, Ohio. Storage unchanged. Excludes existing storage/backup charges and unknown T4g surplus-credit charges; no account discounts/free transfer allowance assumed. Fifteen-minute window and 10 MiB transfer are estimates, not enforced AWS caps."
+  },
+  "grouping": "Use observed response: substantive answered, cutoff-refused, model-abstained after cutoff pass, failed/incomplete. Do not mix model abstentions with cutoff refusals. Preserve cohort counts and surprises.",
+  "latency": "Report empirical p50/p95 (linear interpolation) separately by observed outcome, for client total, embedding, DB retrieval, generation; cutoff-refused generation latency zero. Connection/client setup separately. Single concurrency; first request marked separately, no forced cold starts or cache flush. p95 on ~30 observations is descriptive, not an SLO.",
+  "cost_reporting": "Per request API-reported embedding tokens, generation prompt/completion/cached tokens, model ID, actual usage-based USD (cached-input $0.075/M when reported; uncached $0.15/M; output $0.60/M; embedding $0.02/M). Failed requests with unknown usage flagged unknown, not zero; no paid judge or invoice claims.",
+  "read_only": "Use local actual /ask route with real OpenAI client and a read-only psycopg connection; default_transaction_read_only=on for session, validate SHOW transaction_read_only, each retrieval transaction read-only with unchanged SET LOCAL hnsw.ef_search. No evaluate persistence, DDL, DML, index writes, archival or RDS lifecycle changes. Save results only locally.",
+  "preconditions": "Before any paid call, verify nonsecret runtime models/settings and API source hash; abort on mismatch. Deployed Lambda retrieval defaults remain unverified; no invocation/deployment. RDS must already be Available.",
+  "source_sha256": "fbcbc8f69fc544742e467e3b26953ff9a289c5950cdd89dac5e5e13298fb4366",
+  "query_source_sha256": "c56a12920e6067fa21740f33b99788ac2f117557da73bd9f39745212929cf5be",
+  "output_results": "final_latency_cost_results.json",
+  "output_report": "final_latency_cost_report.md"
+}

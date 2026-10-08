@@ -1,0 +1,49 @@
+{
+  "status": "prepared_only_not_deployed",
+  "region": "us-east-2",
+  "questions": [
+    "What is the recommended way to dump settings in starlette.config without exposing sensitive information like JWT secrets?",
+    "What is the latest stable Python release today?"
+  ],
+  "top_k": 5,
+  "retrieval_settings_unchanged": {
+    "ef_search": 100,
+    "fetch": 30,
+    "collapse_distinct_issues": 5,
+    "threshold": 0.5370554072220923,
+    "repositories": [
+      "tiangolo/fastapi",
+      "encode/starlette",
+      "pydantic/pydantic"
+    ]
+  },
+  "proposed_generation_max_output_tokens": 512,
+  "proposed_max_retries": 0,
+  "sdk_parameters": {
+    "max_completion_tokens": 512,
+    "max_retries": 0
+  },
+  "maximum_embedding_calls": 2,
+  "maximum_generation_calls": 2,
+  "embedding_tokens_fixed_questions": 29,
+  "worst_case_generation_input_tokens": 256000,
+  "worst_case_generation_output_tokens": 1024,
+  "conservative_openai_ceiling_usd": "0.03901498",
+  "saved_context_one_generation_output_cap_cost_usd": "0.00048508",
+  "cost_note": "Assumes exactly two HTTP calls with no replay/retry, production GPT-4o mini and text-embedding-3-small, current standard rates, no cache discount. Each successful generation is bounded conservatively by model 128000 input-token window and 512 output-token limit; larger requests must be rejected by provider. Both questions may pass the fixed cutoff: do not assume unanswerable means no generation. Five distinct issues is a count limit, not a serialized-token-size bound. Chunk target is 700 cl100k tokens, not a validated upper bound on complete GPT-4o-mini messages and metadata.",
+  "previous_live_cap_usd": "0.01",
+  "fits_previous_cap_without_input_bound": false,
+  "conditional_input_ceiling_per_generation_tokens": 20000,
+  "conditional_two_generation_cost_usd": "0.00661498",
+  "conditional_note": "A verified/enforced <=20000 input-token bound per generation would put these two calls below $0.01. This input bound is NOT currently implemented or proved by the five-source limit. Do not run live tests under the earlier hard cap based only on the saved-context estimate.",
+  "aws_incremental_smoke_estimate_usd": "0.000361087835205078125",
+  "aws_added_image_retention_assumption_usd_per_month": "0.025",
+  "existing_resources_updated_on_future_approval": [
+    "ECR github-rag-api: one additional image, retain existing images",
+    "Lambda github-rag-api: code image reference; optionally explicit environment values for only the two new controls, preserving all other keys"
+  ],
+  "infrastructure_created": false,
+  "deployment_requirements": "Verify image defaults and any existing env overrides resolve max_completion_tokens=512 and max_retries=0 before live smoke. No infrastructure creation, no retrieval/cutoff/database changes. No build, push, update, or live checks in this preparation.",
+  "measured_latency_status": "Existing local and health-only live results are historical, from code before these new controls. No latency/quality claim for capped code.",
+  "api_source_sha256": "f9de6400137e649867929546c026a119aa8e8eb16427dd68e2cc378ebb989015"
+}

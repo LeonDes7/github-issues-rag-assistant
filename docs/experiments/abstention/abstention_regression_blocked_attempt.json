@@ -1,0 +1,123 @@
+{
+  "status": "stopped_no_retry",
+  "started_at_utc": "2026-10-08T11:42:35.828658+00:00",
+  "preflight_sha256": "6f65817c2eb164eaf7feff18597d8f4c2fff30fb9420227d35851b02557e9add",
+  "baseline_sha256": "4d4a40628f3f2524b0bb0e3e6398899e05726570b679a42aba3845cded6ca2f5",
+  "prompt_sha256": "d0e07faa2227161bbb264d19baad0b9f1403cac161fda18b3dc549a1f3b17128",
+  "model": "gpt-5-nano",
+  "reasoning_effort": "minimal",
+  "completion_token_cap": 1200,
+  "hard_budget_usd": "0.01091895",
+  "actual_token_cost_usd": "0",
+  "generation_calls_attempted": 1,
+  "generation_calls_completed": 0,
+  "embedding_calls": 0,
+  "database_calls": 0,
+  "automatic_retries": 0,
+  "cutoff": 0.537,
+  "retuned": false,
+  "retrieval_settings": {
+    "RAG_RETRIEVAL_MODE": "vector",
+    "RAG_HNSW_EF_SEARCH": 100,
+    "RAG_CONTEXT_MODE": "issues",
+    "RAG_REPOSITORIES": [
+      "tiangolo/fastapi",
+      "encode/starlette",
+      "pydantic/pydantic"
+    ]
+  },
+  "cases": [
+    {
+      "case_id": "heldout-tiangolo-oauth-revocation",
+      "question": "How can a FastAPI OAuth2 dependency revoke an already authenticated WebSocket connection across four Uvicorn workers within 30 seconds, and what indexed issue demonstrates that guarantee?",
+      "score": 0.6300810303006942,
+      "evidence": [
+        {
+          "citation": "[1]",
+          "repository": "tiangolo/fastapi",
+          "issue_number": 2074,
+          "issue_url": "https://github.com/fastapi/fastapi/issues/2074",
+          "source_url": "https://github.com/fastapi/fastapi/issues/2074#issuecomment-695750650",
+          "chunk_type": "comment",
+          "chunk_text": "Repository: tiangolo/fastapi\nIssue: #2074\nTitle: Uvicorn workers timeout question\n\nDo you have any resource that can be accessed by only one process?",
+          "similarity_score": 0.6300810303006942,
+          "retrieval_score": 0.6300810303006942,
+          "predicted_category": null,
+          "classification_confidence": null
+        },
+        {
+          "citation": "[2]",
+          "repository": "tiangolo/fastapi",
+          "issue_number": 3008,
+          "issue_url": "https://github.com/fastapi/fastapi/issues/3008",
+          "source_url": "https://github.com/fastapi/fastapi/issues/3008",
+          "chunk_type": "heuristic_resolution",
+          "chunk_text": "Repository: tiangolo/fastapi\nIssue: #3008\nTitle: WebSocket disconnected state is not propagated to the application code (proper closures, ping timeouts)\n\n[Low-confidence heuristic resolution; not ground truth. Stored confidence: low]\nYou need to subclass the UvicornWorker and pass the CONFIG_SOMETHING (see how the worker is implemented) yourself, then you use that one with `gunicorn --worker-class your.path.CustomUvicornWorker`.\n\n(I'm on my phone)\n\nEDIT: Like this: https://www.uvicorn.org/deployment/#gunicorn",
+          "similarity_score": 0.6209475263013239,
+          "retrieval_score": 0.6209475263013239,
+          "predicted_category": null,
+          "classification_confidence": null
+        },
+        {
+          "citation": "[3]",
+          "repository": "tiangolo/fastapi",
+          "issue_number": 1724,
+          "issue_url": "https://github.com/fastapi/fastapi/issues/1724",
+          "source_url": "https://github.com/fastapi/fastapi/issues/1724#issuecomment-664548586",
+          "chunk_type": "comment",
+          "chunk_text": "Repository: tiangolo/fastapi\nIssue: #1724\nTitle: Requests over the same connection not terminated properly when middleware is used (affects uvloop + python 3.8)\n\nIf you're running Uvicorn using Gunicorn as the process manager, you'll want to switch to `UvicornH11Worker` (asyncio + h11) instead of `UvicornWorker` in order to use asyncio as the loop implementation. Alternatively you can create your own worker class that combines `asyncio` with `httptools`(httptools seems to be about 10% faster than h11 in my ad-hoc testing).\n\nSee https://github.com/encode/uvicorn/blob/master/uvicorn/workers.py for worker class definition.",
+          "similarity_score": 0.595085273091055,
+          "retrieval_score": 0.595085273091055,
+          "predicted_category": null,
+          "classification_confidence": null
+        },
+        {
+          "citation": "[4]",
+          "repository": "tiangolo/fastapi",
+          "issue_number": 2690,
+          "issue_url": "https://github.com/fastapi/fastapi/issues/2690",
+          "source_url": "https://github.com/fastapi/fastapi/issues/2690#issuecomment-765433161",
+          "chunk_type": "comment",
+          "chunk_text": "Repository: tiangolo/fastapi\nIssue: #2690\nTitle: FastAPI+Uvicorn is running slow than Flask+uWSGI\n\nI believe using Uvicorn's Gunicorn worker class along with gunicorn offers more performance than the uvicorn workers",
+          "similarity_score": 0.5927020062109307,
+          "retrieval_score": 0.5927020062109307,
+          "predicted_category": null,
+          "classification_confidence": null
+        },
+        {
+          "citation": "[5]",
+          "repository": "tiangolo/fastapi",
+          "issue_number": 5919,
+          "issue_url": "https://github.com/fastapi/fastapi/issues/5919",
+          "source_url": "https://github.com/fastapi/fastapi/issues/5919",
+          "chunk_type": "heuristic_resolution",
+          "chunk_text": "Repository: tiangolo/fastapi\nIssue: #5919\nTitle: FastAPI/Uvicorn crashes every day around the same time, different APIs, different providers\n\n[Low-confidence heuristic resolution; not ground truth. Stored confidence: low]\n> yes indeed @yallxe's solution of using gunicorn instead of uvicorn solves the problem! So it's a uvicorn bug, weird, but okay! Thanks!!\n\nWhat probably happens now is that gunicorn will restart the workers, but the problem should still exist.",
+          "similarity_score": 0.5916265459110229,
+          "retrieval_score": 0.5916265459110229,
+          "predicted_category": null,
+          "classification_confidence": null
+        }
+      ],
+      "prior_answer": "I don’t have evidence in the retrieved excerpts that directly answers how to revoke an already authenticated WebSocket across four Uvicorn workers within 30 seconds, nor a cited issue that guarantees that behavior.\n\nWhat we do have:\n- A related discussion about WebSocket shutdown/closure behavior and worker choices, but without a definitive guarantee or cross-worker revocation mechanism [1], [3], [4].\n- Some heuristic guidance suggesting Gunicorn workers with Uvicorn (or different worker classes) as a workaround in related contexts, but not a scoped guarantee for OAuth2-based revocation across multiple workers, nor a time-bound guarantee [3], [4].\n\nSpecifically indexed evidence:\n- [1] discusses a resource question about per-process access; not a solution for WebSocket revocation across workers.\n- [3] mentions using UvicornH11Worker vs UvicornWorker when running with Gunicorn, for certain middleware-related issues; not a guarantee about OAuth2 revocation timing or cross-worker lifecycle for WebSockets.\n- [4] compares performance with Gunicorn/Uvicorn and mentions worker classes, but not a guarantee for revocation semantics or 30-second bound.\n\nConclusion: The retrieved evidence does not contain a concrete method or an indexed issue that demonstrates a guarantee for revoking an authenticated WebSocket connection across four Uvicorn workers within 30 seconds via a FastAPI OAuth2 dependency. If you can provide additional context or more specific issues, I can re-review.",
+      "prior_review_notes": "No retrieved excerpt establishes OAuth2 revocation across four workers within 30 seconds. Model abstained, but its opening related-evidence bullet cites [1] for WebSocket shutdown/closure; [1] only asks about a single-process resource. The actual WebSocket closure evidence is [2]. Flag this unsupported/misattributed auxiliary claim, not an invented revocation solution.",
+      "prior_unsupported_answer": true,
+      "label_ambiguous": false,
+      "messages": [
+        {
+          "role": "system",
+          "content": "You are a trustworthy assistant for GitHub issues. Answer the user’s question only using the retrieved issue excerpts below.\n\nRules:\n- Do not invent facts, fixes, commands, or citations.\n- If the retrieved evidence is insufficient to answer the requested question, state that directly and keep the abstention concise. Do not infer a solution or guarantee from related topics.\n- On abstention, default to only stating the evidence limitation. Omit loosely related evidence summaries, workarounds, and \"what we do have\" claims. Include an optional factual claim only if it helps explain the limitation and is directly supported by the exact excerpt cited.\n- Describe limitations of the retrieved excerpts, not an exhaustive absence of evidence in the corpus or proof that the requested behavior is impossible.\n- Treat heuristic resolution chunks as low-confidence evidence.\n- Cite every factual evidence claim with [1], [2], and so on, matching the supplied sources. Verify each claim against its exact cited excerpt; a shared topic, issue title, similarity score, or neighboring source is not support. Split claims when different excerpts support different parts, and omit any unsupported part. A plain statement of insufficient retrieved evidence does not need a citation.\n- Keep the answer concise and technical.\n\nRetrieved evidence:\n[{\"citation\": \"[1]\", \"repository\": \"tiangolo/fastapi\", \"issue_number\": 2074, \"issue_url\": \"https://github.com/fastapi/fastapi/issues/2074\", \"source_url\": \"https://github.com/fastapi/fastapi/issues/2074#issuecomment-695750650\", \"chunk_type\": \"comment\", \"similarity_score\": 0.6300810303006942, \"excerpt\": \"Repository: tiangolo/fastapi\\nIssue: #2074\\nTitle: Uvicorn workers timeout question\\n\\nDo you have any resource that can be accessed by only one process?\"}, {\"citation\": \"[2]\", \"repository\": \"tiangolo/fastapi\", \"issue_number\": 3008, \"issue_url\": \"https://github.com/fastapi/fastapi/issues/3008\", \"source_url\": \"https://github.com/fastapi/fastapi/issues/3008\", \"chunk_type\": \"heuristic_resolution\", \"similarity_score\": 0.6209475263013239, \"excerpt\": \"Repository: tiangolo/fastapi\\nIssue: #3008\\nTitle: WebSocket disconnected state is not propagated to the application code (proper closures, ping timeouts)\\n\\n[Low-confidence heuristic resolution; not ground truth. Stored confidence: low]\\nYou need to subclass the UvicornWorker and pass the CONFIG_SOMETHING (see how the worker is implemented) yourself, then you use that one with `gunicorn --worker-class your.path.CustomUvicornWorker`.\\n\\n(I'm on my phone)\\n\\nEDIT: Like this: https://www.uvicorn.org/deployment/#gunicorn\"}, {\"citation\": \"[3]\", \"repository\": \"tiangolo/fastapi\", \"issue_number\": 1724, \"issue_url\": \"https://github.com/fastapi/fastapi/issues/1724\", \"source_url\": \"https://github.com/fastapi/fastapi/issues/1724#issuecomment-664548586\", \"chunk_type\": \"comment\", \"similarity_score\": 0.595085273091055, \"excerpt\": \"Repository: tiangolo/fastapi\\nIssue: #1724\\nTitle: Requests over the same connection not terminated properly when middleware is used (affects uvloop + python 3.8)\\n\\nIf you're running Uvicorn using Gunicorn as the process manager, you'll want to switch to `UvicornH11Worker` (asyncio + h11) instead of `UvicornWorker` in order to use asyncio as the loop implementation. Alternatively you can create your own worker class that combines `asyncio` with `httptools`(httptools seems to be about 10% faster than h11 in my ad-hoc testing).\\n\\nSee https://github.com/encode/uvicorn/blob/master/uvicorn/workers.py for worker class definition.\"}, {\"citation\": \"[4]\", \"repository\": \"tiangolo/fastapi\", \"issue_number\": 2690, \"issue_url\": \"https://github.com/fastapi/fastapi/issues/2690\", \"source_url\": \"https://github.com/fastapi/fastapi/issues/2690#issuecomment-765433161\", \"chunk_type\": \"comment\", \"similarity_score\": 0.5927020062109307, \"excerpt\": \"Repository: tiangolo/fastapi\\nIssue: #2690\\nTitle: FastAPI+Uvicorn is running slow than Flask+uWSGI\\n\\nI believe using Uvicorn's Gunicorn worker class along with gunicorn offers more performance than the uvicorn workers\"}, {\"citation\": \"[5]\", \"repository\": \"tiangolo/fastapi\", \"issue_number\": 5919, \"issue_url\": \"https://github.com/fastapi/fastapi/issues/5919\", \"source_url\": \"https://github.com/fastapi/fastapi/issues/5919\", \"chunk_type\": \"heuristic_resolution\", \"similarity_score\": 0.5916265459110229, \"excerpt\": \"Repository: tiangolo/fastapi\\nIssue: #5919\\nTitle: FastAPI/Uvicorn crashes every day around the same time, different APIs, different providers\\n\\n[Low-confidence heuristic resolution; not ground truth. Stored confidence: low]\\n> yes indeed @yallxe's solution of using gunicorn instead of uvicorn solves the problem! So it's a uvicorn bug, weird, but okay! Thanks!!\\n\\nWhat probably happens now is that gunicorn will restart the workers, but the problem should still exist.\"}]"
+        },
+        {
+          "role": "user",
+          "content": "How can a FastAPI OAuth2 dependency revoke an already authenticated WebSocket connection across four Uvicorn workers within 30 seconds, and what indexed issue demonstrates that guarantee?"
+        }
+      ],
+      "estimated_input_tokens": 1278,
+      "conservative_input_token_bound": 5550,
+      "review_notes": "Pending citation-support review",
+      "human_verified": ""
+    }
+  ],
+  "cost_note": "API-reported tokens at $0.05/$0.40 per million input/output; cached discounts ignored; not invoice reconciliation.",
+  "error_type": "APIConnectionError"
+}

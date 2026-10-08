@@ -6,7 +6,7 @@ This review uses existing measured experiment files. No OpenAI calls, deployment
 
 Historical A and B ran against all 63,634 chunks, including 632 rows stored under the additional `fastapi/fastapi` alias. The original three-repository snapshot has 63,002 chunks. This was a scope difference, not a new embedding run.
 
-The existing `clean_scope_experiment.json` replays the accepted combined configuration (ef_search=100, fetch 30, collapse to five distinct issues) on both scopes using cached embeddings and a shared read-only database snapshot. It reports zero per-case metric changes and zero refusal-decision changes across the original 60 cases. The metrics below use only the 45 answerable cases.
+The existing [clean_scope_experiment.json](../experiments/retrieval/clean_scope_experiment.json) replays the accepted combined configuration (ef_search=100, fetch 30, collapse to five distinct issues) on both scopes using cached embeddings and a shared read-only database snapshot. It reports zero per-case metric changes and zero refusal-decision changes across the original 60 cases. The metrics below use only the 45 answerable cases.
 
 | Scope | All rows Hit@5 / Recall@5 / MRR | Configured repos Hit@5 / Recall@5 / MRR |
 |---|---|---|
@@ -27,7 +27,7 @@ This is repository production code, not a deployment claim. The Lambda still run
 
 ## Cleanup proposal: retain and exclude
 
-Keep the current archive-only arrangement. The approved local archive already exists under the git-ignored `archives/fastapi_alias/20261007T210850Z` directory. `alias_archive_receipt.json` records verified hashes, round-trip checks, credential scanning, and post-export database counts.
+Keep the current archive-only arrangement. The approved local archive already exists under the git-ignored `archives/fastapi_alias/20261007T210850Z` directory. [alias_archive_receipt.json](alias_archive_receipt.json) records verified hashes, round-trip checks, credential scanning, and post-export database counts.
 
 | Retained alias table | Rows |
 |---|---:|

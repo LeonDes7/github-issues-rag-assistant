@@ -1,0 +1,31 @@
+{
+  "lambda": {
+    "last_modified": "2026-10-05T11:26:17.000+0000",
+    "memory_mb": 1024,
+    "timeout_seconds": 90,
+    "architecture": [
+      "x86_64"
+    ],
+    "settings": {
+      "OPENAI_GENERATION_MODEL": "gpt-4o-mini",
+      "OPENAI_EMBEDDING_MODEL": "text-embedding-3-small",
+      "RAG_CONTEXT_MODE": "unset; deployed default unverified",
+      "RAG_RETRIEVAL_MODE": "unset; deployed default unverified",
+      "RAG_HNSW_EF_SEARCH": "unset; deployed default unverified",
+      "RAG_CONFIDENCE_THRESHOLD": "unset; deployed default unverified",
+      "RAG_REPOSITORIES": "unset; deployed default unverified"
+    }
+  },
+  "rds_instances": [
+    {
+      "identifier": "github-rag-db",
+      "class": "db.t4g.micro",
+      "engine": "postgres",
+      "version": "18.3",
+      "status": "available",
+      "multi_az": false,
+      "storage_type": "gp2",
+      "allocated_storage_gib": 20
+    }
+  ]
+}

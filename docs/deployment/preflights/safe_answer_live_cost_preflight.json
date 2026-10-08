@@ -1,0 +1,31 @@
+{
+  "status": "prepared_only_approval_pending",
+  "region": "us-east-2",
+  "endpoint": "https://w3qqwb25w0.execute-api.us-east-2.amazonaws.com/ask",
+  "method": "POST",
+  "request_count": 1,
+  "body": {
+    "question": "What problem did the reporter observe when sending larger base64-encoded video frames over a WebSocket?",
+    "top_k": 5
+  },
+  "case_id": "generated-tiangolo-fastapi-2071",
+  "prior_local_outcomes": [
+    "answered",
+    "answered",
+    "answered",
+    "answered",
+    "answered"
+  ],
+  "embedding_model": "text-embedding-3-small",
+  "generation_model": "gpt-4o-mini",
+  "embedding_tokens": 18,
+  "max_generation_input_tokens": 12000,
+  "max_generation_output_tokens": 512,
+  "retries": 0,
+  "proposed_hard_openai_cap_usd": "0.00210756",
+  "build_push_deploy": false,
+  "configuration_changes": false,
+  "database_writes": false,
+  "extra_health_or_warmup_calls": 0,
+  "stop_on_failure_no_retry": true
+}

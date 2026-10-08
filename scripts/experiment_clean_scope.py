@@ -17,14 +17,14 @@ ALIAS = "fastapi/fastapi"
 
 
 def main():
-    cases = evaluate.load_cases(ROOT / "evaluation_cases.generated.jsonl")
+    cases = evaluate.load_cases(ROOT / "evaluation/evaluation_cases.generated.jsonl")
     cache = json.loads((ROOT / ".question_embeddings.json").read_text())
     if cache["questions"] != {c["case_id"]: c["question"] for c in cases} or cache["model"] != "text-embedding-3-small":
         raise RuntimeError("Cache does not match cases")
     settings = api.get_settings()
     if set(settings["RAG_REPOSITORIES"]) != set(CLEAN):
         raise RuntimeError("Configured production repositories differ from approved clean scope")
-    cutoff = json.loads((ROOT / "confidence_calibration_results.json").read_text())["threshold_selection"]["recommended_threshold"]
+    cutoff = json.loads((ROOT / "docs/experiments/retrieval/confidence_calibration_results.json").read_text())["threshold_selection"]["recommended_threshold"]
     report = {"started_at": datetime.now(timezone.utc).isoformat(), "ef_search": 100,
               "candidate_chunks": 30, "selected_issues": 5, "cutoff": cutoff,
               "openai_calls": 0, "cutoff_retuned": False, "production_repositories": settings["RAG_REPOSITORIES"],
@@ -69,7 +69,7 @@ def main():
                                 for b, a in zip(before, after) if b["metrics"] != a["metrics"]]
     report["refusal_changes"] = [a["case_id"] for b, a in zip(before, after) if b["refused"] != a["refused"]]
     report["finished_at"] = datetime.now(timezone.utc).isoformat()
-    (ROOT / "clean_scope_experiment.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+    (ROOT / "docs/experiments/retrieval/clean_scope_experiment.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({k: report[k] for k in ("counts", "alias_rows_by_issue_table", "foreign_keys", "summaries", "metric_changes", "refusal_changes")}, indent=2), flush=True)
 
 
