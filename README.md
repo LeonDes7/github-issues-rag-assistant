@@ -4,6 +4,8 @@ An evidence-grounded assistant for closed FastAPI, Starlette and Pydantic issues
 It retrieves PostgreSQL issue discussions, answers from the retrieved evidence,
 and returns GitHub source links. Unsupported questions can be refused.
 
+![GitHub Issues Assistant question form](docs/images/streamlit-demo.png)
+
 ## Current status
 
 The existing `github-rag-api` Lambda in `us-east-2` is deployed and smoke-tested.
