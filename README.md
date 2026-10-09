@@ -1,5 +1,15 @@
 # Trustworthy RAG Assistant for GitHub Issues
 
+## Results at a glance
+
+- Corpus: **9,555 issues / 43,535 comments / 63,002 chunks**.
+- Development set (45 generated answerable cases, not human-verified): Hit@5 **0.8000 → 0.9333**; MRR **0.7526 → 0.8389**.
+- Harder unanswerables: cutoff refused only **1/15**; generation abstained on the other 14 in the original run, with one auxiliary citation misattribution.
+- Idempotent real-database replay verified on already loaded data; new-issue incremental ingestion untested; no schedule deployed.
+- Historical local answered-query p50/p95: **2.047 / 4.815 s**; mean token cost **$0.000257734/answered query**; predates deployed controls.
+- Stack: GitHub → S3 → PostgreSQL/pgvector → FastAPI/OpenAI → Lambda/API Gateway → Streamlit.
+- Demo video: **[link pending]**.
+
 An evidence-grounded assistant for closed FastAPI, Starlette and Pydantic issues.
 It retrieves PostgreSQL issue discussions, answers from the retrieved evidence,
 and returns GitHub source links. Unsupported questions can be refused.
@@ -18,10 +28,6 @@ The API endpoint is:
 The Streamlit interface calls the API from server-side Python.
 The backend remediation is deployed. Streamlit safeguards are committed and pushed,
 but public rollout is not independently verified.
-
-## Results at a glance
-
-Real-database loader/embedding replay: two passes, 0 inserts/updates/embedding calls, unchanged counts and fingerprints; already-loaded-data rerun safety verified, new-issue ingestion untested, no schedule deployed.
 
 ## Architecture
 
@@ -123,9 +129,9 @@ Heuristic classification and lexical grounding checks are estimates.
 | OpenAI retries | `OPENAI_MAX_RETRIES=0` |
 
 Below the cutoff, no generation call is made. The fixed answer is:
-?There isn't enough evidence in the indexed issues to answer this question.?
+"There isn't enough evidence in the indexed issues to answer this question."
 A model insufficient-evidence decision returns only:
-?The retrieved excerpts do not provide enough evidence to answer this question.?
+"The retrieved excerpts do not provide enough evidence to answer this question."
 Model-written side claims and inline citations are discarded on that path.
 Retrieved sources remain separate; their presence does not prove the unavailable answer.
 
