@@ -1,0 +1,3139 @@
+{
+  "status": "pass",
+  "phase": "complete: step 1 PASS",
+  "snapshots": {
+    "baseline": {
+      "selected_counts": {
+        "issues": 9555,
+        "comments": 43535,
+        "chunks": 63002,
+        "embeddings": 63002
+      },
+      "by_repository": {
+        "encode/starlette": {
+          "issues": 777,
+          "comments": 3214,
+          "stored_comment_count": 3214,
+          "chunks": 4450,
+          "embeddings": 4450
+        },
+        "fastapi/fastapi": {
+          "issues": 76,
+          "comments": 420,
+          "stored_comment_count": 420,
+          "chunks": 632,
+          "embeddings": 632
+        },
+        "pydantic/pydantic": {
+          "issues": 5223,
+          "comments": 20149,
+          "stored_comment_count": 20149,
+          "chunks": 30297,
+          "embeddings": 30297
+        },
+        "tiangolo/fastapi": {
+          "issues": 3555,
+          "comments": 20172,
+          "stored_comment_count": 20172,
+          "chunks": 28255,
+          "embeddings": 28255
+        }
+      },
+      "embedding_fingerprints": {
+        "encode/starlette": "07e0de405555127dc28938004f4ba0b2",
+        "fastapi/fastapi": "4c93f30c2f7144742597cd207c76dc90",
+        "pydantic/pydantic": "40b8bd6690d5374a167715216e0cb907",
+        "tiangolo/fastapi": "470f8511464bf1265ac75887917664fb"
+      }
+    },
+    "pass_1": {
+      "selected_counts": {
+        "issues": 9555,
+        "comments": 43535,
+        "chunks": 63002,
+        "embeddings": 63002
+      },
+      "by_repository": {
+        "encode/starlette": {
+          "issues": 777,
+          "comments": 3214,
+          "stored_comment_count": 3214,
+          "chunks": 4450,
+          "embeddings": 4450
+        },
+        "fastapi/fastapi": {
+          "issues": 76,
+          "comments": 420,
+          "stored_comment_count": 420,
+          "chunks": 632,
+          "embeddings": 632
+        },
+        "pydantic/pydantic": {
+          "issues": 5223,
+          "comments": 20149,
+          "stored_comment_count": 20149,
+          "chunks": 30297,
+          "embeddings": 30297
+        },
+        "tiangolo/fastapi": {
+          "issues": 3555,
+          "comments": 20172,
+          "stored_comment_count": 20172,
+          "chunks": 28255,
+          "embeddings": 28255
+        }
+      },
+      "embedding_fingerprints": {
+        "encode/starlette": "07e0de405555127dc28938004f4ba0b2",
+        "fastapi/fastapi": "4c93f30c2f7144742597cd207c76dc90",
+        "pydantic/pydantic": "40b8bd6690d5374a167715216e0cb907",
+        "tiangolo/fastapi": "470f8511464bf1265ac75887917664fb"
+      }
+    },
+    "pass_2": {
+      "selected_counts": {
+        "issues": 9555,
+        "comments": 43535,
+        "chunks": 63002,
+        "embeddings": 63002
+      },
+      "by_repository": {
+        "encode/starlette": {
+          "issues": 777,
+          "comments": 3214,
+          "stored_comment_count": 3214,
+          "chunks": 4450,
+          "embeddings": 4450
+        },
+        "fastapi/fastapi": {
+          "issues": 76,
+          "comments": 420,
+          "stored_comment_count": 420,
+          "chunks": 632,
+          "embeddings": 632
+        },
+        "pydantic/pydantic": {
+          "issues": 5223,
+          "comments": 20149,
+          "stored_comment_count": 20149,
+          "chunks": 30297,
+          "embeddings": 30297
+        },
+        "tiangolo/fastapi": {
+          "issues": 3555,
+          "comments": 20172,
+          "stored_comment_count": 20172,
+          "chunks": 28255,
+          "embeddings": 28255
+        }
+      },
+      "embedding_fingerprints": {
+        "encode/starlette": "07e0de405555127dc28938004f4ba0b2",
+        "fastapi/fastapi": "4c93f30c2f7144742597cd207c76dc90",
+        "pydantic/pydantic": "40b8bd6690d5374a167715216e0cb907",
+        "tiangolo/fastapi": "470f8511464bf1265ac75887917664fb"
+      }
+    }
+  },
+  "passes": [
+    {
+      "pass": 1,
+      "loader": {
+        "bronze_inputs": [
+          {
+            "repository": "tiangolo/fastapi",
+            "s3_path": "s3://leon-rag-project-raw-2026/bronze/github/repo=fastapi__fastapi/ingested_at=20261005T101821560700Z/issues.jsonl"
+          },
+          {
+            "repository": "encode/starlette",
+            "s3_path": "s3://leon-rag-project-raw-2026/bronze/github/repo=encode__starlette/ingested_at=20261005T101851267365Z/issues.jsonl"
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "s3_path": "s3://leon-rag-project-raw-2026/bronze/github/repo=pydantic__pydantic/ingested_at=20261005T101918016130Z/issues.jsonl"
+          }
+        ],
+        "rows_inserted": 0,
+        "rows_updated": 0,
+        "total_rows_in_rds": 9631,
+        "validation": {
+          "source_records": 9831,
+          "valid_records": 9555,
+          "rejected_records": 276,
+          "duplicate_records": 276,
+          "missing_bodies": 29,
+          "missing_heuristic_resolutions": 5655,
+          "rejected_reasons": [
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 1,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 2,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 3,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 4,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 5,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 6,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 7,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 8,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 9,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 10,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 11,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 12,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 13,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 14,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 15,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 16,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 17,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 18,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 19,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 20,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 21,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 22,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 23,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 24,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 25,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 26,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 27,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 28,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 29,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 30,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 31,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 32,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 33,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 34,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 35,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 36,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 37,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 38,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 39,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 40,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 41,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 42,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 43,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 44,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 45,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 46,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 47,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 48,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 49,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 50,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 51,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 52,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 53,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 54,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 55,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 56,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 57,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 58,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 59,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 60,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 61,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 62,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 63,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 64,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 65,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 66,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 67,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 68,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 69,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 70,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 71,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 72,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 73,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 74,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 75,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 76,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 1,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 2,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 3,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 4,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 5,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 6,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 7,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 8,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 9,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 10,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 11,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 12,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 13,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 14,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 15,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 16,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 17,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 18,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 19,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 20,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 21,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 22,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 23,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 24,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 25,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 26,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 27,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 28,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 29,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 30,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 31,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 32,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 33,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 34,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 35,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 36,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 37,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 38,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 39,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 40,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 41,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 42,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 43,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 44,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 45,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 46,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 47,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 48,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 49,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 50,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 51,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 52,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 53,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 54,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 55,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 56,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 57,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 58,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 59,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 60,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 61,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 62,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 63,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 64,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 65,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 66,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 67,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 68,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 69,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 70,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 71,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 72,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 73,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 74,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 75,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 76,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 77,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 78,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 79,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 80,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 81,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 82,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 83,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 84,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 85,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 86,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 87,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 88,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 89,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 90,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 91,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 92,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 93,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 94,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 95,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 96,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 97,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 98,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 99,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 100,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 1,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 2,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 3,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 4,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 5,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 6,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 7,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 8,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 9,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 10,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 11,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 12,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 13,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 14,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 15,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 16,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 17,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 18,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 19,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 20,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 21,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 22,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 23,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 24,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 25,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 26,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 27,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 28,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 29,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 30,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 31,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 32,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 33,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 34,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 35,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 36,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 37,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 38,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 39,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 40,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 41,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 42,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 43,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 44,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 45,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 46,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 47,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 48,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 49,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 50,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 51,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 52,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 53,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 54,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 55,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 56,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 57,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 58,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 59,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 60,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 61,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 62,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 63,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 64,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 65,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 66,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 67,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 68,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 69,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 70,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 71,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 72,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 73,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 74,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 75,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 76,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 77,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 78,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 79,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 80,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 81,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 82,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 83,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 84,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 85,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 86,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 87,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 88,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 89,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 90,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 91,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 92,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 93,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 94,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 95,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 96,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 97,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 98,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 99,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 100,
+              "reason": "duplicate repository and issue number"
+            }
+          ],
+          "by_repository": {
+            "tiangolo/fastapi": {
+              "source_records": 3631,
+              "rejected_records": 76,
+              "valid_records": 3555,
+              "duplicate_records": 76,
+              "missing_bodies": 11,
+              "missing_heuristic_resolutions": 1441
+            },
+            "encode/starlette": {
+              "source_records": 877,
+              "rejected_records": 100,
+              "valid_records": 777,
+              "duplicate_records": 100,
+              "missing_bodies": 3,
+              "missing_heuristic_resolutions": 647
+            },
+            "pydantic/pydantic": {
+              "source_records": 5323,
+              "rejected_records": 100,
+              "valid_records": 5223,
+              "duplicate_records": 100,
+              "missing_bodies": 15,
+              "missing_heuristic_resolutions": 3567
+            }
+          }
+        },
+        "resolution_note": "Resolution text is a low-confidence heuristic based on the last maintainer-associated comment before closure; it is not guaranteed ground truth."
+      },
+      "embedding": {
+        "issues_processed": 14,
+        "issues_selected": 14,
+        "model": "text-embedding-3-small",
+        "chunk_count": 0,
+        "chunks_by_type": {
+          "issue_body": 0,
+          "comment": 0,
+          "heuristic_resolution": 0
+        },
+        "estimated_input_tokens": 0,
+        "estimated_embedding_api_calls": 0,
+        "estimated_cost_usd": 0.0,
+        "repositories": [
+          "tiangolo/fastapi",
+          "encode/starlette",
+          "pydantic/pydantic"
+        ],
+        "embeddings_stored": 0,
+        "failed_or_skipped_chunks": 0,
+        "failed_chunks": 0,
+        "skipped_chunks_already_embedded": 0,
+        "input_tokens_used": 0,
+        "actual_embedding_api_calls": 0,
+        "table_totals": {
+          "issues_with_chunks": 9541,
+          "total_chunks": 63002,
+          "total_embeddings": 63002,
+          "chunks_and_embeddings_by_type": {
+            "comment": {
+              "chunks": 45283,
+              "embeddings": 45283
+            },
+            "heuristic_resolution": {
+              "chunks": 3943,
+              "embeddings": 3943
+            },
+            "issue_body": {
+              "chunks": 13776,
+              "embeddings": 13776
+            }
+          }
+        },
+        "similarity_search_examples": []
+      }
+    },
+    {
+      "pass": 2,
+      "loader": {
+        "bronze_inputs": [
+          {
+            "repository": "tiangolo/fastapi",
+            "s3_path": "s3://leon-rag-project-raw-2026/bronze/github/repo=fastapi__fastapi/ingested_at=20261005T101821560700Z/issues.jsonl"
+          },
+          {
+            "repository": "encode/starlette",
+            "s3_path": "s3://leon-rag-project-raw-2026/bronze/github/repo=encode__starlette/ingested_at=20261005T101851267365Z/issues.jsonl"
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "s3_path": "s3://leon-rag-project-raw-2026/bronze/github/repo=pydantic__pydantic/ingested_at=20261005T101918016130Z/issues.jsonl"
+          }
+        ],
+        "rows_inserted": 0,
+        "rows_updated": 0,
+        "total_rows_in_rds": 9631,
+        "validation": {
+          "source_records": 9831,
+          "valid_records": 9555,
+          "rejected_records": 276,
+          "duplicate_records": 276,
+          "missing_bodies": 29,
+          "missing_heuristic_resolutions": 5655,
+          "rejected_reasons": [
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 1,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 2,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 3,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 4,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 5,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 6,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 7,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 8,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 9,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 10,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 11,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 12,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 13,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 14,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 15,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 16,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 17,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 18,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 19,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 20,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 21,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 22,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 23,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 24,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 25,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 26,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 27,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 28,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 29,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 30,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 31,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 32,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 33,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 34,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 35,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 36,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 37,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 38,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 39,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 40,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 41,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 42,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 43,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 44,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 45,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 46,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 47,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 48,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 49,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 50,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 51,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 52,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 53,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 54,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 55,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 56,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 57,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 58,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 59,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 60,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 61,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 62,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 63,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 64,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 65,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 66,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 67,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 68,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 69,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 70,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 71,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 72,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 73,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 74,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 75,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "tiangolo/fastapi",
+              "source_line_number": 76,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 1,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 2,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 3,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 4,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 5,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 6,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 7,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 8,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 9,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 10,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 11,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 12,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 13,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 14,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 15,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 16,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 17,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 18,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 19,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 20,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 21,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 22,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 23,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 24,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 25,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 26,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 27,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 28,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 29,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 30,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 31,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 32,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 33,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 34,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 35,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 36,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 37,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 38,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 39,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 40,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 41,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 42,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 43,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 44,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 45,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 46,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 47,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 48,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 49,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 50,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 51,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 52,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 53,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 54,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 55,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 56,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 57,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 58,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 59,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 60,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 61,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 62,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 63,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 64,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 65,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 66,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 67,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 68,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 69,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 70,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 71,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 72,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 73,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 74,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 75,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 76,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 77,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 78,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 79,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 80,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 81,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 82,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 83,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 84,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 85,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 86,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 87,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 88,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 89,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 90,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 91,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 92,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 93,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 94,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 95,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 96,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 97,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 98,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 99,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "encode/starlette",
+              "source_line_number": 100,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 1,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 2,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 3,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 4,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 5,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 6,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 7,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 8,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 9,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 10,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 11,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 12,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 13,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 14,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 15,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 16,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 17,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 18,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 19,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 20,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 21,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 22,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 23,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 24,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 25,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 26,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 27,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 28,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 29,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 30,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 31,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 32,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 33,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 34,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 35,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 36,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 37,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 38,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 39,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 40,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 41,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 42,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 43,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 44,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 45,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 46,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 47,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 48,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 49,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 50,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 51,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 52,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 53,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 54,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 55,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 56,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 57,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 58,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 59,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 60,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 61,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 62,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 63,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 64,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 65,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 66,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 67,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 68,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 69,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 70,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 71,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 72,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 73,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 74,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 75,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 76,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 77,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 78,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 79,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 80,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 81,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 82,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 83,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 84,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 85,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 86,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 87,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 88,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 89,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 90,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 91,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 92,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 93,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 94,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 95,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 96,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 97,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 98,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 99,
+              "reason": "duplicate repository and issue number"
+            },
+            {
+              "repository": "pydantic/pydantic",
+              "source_line_number": 100,
+              "reason": "duplicate repository and issue number"
+            }
+          ],
+          "by_repository": {
+            "tiangolo/fastapi": {
+              "source_records": 3631,
+              "rejected_records": 76,
+              "valid_records": 3555,
+              "duplicate_records": 76,
+              "missing_bodies": 11,
+              "missing_heuristic_resolutions": 1441
+            },
+            "encode/starlette": {
+              "source_records": 877,
+              "rejected_records": 100,
+              "valid_records": 777,
+              "duplicate_records": 100,
+              "missing_bodies": 3,
+              "missing_heuristic_resolutions": 647
+            },
+            "pydantic/pydantic": {
+              "source_records": 5323,
+              "rejected_records": 100,
+              "valid_records": 5223,
+              "duplicate_records": 100,
+              "missing_bodies": 15,
+              "missing_heuristic_resolutions": 3567
+            }
+          }
+        },
+        "resolution_note": "Resolution text is a low-confidence heuristic based on the last maintainer-associated comment before closure; it is not guaranteed ground truth."
+      },
+      "embedding": {
+        "issues_processed": 14,
+        "issues_selected": 14,
+        "model": "text-embedding-3-small",
+        "chunk_count": 0,
+        "chunks_by_type": {
+          "issue_body": 0,
+          "comment": 0,
+          "heuristic_resolution": 0
+        },
+        "estimated_input_tokens": 0,
+        "estimated_embedding_api_calls": 0,
+        "estimated_cost_usd": 0.0,
+        "repositories": [
+          "tiangolo/fastapi",
+          "encode/starlette",
+          "pydantic/pydantic"
+        ],
+        "embeddings_stored": 0,
+        "failed_or_skipped_chunks": 0,
+        "failed_chunks": 0,
+        "skipped_chunks_already_embedded": 0,
+        "input_tokens_used": 0,
+        "actual_embedding_api_calls": 0,
+        "table_totals": {
+          "issues_with_chunks": 9541,
+          "total_chunks": 63002,
+          "total_embeddings": 63002,
+          "chunks_and_embeddings_by_type": {
+            "comment": {
+              "chunks": 45283,
+              "embeddings": 45283
+            },
+            "heuristic_resolution": {
+              "chunks": 3943,
+              "embeddings": 3943
+            },
+            "issue_body": {
+              "chunks": 13776,
+              "embeddings": 13776
+            }
+          }
+        },
+        "similarity_search_examples": []
+      }
+    }
+  ],
+  "openai_requests": 0,
+  "openai_cost_usd": 0,
+  "delete_attempts": 0,
+  "repositories": [
+    "tiangolo/fastapi",
+    "encode/starlette",
+    "pydantic/pydantic"
+  ],
+  "rds_status": "available",
+  "source_object_counts": {
+    "tiangolo/fastapi": {
+      "issue_objects": 3555,
+      "legacy_objects": 1
+    },
+    "encode/starlette": {
+      "issue_objects": 777,
+      "legacy_objects": 1
+    },
+    "pydantic/pydantic": {
+      "issue_objects": 5223,
+      "legacy_objects": 1
+    }
+  },
+  "manifest_sha256": "9b97d1611bb5717d0590c35e39909d7e866d0ddeb5d2eaf9e4684442c432e67d",
+  "source_bytes": 157834341,
+  "preflight_seconds": 4.324,
+  "downloaded_objects": 9558,
+  "committed": true,
+  "embedding_fingerprint_comparison": "baseline = pass 1 = pass 2",
+  "baseline_counts_unchanged": true,
+  "elapsed_seconds": 796.502
+}

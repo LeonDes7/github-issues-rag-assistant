@@ -20,6 +20,8 @@ JSON are provenance from the original run, not current filesystem destinations.
 
 ## deployment/live
 
+- [idempotency_live_report.md](deployment/live/idempotency_live_report.md)
+- [idempotency_live_results.json](deployment/live/idempotency_live_results.json)
 - [deployment_live_report.md](deployment/live/deployment_live_report.md)
 - [deployment_live_results.json](deployment/live/deployment_live_results.json)
 - [final_deployment_live_report.md](deployment/live/final_deployment_live_report.md)
@@ -31,6 +33,8 @@ JSON are provenance from the original run, not current filesystem destinations.
 
 ## deployment/preflights
 
+- [idempotency_plan.md](deployment/preflights/idempotency_plan.md)
+- [idempotency_preflight.json](deployment/preflights/idempotency_preflight.json)
 - [deployment_cost_controls_preflight.json](deployment/preflights/deployment_cost_controls_preflight.json)
 - [deployment_cost_controls_preflight.md](deployment/preflights/deployment_cost_controls_preflight.md)
 - [deployment_image_validation.json](deployment/preflights/deployment_image_validation.json)

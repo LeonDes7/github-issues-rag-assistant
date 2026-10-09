@@ -1,0 +1,19 @@
+# Real-database idempotency replay plan
+
+Step 1 was explicitly authorized and completed: see the [passing replay report](../live/idempotency_live_report.md). Both passes produced 0 inserts, 0 updates and 0 embedding calls, unchanged issue/comment/chunk counts (9,555 / 43,535 / 63,002), and unchanged embedding fingerprints. This verifies rerun safety on already loaded data, not live incremental ingestion with new issues; no schedule is deployed. Steps 2 and 3 remain pending. The plan below preserves the execution conditions.
+
+Read: docs/corpus/step1_scope_review.md and docs/experiments/context/answer_comparison_review.md. Their historical local-only proposal is superseded by the user's explicit real-database request. Existing mocked tests do not prove persistence idempotency.
+
+Scope: tiangolo/fastapi, encode/starlette, pydantic/pydantic. Preserve alias rows. No GitHub ingestion, AWS resource changes, deletes, pushes, or deployment.
+
+Before execution, read current Bronze and the real database with a read-only session. Compare desired chunk text/content hashes/IDs with existing embeddings, and save nonsecret preflight counts. Expected OpenAI cost is $0 only if all desired chunks have reusable embeddings. S3 requests and transfer can incur incremental AWS charges; no exact AWS total is established by this plan.
+
+Earlier preparation checkpoint: an initial full read-only source scan was stopped before completion. The subsequently authorized execution used a metadata-only preflight completed in 4.324 seconds, followed by pinned source reads cached for both passes. The replay passed with zero OpenAI calls. Pending embeddings would have caused a stop rather than paid regeneration.
+
+Step 1 is now authorized. The runner uses a strict client SQL allowlist rejecting DELETE, DROP, TRUNCATE and schema changes, plus a client guard rejecting every OpenAI request. It installs no server policy or privileges, because database schema/resource changes are excluded. Skip schema preparation only after verifying required schema already exists. This preserves production loader/upsert and embedding-selection logic while enforcing the user's constraints. Reject nonempty changed-issue deletion work; do not silently replace deletion with another persistence strategy.
+
+Authorized execution conditions: verify RDS is already available without starting it; metadata-only per-prefix inventory preflight capped at 10 minutes; no full Bronze-body scan during preflight. Download pinned source bodies once during replay using conditional ETags, cache for both production loader passes, and recheck metadata before/after each pass with a minute-based source monitor. Run in a separate hidden terminal with redirected progress logs and one-minute heartbeats. Hold existing Silver/Gold write locks and both passes in one transaction; on any blocked condition roll back. Save baseline/pass 1/pass 2 counts and embedding fingerprints, inserted/updated totals, and scoped plus retained-alias counts. Stop after step 1.
+
+Capture counts globally and per selected repository before replay, after loader+embedding pass 1, and after identical pass 2. Count Silver issues, actual JSON comment array elements (also check stored comment_count), Gold chunks and nonnull embeddings. Capture deterministic sorted fingerprints of chunk IDs/text/content hashes/embedding values. Record loader insert/update totals and actual embedding API call counts, independently guarded at the client boundary.
+
+Assert pass 2 issue/comment/chunk counts equal pass 1; assert no regenerated embeddings, zero embedding API requests, and unchanged embedding fingerprints. Also report baseline differences and retained alias counts. Abort on unexpected pending work, delete attempt, source change, schema mismatch, or concurrent data changes. Save success/failure JSON and Markdown report locally. A failed guard is a blocked replay, not a passing idempotency result.

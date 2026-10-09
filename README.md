@@ -19,6 +19,10 @@ The Streamlit interface calls the API from server-side Python.
 The backend remediation is deployed. Streamlit safeguards are committed and pushed,
 but public rollout is not independently verified.
 
+## Results at a glance
+
+Real-database loader/embedding replay: two passes, 0 inserts/updates/embedding calls, unchanged counts and fingerprints; already-loaded-data rerun safety verified, new-issue ingestion untested, no schedule deployed.
+
 ## Architecture
 
 1. GitHub closed issues and comments are stored unchanged in S3 Bronze.
@@ -178,6 +182,10 @@ $0.000216/query and 19 refusals; it predates final distinct-issue retrieval.
 See [measurement report](docs/measurements/final_latency_cost_report.md).
 
 ## Live verification
+
+Replaying the loader and embedding step twice on the real database produced 0 inserts, 0 updates and 0 embedding calls; issue/comment/chunk counts stayed 9,555 / 43,535 / 63,002 and embedding fingerprints were unchanged.
+This verifies rerun safety on already loaded data, not live incremental ingestion with new issues; no schedule is deployed.
+See the [idempotency report](docs/deployment/live/idempotency_live_report.md) and [recorded results](docs/deployment/live/idempotency_live_results.json).
 
 Current remediation image: **216,254,880 compressed bytes**.
 Digest: `sha256:3ee06641a7814eec96ed08c553ab7a15fdb82095e5f0ef983636d2c6f1855330`.

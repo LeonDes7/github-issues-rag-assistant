@@ -1,0 +1,18 @@
+{
+  "status": "completed_pass",
+  "source_scan_status": "stopped_before_completion_due_to_runtime",
+  "database_replay_runs": 2,
+  "openai_requests": 0,
+  "expected_openai_cost_usd": 0,
+  "cost_condition": "Execution must reject all OpenAI calls and stop if embeddings would need regeneration.",
+  "aws_cost_estimate": "Not quantified: S3 LIST/GET and possible transfer charges, plus ongoing existing infrastructure costs.",
+  "live_baseline_counts": {
+    "issues": 9555,
+    "comments": 43535,
+    "chunks": 63002,
+    "embeddings": 63002
+  },
+  "idempotency_proven": true,
+  "next_action": "Wait for explicit user OK, then prepare and run guarded two-pass replay; stop after reporting step 1.",
+  "live_result": "docs/deployment/live/idempotency_live_results.json"
+}
