@@ -44,27 +44,13 @@ def _show_result(result: dict[str, Any]) -> None:
     )
     if not isinstance(citations, list):
         citations = []
+    citations = [
+        {key: value for key, value in citation.items()
+         if key not in {"predicted_category", "classification_confidence"}}
+        if isinstance(citation, dict) else citation
+        for citation in citations
+    ]
     if citations:
-        first = citations[0]
-        if isinstance(first, dict):
-            category = first.get("predicted_category")
-            confidence = first.get("classification_confidence")
-            repository = first.get("repository", "unknown repository")
-            issue_number = first.get("issue_number", "unknown")
-            if category:
-                st.metric(
-                    "Predicted category of top retrieved issue",
-                    str(category).replace("_", " ").title(),
-                    delta=f"{confidence or 'unspecified'} confidence",
-                )
-                st.caption(
-                    f"Based on {repository}#{issue_number}; this is the stored "
-                    "issue-classification prediction, not a classification of "
-                    "your question."
-                )
-            else:
-                st.info("No stored category prediction is available for the top citation.")
-
         st.subheader("Retrieved GitHub sources")
         st.caption(
             "These sources were retrieved for your question. Their presence does "
