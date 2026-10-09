@@ -6,7 +6,7 @@ Exactly one POST to `https://w3qqwb25w0.execute-api.us-east-2.amazonaws.com/ask`
 {"question":"What problem did the reporter observe when sending larger base64-encoded video frames over a WebSocket?","top_k":5}
 ```
 
-This is manually verified evaluation case `generated-tiangolo-fastapi-2071`, unrelated to settings or secrets. It returned an answered outcome in all five prior local measurement rounds. The expected supported fact is that larger base64-encoded video frames caused the WebSocket client to disconnect, grounded in FastAPI issue #2071. Those historical local results establish the selection; they do not guarantee a supported answer from the deployed remediation image.
+This is Codex-checked, not human-verified evaluation case `generated-tiangolo-fastapi-2071`, unrelated to settings or secrets. It returned an answered outcome in all five prior local measurement rounds. The expected supported fact is that larger base64-encoded video frames caused the WebSocket client to disconnect, grounded in FastAPI issue #2071. Those historical local results establish the selection; they do not guarantee a supported answer from the deployed remediation image.
 
 Existing models remain `text-embedding-3-small` and `gpt-4o-mini`; generation input is bounded at 12,000 tokens and output at 512, with zero OpenAI retries. Retrieval and cutoff settings remain unchanged. Local cl100k tokenization of the exact question yields 18 embedding tokens.
 

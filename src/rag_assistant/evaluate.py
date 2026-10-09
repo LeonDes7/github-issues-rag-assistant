@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS {RESULTS_TABLE} (
     run_id UUID NOT NULL REFERENCES {RUNS_TABLE}(run_id) ON DELETE CASCADE,
     case_id TEXT NOT NULL,
     verification_status TEXT NOT NULL CHECK (
-        verification_status IN ('manually_verified', 'heuristic', 'unresolved')
+        verification_status IN ('manually_verified', 'codex_checked', 'heuristic', 'unresolved')
     ),
     question TEXT NOT NULL,
     case_result JSONB NOT NULL,
@@ -121,6 +121,7 @@ def load_cases(path: Path = DEFAULT_CASES_PATH) -> list[dict[str, Any]]:
             raise ValueError(f"Invalid or duplicate case_id on line {line_number}")
         if case["verification_status"] not in {
             "manually_verified",
+            "codex_checked",
             "heuristic",
             "unresolved",
         }:

@@ -14,13 +14,23 @@ def retrieved(repository, issue_number, issue_url=None):
 
 
 class EvaluationTests(unittest.TestCase):
+    def test_generated_cases_distinguish_codex_checks_from_human_review(self):
+        cases = evaluate.load_cases(Path("evaluation/evaluation_cases.generated.jsonl"))
+        checked = [case for case in cases if case["verification_status"] == "codex_checked"]
+        self.assertEqual(len(checked), 45)
+        self.assertFalse(any(case["verification_status"] == "manually_verified" for case in cases))
+        self.assertTrue(all(case["human_verified"] == "" for case in cases))
+        self.assertTrue(all(case["verification_note"] ==
+                            "Checked by Codex against the gold issue; not human-verified."
+                            for case in checked))
+
     def test_initial_cases_are_small_and_provenance_labeled(self):
         cases = evaluate.load_cases(Path("evaluation/evaluation_cases.jsonl"))
 
         self.assertEqual(len(cases), 10)
         self.assertEqual(
             {case["verification_status"] for case in cases},
-            {"manually_verified", "heuristic", "unresolved"},
+            {"codex_checked", "heuristic", "unresolved"},
         )
         self.assertTrue(
             all(
