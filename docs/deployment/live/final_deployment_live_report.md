@@ -4,7 +4,7 @@
 
 ## Image and controls
 
-- Deployed image: `918897410856.dkr.ecr.us-east-2.amazonaws.com/github-rag-api@sha256:1e08220c4cbff6fbd46ea5f9d191532e7c2cd6c24f09731e556123340e2832e4`.
+- Deployed image: `<ACCOUNT_ID>.dkr.ecr.us-east-2.amazonaws.com/github-rag-api@sha256:1e08220c4cbff6fbd46ea5f9d191532e7c2cd6c24f09731e556123340e2832e4`.
 - Compressed ECR image size: **216247900 bytes** (216.2479 MB, decimal).
 - Lambda revision: `29648095-57d4-45db-b004-7a07c6fd3faa`.
 - Effective settings were validated in the built image using the existing Lambda environment and dummy secrets, with networking disabled. Source SHA-256 matched local source. Existing environment, role, VPC, memory, timeout and architecture were checked unchanged after update.

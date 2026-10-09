@@ -2,11 +2,11 @@
   "status": "preflight_only_awaiting_approval",
   "resources_updated": [
     {
-      "resource": "arn:aws:ecr:us-east-2:918897410856:repository/github-rag-api",
+      "resource": "<PROJECT_ARN>",
       "change": "Push one uniquely tagged amd64 image; no deletion or repository setting change."
     },
     {
-      "resource": "arn:aws:lambda:us-east-2:918897410856:function:github-rag-api",
+      "resource": "<PROJECT_ARN>",
       "change": "UpdateFunctionCode to resolved new ECR digest using expected RevisionId; Publish=false. Preserve existing configuration/environment, IAM and VPC. New code defaults implement approved clean-scope settings."
     }
   ],
@@ -23,13 +23,13 @@
     "new VPC/subnet/security group",
     "provisioned concurrency"
   ],
-  "retained_image_for_manual_rollback": "918897410856.dkr.ecr.us-east-2.amazonaws.com/github-rag-api@sha256:ec8bf244716b7cf4f8e3300f6edccd5682138bd48f7a000411ae752e701849b5",
+  "retained_image_for_manual_rollback": "<ACCOUNT_ID>.dkr.ecr.us-east-2.amazonaws.com/github-rag-api@sha256:ec8bf244716b7cf4f8e3300f6edccd5682138bd48f7a000411ae752e701849b5",
   "unchanged_resources": {
     "api_id": "w3qqwb25w0",
     "integration": "dgaicxp",
-    "role": "arn:aws:iam::918897410856:role/github-rag-lambda-execution",
-    "secret_arn": "arn:aws:secretsmanager:us-east-2:918897410856:secret:github-rag/dev/api-runtime-F1L5s9",
-    "rds": "arn:aws:rds:us-east-2:918897410856:db:github-rag-db",
+    "role": "<PROJECT_ARN>",
+    "secret_arn": "<PROJECT_ARN>",
+    "rds": "<PROJECT_ARN>",
     "nat": [
       {
         "id": "nat-097cf07818b8577a9",

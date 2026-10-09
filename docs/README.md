@@ -5,6 +5,7 @@ results and limitations; preflights are not instructions to rerun paid operation
 
 Recorded JSON/fixture contents are unchanged during cleanup. Paths inside historical
 JSON are provenance from the original run, not current filesystem destinations.
+Public documentation now uses placeholders for AWS account IDs, ARNs and secret names; identifier redaction changes those historical fields only.
 
 ## corpus
 

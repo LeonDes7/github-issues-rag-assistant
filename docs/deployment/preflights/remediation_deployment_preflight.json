@@ -2,7 +2,7 @@
   "status": "approval_pending_not_executed",
   "region": "us-east-2",
   "lambda_name": "github-rag-api",
-  "ecr_repository": "918897410856.dkr.ecr.us-east-2.amazonaws.com/github-rag-api",
+  "ecr_repository": "<ACCOUNT_ID>.dkr.ecr.us-east-2.amazonaws.com/github-rag-api",
   "checks": [
     {
       "method": "GET",

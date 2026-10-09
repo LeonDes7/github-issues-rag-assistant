@@ -24,3 +24,6 @@ Thumbs.db
 
 # Disposable future run outputs; reviewed evidence lives in docs/
 artifacts/
+
+# Local AWS identifier inventory
+docs/security/aws_identifier_inventory.md

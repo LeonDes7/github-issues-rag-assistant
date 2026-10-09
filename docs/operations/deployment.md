@@ -274,7 +274,7 @@ To deploy on Streamlit Community Cloud:
    - `RAG_API_URL` — use the deployed HTTPS endpoint:
      `https://w3qqwb25w0.execute-api.us-east-2.amazonaws.com`
    - `API_AUTH_TOKEN` — the existing bearer token stored in AWS Secrets
-     Manager at `github-rag/dev/api-runtime`. Copy it only through a trusted,
+     Manager at `<SECRET_NAME>`. Copy it only through a trusted,
      private secret-management workflow; never paste it into code, a commit,
      a URL, or a client-side component.
 4. Save the secrets and redeploy/reboot the app. The app reports a clear
@@ -307,7 +307,7 @@ image or pass secret values on a command line.
 
 The dev deployment uses ECR repository `github-rag-api`, Lambda function
 `github-rag-api`, HTTP API `github-rag-api-dev`, Secrets Manager secret
-`github-rag/dev/api-runtime`, and execution role
+`<SECRET_NAME>`, and execution role
 `github-rag-lambda-execution`. The public API Gateway endpoint is configured
 in the local `.env` as `RAG_API_URL`; `/ask` requires the bearer token while
 `/health` is public and checks PostgreSQL.
@@ -334,6 +334,6 @@ is the Lambda security group; keep the existing administrator client rule.
 Then delete that Lambda security group, ECR repository `github-rag-api`
 (including its images), execution role `github-rag-lambda-execution` and its
 inline policy, log group `/aws/lambda/github-rag-api`, and secret
-`github-rag/dev/api-runtime` if they are no longer needed. Secret deletion
+`<SECRET_NAME>` if they are no longer needed. Secret deletion
 uses Secrets Manager's recovery window unless force deletion is explicitly
 selected.

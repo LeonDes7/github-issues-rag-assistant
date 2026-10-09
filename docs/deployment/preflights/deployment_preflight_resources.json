@@ -1,8 +1,8 @@
 {
   "region": "us-east-2",
   "lambda": {
-    "FunctionArn": "arn:aws:lambda:us-east-2:918897410856:function:github-rag-api",
-    "Role": "arn:aws:iam::918897410856:role/github-rag-lambda-execution",
+    "FunctionArn": "<PROJECT_ARN>",
+    "Role": "<PROJECT_ARN>",
     "MemorySize": 1024,
     "Timeout": 90,
     "Architectures": [
@@ -22,15 +22,15 @@
       "Ipv6AllowedForDualStack": false
     }
   },
-  "current_image_uri": "918897410856.dkr.ecr.us-east-2.amazonaws.com/github-rag-api@sha256:ec8bf244716b7cf4f8e3300f6edccd5682138bd48f7a000411ae752e701849b5",
+  "current_image_uri": "<ACCOUNT_ID>.dkr.ecr.us-east-2.amazonaws.com/github-rag-api@sha256:ec8bf244716b7cf4f8e3300f6edccd5682138bd48f7a000411ae752e701849b5",
   "nonsecret_environment": {
-    "RAG_SECRETS_ARN": "arn:aws:secretsmanager:us-east-2:918897410856:secret:github-rag/dev/api-runtime-F1L5s9",
+    "RAG_SECRETS_ARN": "<PROJECT_ARN>",
     "OPENAI_GENERATION_MODEL": "gpt-4o-mini",
     "OPENAI_EMBEDDING_MODEL": "text-embedding-3-small"
   },
   "ecr": {
-    "repositoryArn": "arn:aws:ecr:us-east-2:918897410856:repository/github-rag-api",
-    "repositoryUri": "918897410856.dkr.ecr.us-east-2.amazonaws.com/github-rag-api",
+    "repositoryArn": "<PROJECT_ARN>",
+    "repositoryUri": "<ACCOUNT_ID>.dkr.ecr.us-east-2.amazonaws.com/github-rag-api",
     "imageTagMutability": "MUTABLE",
     "imageScanningConfiguration": {
       "scanOnPush": true
@@ -89,7 +89,7 @@
     "integrations": [
       {
         "id": "dgaicxp",
-        "uri": "arn:aws:lambda:us-east-2:918897410856:function:github-rag-api"
+        "uri": "<PROJECT_ARN>"
       }
     ]
   },
@@ -102,7 +102,7 @@
   ],
   "existing_vpc_endpoints": [],
   "rds": {
-    "arn": "arn:aws:rds:us-east-2:918897410856:db:github-rag-db",
+    "arn": "<PROJECT_ARN>",
     "class": "db.t4g.micro",
     "status": "available",
     "multi_az": false,

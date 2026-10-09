@@ -2,7 +2,7 @@
 
 One remediation image was built and pushed to the existing ECR repository and only the existing `github-rag-api` Lambda code image was updated in `us-east-2`. No infrastructure or database writes were performed, no configuration/retrieval/cutoff settings were changed, and existing images were retained. Exactly two live checks ran with zero retries and no warmups. Both passed the approved safety checks; execution stopped afterward.
 
-The deployed image is `918897410856.dkr.ecr.us-east-2.amazonaws.com/github-rag-api@sha256:3ee06641a7814eec96ed08c553ab7a15fdb82095e5f0ef983636d2c6f1855330`, tag `remediation-20261008-final`. ECR reports compressed image size **216,254,880 bytes (216.25488 MB decimal)**. Image validation confirmed API and redaction file hashes, unchanged retrieval settings, generation input limit 12,000, output limit 512, and OpenAI retries zero. All 101 local tests passed before execution. The Streamlit patch was not deployed.
+The deployed image is `<ACCOUNT_ID>.dkr.ecr.us-east-2.amazonaws.com/github-rag-api@sha256:3ee06641a7814eec96ed08c553ab7a15fdb82095e5f0ef983636d2c6f1855330`, tag `remediation-20261008-final`. ECR reports compressed image size **216,254,880 bytes (216.25488 MB decimal)**. Image validation confirmed API and redaction file hashes, unchanged retrieval settings, generation input limit 12,000, output limit 512, and OpenAI retries zero. All 101 local tests passed before execution. The Streamlit patch was not deployed.
 
 | Live check | Result | Observed client time |
 |---|---|---:|

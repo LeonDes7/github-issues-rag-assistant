@@ -2,7 +2,7 @@
 
 **One image was pushed and the existing github-rag-api Lambda code was updated in us-east-2. The live /health check passed; the two /ask checks were not run.**
 
-- Image: `918897410856.dkr.ecr.us-east-2.amazonaws.com/github-rag-api@sha256:f9e04c70616b852c8028e14e835cdb53daf4b3850337d126ca96d3d874ea12a6`.
+- Image: `<ACCOUNT_ID>.dkr.ecr.us-east-2.amazonaws.com/github-rag-api@sha256:f9e04c70616b852c8028e14e835cdb53daf4b3850337d126ca96d3d874ea12a6`.
 - Compressed image size: 216239569 bytes.
 - Local tests: 85 passed. Offline image model/settings, abstention finalizer and Lambda handler validation passed with networking disabled and dummy credentials.
 - Lambda revision after update: `6919f8b4-283f-4b9e-8b39-0c9409f66e07`.

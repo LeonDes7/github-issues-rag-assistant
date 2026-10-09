@@ -4,7 +4,7 @@ Prepared 2026-10-08 from saved deployment/resource artifacts. No build, push, AW
 
 ## Exact scope
 
-Build locally and push one image to existing ECR repository `918897410856.dkr.ecr.us-east-2.amazonaws.com/github-rag-api`. Update only the code image of existing Lambda `arn:aws:lambda:us-east-2:918897410856:function:github-rag-api`. Retain all existing images. Current recorded image digest: `sha256:1e08220c4cbff6fbd46ea5f9d191532e7c2cd6c24f09731e556123340e2832e4`.
+Build locally and push one image to existing ECR repository `<ACCOUNT_ID>.dkr.ecr.us-east-2.amazonaws.com/github-rag-api`. Update only the code image of existing Lambda `<PROJECT_ARN>`. Retain all existing images. Current recorded image digest: `sha256:1e08220c4cbff6fbd46ea5f9d191532e7c2cd6c24f09731e556123340e2832e4`.
 
 Reuse existing HTTP API `w3qqwb25w0`, execution role, secret, log group, VPC/subnets/security group, NAT gateway and RDS instance. Create no infrastructure, including NAT gateway, VPC endpoint, EC2, Glue or Multi-AZ resource. Change no Lambda configuration, retrieval ranking/settings, cutoff or database data. The Streamlit patch remains local; this approval would update the Lambda backend only.
 

@@ -4,16 +4,16 @@
 
 ## Existing resources to update
 
-- `arn:aws:ecr:us-east-2:918897410856:repository/github-rag-api`: Push one uniquely tagged amd64 image; no deletion or repository setting change.
-- `arn:aws:lambda:us-east-2:918897410856:function:github-rag-api`: UpdateFunctionCode to resolved new ECR digest using expected RevisionId; Publish=false. Preserve existing configuration/environment, IAM and VPC. New code defaults implement approved clean-scope settings.
+- `<PROJECT_ARN>`: Push one uniquely tagged amd64 image; no deletion or repository setting change.
+- `<PROJECT_ARN>`: UpdateFunctionCode to resolved new ECR digest using expected RevisionId; Publish=false. Preserve existing configuration/environment, IAM and VPC. New code defaults implement approved clean-scope settings.
 
 ## Resources reused without changes
 
 - api_id: `"w3qqwb25w0"`.
 - integration: `"dgaicxp"`.
-- role: `"arn:aws:iam::918897410856:role/github-rag-lambda-execution"`.
-- secret_arn: `"arn:aws:secretsmanager:us-east-2:918897410856:secret:github-rag/dev/api-runtime-F1L5s9"`.
-- rds: `"arn:aws:rds:us-east-2:918897410856:db:github-rag-db"`.
+- role: `"<PROJECT_ARN>"`.
+- secret_arn: `"<PROJECT_ARN>"`.
+- rds: `"<PROJECT_ARN>"`.
 - nat: `[{"id": "nat-097cf07818b8577a9", "state": "available", "subnet": "subnet-0769c27ce21678466"}]`.
 - vpc: `{"SubnetIds": ["subnet-02970a3628abe0a1e", "subnet-08624d3bb13fc2619"], "SecurityGroupIds": ["sg-09328f537d896d8b4"], "VpcId": "vpc-005161e9ccd247f58", "Ipv6AllowedForDualStack": false}`.
 - log_group: `"/aws/lambda/github-rag-api"`.
@@ -31,7 +31,7 @@
 
 Local Docker Desktop buildx --platform linux/amd64 --provenance=false --sbom=false; use Dockerfile; no AWS build service, no secret build arguments. Base and dependency versions are unpinned: build tests and import check required before push. No build performed in preflight.
 
-Current deployed digest retained: `918897410856.dkr.ecr.us-east-2.amazonaws.com/github-rag-api@sha256:ec8bf244716b7cf4f8e3300f6edccd5682138bd48f7a000411ae752e701849b5`. Existing revision: `e34152f6-6add-49ac-aed5-ea7773d75454`. No automatic rollback or deletion.
+Current deployed digest retained: `<ACCOUNT_ID>.dkr.ecr.us-east-2.amazonaws.com/github-rag-api@sha256:ec8bf244716b7cf4f8e3300f6edccd5682138bd48f7a000411ae752e701849b5`. Existing revision: `e34152f6-6add-49ac-aed5-ea7773d75454`. No automatic rollback or deletion.
 
 ## Exact live checks
 

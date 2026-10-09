@@ -8,11 +8,11 @@ from botocore.config import Config
 from dotenv import load_dotenv
 ROOT=Path(__file__).resolve().parents[1]
 REGION='us-east-2';TAG='input-budget-20261008-final'
-REGISTRY='918897410856.dkr.ecr.us-east-2.amazonaws.com'
 QUESTIONS=["What is the recommended way to dump settings in starlette.config without exposing sensitive information like JWT secrets?", "What is the latest stable Python release today?"]
 CAP=Decimal('0.005');CEILING=Decimal('0.00421498')
 def main():
  load_dotenv(ROOT/'.env')
+ REGISTRY=os.environ['AWS_ECR_REGISTRY']
  path=ROOT/'docs/deployment/live/final_deployment_live_results.json'
  result={'status':'running','started_at_utc':datetime.now(timezone.utc).isoformat(),'region':REGION,'hard_openai_cap_usd':str(CAP),'conservative_two_request_ceiling_usd':str(CEILING),'checks':[],'standard_rate_token_cost_usd':'0','openai_usage_unknown':False,'local_tests_passed':93,'configuration_changed':False,'infrastructure_created':False,'existing_images_retained':True}
  with path.open('x',encoding='utf-8') as f:f.write(json.dumps(result))

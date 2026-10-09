@@ -157,8 +157,8 @@ that trusts `scheduler.amazonaws.com` and can invoke the ingestion Lambda:
 
 ```powershell
 .\scripts\create_daily_ingestion_schedule.ps1 `
-  -LambdaArn "arn:aws:lambda:us-east-2:123456789012:function:github-rag-ingestion" `
-  -ScheduleRoleArn "arn:aws:iam::123456789012:role/github-rag-scheduler" `
+  -LambdaArn "<PROJECT_ARN>" `
+  -ScheduleRoleArn "<PROJECT_ARN>" `
   -Region "us-east-2"
 ```
 

@@ -130,8 +130,8 @@
     "api_sha256": "054bc3ab00399492809bcb468ed9667b66b40c0c625cfbe957aafb77caef709c",
     "redaction_sha256": "0f2c7217e5b7e68af0de2d8e75656dfef8f9507c3b55273e121b49023d3bf1c0"
   },
-  "previous_image_uri": "918897410856.dkr.ecr.us-east-2.amazonaws.com/github-rag-api@sha256:1e08220c4cbff6fbd46ea5f9d191532e7c2cd6c24f09731e556123340e2832e4",
-  "image_uri": "918897410856.dkr.ecr.us-east-2.amazonaws.com/github-rag-api@sha256:3ee06641a7814eec96ed08c553ab7a15fdb82095e5f0ef983636d2c6f1855330",
+  "previous_image_uri": "<ACCOUNT_ID>.dkr.ecr.us-east-2.amazonaws.com/github-rag-api@sha256:1e08220c4cbff6fbd46ea5f9d191532e7c2cd6c24f09731e556123340e2832e4",
+  "image_uri": "<ACCOUNT_ID>.dkr.ecr.us-east-2.amazonaws.com/github-rag-api@sha256:3ee06641a7814eec96ed08c553ab7a15fdb82095e5f0ef983636d2c6f1855330",
   "compressed_image_bytes": 216254880,
   "image_pushed": true,
   "lambda_code_update_requested": true,
