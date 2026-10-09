@@ -112,7 +112,8 @@ FastAPI and local Streamlit load `.env` themselves.
 The JSON response includes `answer`, structured `citations`,
 `retrieval_metadata` and `performance` with latency/token/cost information.
 Source URLs and metadata come from retrieved rows, not model-created URLs.
-Classification/confidence describes the retrieved issue, not the user's question.
+The API still returns stored category predictions for the 200 of 9,555 issues that have them; the Streamlit UI does not display predictions or their confidence, including in debug details.
+API classification/confidence describes the retrieved issue, not the user's question.
 Heuristic classification and lexical grounding checks are estimates.
 
 ## Production settings and safeguards

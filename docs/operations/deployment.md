@@ -21,9 +21,10 @@ code; credentials belong in deployment secrets, never in this repository.
 
 The Community Cloud UI uses the deployed API endpoint
 `https://w3qqwb25w0.execute-api.us-east-2.amazonaws.com`. After deployment,
-ask a question to see the answer, the top retrieved issue's predicted
-bug/feature/usage category and confidence, source links, and retrieval
-diagnostics. The category prediction describes the retrieved issue, not the
+ask a question to see the answer, source links, and retrieval diagnostics.
+The API still returns stored category predictions for the 200 of 9,555 issues
+that have them; the Streamlit UI does not display predictions or their confidence,
+including in debug details. API predictions describe retrieved issues, not the
 question, and heuristic confidence is not ground truth.
 
 ## Project layout
@@ -246,10 +247,10 @@ The earlier health-only deployment attempt remains recorded in
 ## Streamlit interface and Community Cloud deployment
 
 `streamlit_app.py` calls the authenticated `/ask` API from server-side Python.
-It displays the grounded answer, the predicted category and confidence of the
-top retrieved issue, clickable GitHub citations, and expandable retrieval
-metadata. The category is the stored issue classification, not a
-classification of the user's question. API tokens are read only from
+It displays the grounded answer, clickable GitHub citations, and expandable
+retrieval metadata. The API still returns stored category predictions for the
+200 of 9,555 issues that have them; the UI does not display predictions or their
+confidence, including in debug details. API tokens are read only from
 Streamlit server-side secrets and are never sent to browser code.
 
 For local use, install the UI extra and start the FastAPI server in another
