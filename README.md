@@ -7,6 +7,7 @@
 - Harder unanswerables: cutoff refused only **1/15**; generation abstained on the other 14 in the original run, with one auxiliary citation misattribution.
 - Idempotent real-database replay verified on already loaded data; new-issue incremental ingestion untested; no schedule deployed.
 - Historical local answered-query p50/p95: **2.047 / 4.815 s**; mean token cost **$0.000257734/answered query**; predates deployed controls.
+- Deployed measurement (2026-10-16): **7/10 supported cited answers**; qualifying end-to-end p50/p95 **2.538 / 4.311 s**; average OpenAI cost **$0.00031237/answer**. Seven-sample descriptive percentiles; reported tokens at standard uncached rates; no local latency included.
 - Stack: GitHub → S3 → PostgreSQL/pgvector → FastAPI/OpenAI → Lambda/API Gateway → Streamlit.
 - Demo video: **[link pending]**.
 
@@ -173,6 +174,29 @@ A later 14-case frozen-context replay verified fixed abstentions and separate
 sources through the local API with mocked dependencies; it did not test live retrieval.
 See [held-out review](docs/experiments/abstention/heldout_unanswerable_results_review.md)
 and [final regression](docs/experiments/abstention/final_abstention_regression_comparison.md).
+
+## Deployed end-to-end latency and cost
+
+On October 16, 2026, `/health` passed and all **10 approved answerable requests**
+returned HTTP 200. **7/10 were successful, supported cited answers** after Codex
+source-support review.
+
+| Metric for the seven qualifying answers | Result |
+|---|---:|
+| Deployed end-to-end p50 | **2.538 s** |
+| Deployed end-to-end p95 | **4.311 s** |
+| Average OpenAI cost per answer | **$0.00031237** |
+| Total OpenAI cost | **$0.00218658** |
+
+Total OpenAI cost across all ten attempts was **$0.00322565**. One answer without
+inline citations, one abstention, and one off-target answer were excluded from
+the qualifying latency/cost summary; their costs remain in the all-attempt total.
+Percentiles are descriptive because the qualifying sample is seven. Costs use
+reported tokens at standard uncached rates, without invoice reconciliation.
+Timing covers the deployed HTTPS round trip; **no local latency is included**.
+No retries or AWS infrastructure changes occurred. See the
+[deployed measurement report](docs/measurements/deployed_latency_cost_report.md)
+and [raw results](docs/measurements/deployed_latency_cost_results.json).
 
 ## Historical local latency and cost
 

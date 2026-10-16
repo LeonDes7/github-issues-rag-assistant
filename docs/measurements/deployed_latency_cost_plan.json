@@ -1,0 +1,151 @@
+{
+  "status": "approved_and_completed",
+  "endpoint": "https://w3qqwb25w0.execute-api.us-east-2.amazonaws.com",
+  "health_request": {
+    "method": "GET",
+    "path": "/health",
+    "count": 1,
+    "stop_unless_database_reachable": true
+  },
+  "ask_method": "POST",
+  "ask_path": "/ask",
+  "authorization": "Bearer token from private local environment, never recorded",
+  "ask_request_count": 10,
+  "concurrency": 1,
+  "retries": 0,
+  "redirects": false,
+  "warmups": 0,
+  "queries": [
+    {
+      "case_id": "generated-tiangolo-fastapi-2071",
+      "body": {
+        "question": "What problem did the reporter observe when sending larger base64-encoded video frames over a WebSocket?",
+        "top_k": 5
+      },
+      "expected_issue": {
+        "repository": "tiangolo/fastapi",
+        "issue_number": 2071
+      },
+      "embedding_tokens": 18
+    },
+    {
+      "case_id": "generated-encode-starlette-542",
+      "body": {
+        "question": "What is the recommended workaround for the dependency issue between graphene and aniso8601 when installing starlette[full]?",
+        "top_k": 5
+      },
+      "expected_issue": {
+        "repository": "encode/starlette",
+        "issue_number": 542
+      },
+      "embedding_tokens": 23
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-618",
+      "body": {
+        "question": "What steps should I take if the automatic reload feature fails to work on Windows 10 when modifying main.py?",
+        "top_k": 5
+      },
+      "expected_issue": {
+        "repository": "tiangolo/fastapi",
+        "issue_number": 618
+      },
+      "embedding_tokens": 22
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-4999",
+      "body": {
+        "question": "What unexpected behavior occurred when the reporter called `.parse_obj()` in an async loop?",
+        "top_k": 5
+      },
+      "expected_issue": {
+        "repository": "pydantic/pydantic",
+        "issue_number": 4999
+      },
+      "embedding_tokens": 17
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-8499",
+      "body": {
+        "question": "What is the workaround for the RecursionError encountered when parsing graph-like data with Pydantic V2?",
+        "top_k": 5
+      },
+      "expected_issue": {
+        "repository": "pydantic/pydantic",
+        "issue_number": 8499
+      },
+      "embedding_tokens": 22
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-1873",
+      "body": {
+        "question": "What testing limitation did the reporter describe for service logic that uses FastAPI dependency injection?",
+        "top_k": 5
+      },
+      "expected_issue": {
+        "repository": "tiangolo/fastapi",
+        "issue_number": 1873
+      },
+      "embedding_tokens": 17
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-1060",
+      "body": {
+        "question": "What validation error occurs when subclassing `StrictStr` or `ConstrainedStr` in the reported Pydantic 1.2.0 example?",
+        "top_k": 5
+      },
+      "expected_issue": {
+        "repository": "pydantic/pydantic",
+        "issue_number": 1060
+      },
+      "embedding_tokens": 31
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-10131",
+      "body": {
+        "question": "What is the reported bug regarding the discriminator field in schema generation with `by_alias=False` in Pydantic?",
+        "top_k": 5
+      },
+      "expected_issue": {
+        "repository": "pydantic/pydantic",
+        "issue_number": 10131
+      },
+      "embedding_tokens": 23
+    },
+    {
+      "case_id": "generated-encode-starlette-1454",
+      "body": {
+        "question": "What is the impact of Starlette lowercasing headers on the functionality of the pdf.js library when serving PDFs?",
+        "top_k": 5
+      },
+      "expected_issue": {
+        "repository": "encode/starlette",
+        "issue_number": 1454
+      },
+      "embedding_tokens": 24
+    },
+    {
+      "case_id": "generated-encode-starlette-818",
+      "body": {
+        "question": "Why did enabling `requests_mock.Mocker()` interfere with the HTTP adapters used by Starlette `TestClient`?",
+        "top_k": 5
+      },
+      "expected_issue": {
+        "repository": "encode/starlette",
+        "issue_number": 818
+      },
+      "embedding_tokens": 23
+    }
+  ],
+  "estimates": {
+    "embedding_calls": 10,
+    "generation_calls_up_to": 10,
+    "embedding_input_tokens": 220,
+    "generation_input_tokens_planning_assumption": 30000,
+    "generation_output_tokens_planning_assumption": 1200,
+    "estimated_usd": 0.0052244,
+    "configured_limit_ceiling_usd": 0.021076400000000002
+  },
+  "scope": "Deployed HTTPS client round-trip only. Successful cited answers only in latency and answered-cost summary; exclusions and all-run known/unknown spend reported separately. No AWS/secret/Streamlit changes.",
+  "results_file": "docs/measurements/deployed_latency_cost_results.json"
+}

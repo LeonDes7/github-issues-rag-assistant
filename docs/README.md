@@ -90,6 +90,10 @@ Public documentation now uses placeholders for AWS account IDs, ARNs and secret 
 
 ## measurements
 
+- [deployed_latency_cost_plan.json](measurements/deployed_latency_cost_plan.json)
+- [deployed_latency_cost_report.md](measurements/deployed_latency_cost_report.md)
+- [deployed_latency_cost_results.json](measurements/deployed_latency_cost_results.json)
+
 - [final_latency_cost_plan.json](measurements/final_latency_cost_plan.json)
 - [final_latency_cost_plan.md](measurements/final_latency_cost_plan.md)
 - [final_latency_cost_report.md](measurements/final_latency_cost_report.md)

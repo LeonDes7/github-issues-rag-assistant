@@ -1,0 +1,1041 @@
+{
+  "started_at_utc": "2026-10-16T18:43:00.770582+00:00",
+  "scope": "Deployed HTTPS end-to-end latency only",
+  "status": "complete",
+  "approved_plan": "docs/measurements/deployed_latency_cost_plan.json",
+  "ask_requests_sent": 10,
+  "requests": [
+    {
+      "case_id": "generated-tiangolo-fastapi-2071",
+      "body": {
+        "question": "What problem did the reporter observe when sending larger base64-encoded video frames over a WebSocket?",
+        "top_k": 5
+      },
+      "expected_issue": {
+        "repository": "tiangolo/fastapi",
+        "issue_number": 2071
+      },
+      "outcome": "successful_cited_answer",
+      "usage_unknown": false,
+      "client_latency_ms": 4914.537099990412,
+      "http_status": 200,
+      "api_response": {
+        "answer": "The reporter observed that when sending larger base64-encoded video frames over a WebSocket, the client gets disconnected [1].",
+        "citations": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2071,
+            "issue_url": "https://github.com/fastapi/fastapi/issues/2071",
+            "source_url": "https://github.com/fastapi/fastapi/issues/2071",
+            "chunk_type": "issue_body",
+            "similarity_score": 0.6680349524035358,
+            "retrieval_score": 0.6680349524035358,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 407,
+            "issue_url": "https://github.com/Kludex/starlette/issues/407",
+            "source_url": "https://github.com/Kludex/starlette/issues/407#issuecomment-466677753",
+            "chunk_type": "comment",
+            "similarity_score": 0.5612601959824455,
+            "retrieval_score": 0.5612601959824455,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1369,
+            "issue_url": "https://github.com/Kludex/starlette/issues/1369",
+            "source_url": "https://github.com/Kludex/starlette/issues/1369#issuecomment-1028834412",
+            "chunk_type": "comment",
+            "similarity_score": 0.5333870937255932,
+            "retrieval_score": 0.5333870937255932,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2445,
+            "issue_url": "https://github.com/fastapi/fastapi/issues/2445",
+            "source_url": "https://github.com/fastapi/fastapi/issues/2445#issuecomment-736553090",
+            "chunk_type": "comment",
+            "similarity_score": 0.5229367914765282,
+            "retrieval_score": 0.5229367914765282,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 940,
+            "issue_url": "https://github.com/Kludex/starlette/issues/940",
+            "source_url": "https://github.com/Kludex/starlette/issues/940#issuecomment-626699379",
+            "chunk_type": "comment",
+            "similarity_score": 0.5216778249439462,
+            "retrieval_score": 0.5216778249439462,
+            "predicted_category": null,
+            "classification_confidence": null
+          }
+        ],
+        "retrieval_metadata": {
+          "top_k": 5,
+          "retrieved_count": 5,
+          "embedding_model": "text-embedding-3-small",
+          "generation_model": "gpt-4o-mini",
+          "retrieval_mode": "vector",
+          "confidence_threshold": 0.5370554072220923
+        },
+        "performance": {
+          "retrieval_latency_ms": 2478.723,
+          "llm_latency_ms": 2024.579,
+          "total_latency_ms": 4503.323,
+          "embedding_tokens": 18,
+          "generation_prompt_tokens": 1087,
+          "generation_completion_tokens": 25,
+          "estimated_cost_usd": 0.00017841
+        }
+      },
+      "standard_rate_openai_cost_usd": "0.00017841",
+      "citation_checks": {
+        "inline_refs_valid": true,
+        "expected_issue_cited": true,
+        "safe_output": true
+      },
+      "support_review": "PASS: saved issue-body excerpt supports larger-frame disconnect."
+    },
+    {
+      "case_id": "generated-encode-starlette-542",
+      "body": {
+        "question": "What is the recommended workaround for the dependency issue between graphene and aniso8601 when installing starlette[full]?",
+        "top_k": 5
+      },
+      "expected_issue": {
+        "repository": "encode/starlette",
+        "issue_number": 542
+      },
+      "outcome": "successful_cited_answer",
+      "usage_unknown": false,
+      "client_latency_ms": 2351.3080999982776,
+      "http_status": 200,
+      "api_response": {
+        "answer": "The recommended workaround for the dependency issue between graphene and aniso8601 when installing starlette[full] is to install starlette with minimal dependencies and then add only the ones that you are using, such as `itsdangerous` and `python-multipart` [1].",
+        "citations": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 542,
+            "issue_url": "https://github.com/Kludex/starlette/issues/542",
+            "source_url": "https://github.com/Kludex/starlette/issues/542",
+            "chunk_type": "issue_body",
+            "similarity_score": 0.7295053436148953,
+            "retrieval_score": 0.7295053436148953,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1144,
+            "issue_url": "https://github.com/Kludex/starlette/issues/1144",
+            "source_url": "https://github.com/Kludex/starlette/issues/1144",
+            "chunk_type": "heuristic_resolution",
+            "similarity_score": 0.6201687630654332,
+            "retrieval_score": 0.6201687630654332,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 2791,
+            "issue_url": "https://github.com/Kludex/starlette/issues/2791",
+            "source_url": "https://github.com/Kludex/starlette/issues/2791#issuecomment-2536576214",
+            "chunk_type": "comment",
+            "similarity_score": 0.6200875499949394,
+            "retrieval_score": 0.6200875499949394,
+            "predicted_category": "unknown",
+            "classification_confidence": "low"
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 619,
+            "issue_url": "https://github.com/Kludex/starlette/issues/619",
+            "source_url": "https://github.com/Kludex/starlette/issues/619#issuecomment-781329587",
+            "chunk_type": "comment",
+            "similarity_score": 0.5992634109106398,
+            "retrieval_score": 0.5992634109106398,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 450,
+            "issue_url": "https://github.com/Kludex/starlette/issues/450",
+            "source_url": "https://github.com/Kludex/starlette/issues/450#issuecomment-476542221",
+            "chunk_type": "comment",
+            "similarity_score": 0.5918847615288925,
+            "retrieval_score": 0.5918847615288925,
+            "predicted_category": null,
+            "classification_confidence": null
+          }
+        ],
+        "retrieval_metadata": {
+          "top_k": 5,
+          "retrieved_count": 5,
+          "embedding_model": "text-embedding-3-small",
+          "generation_model": "gpt-4o-mini",
+          "retrieval_mode": "vector",
+          "confidence_threshold": 0.5370554072220923
+        },
+        "performance": {
+          "retrieval_latency_ms": 680.712,
+          "llm_latency_ms": 1570.137,
+          "total_latency_ms": 2250.866,
+          "embedding_tokens": 23,
+          "generation_prompt_tokens": 1544,
+          "generation_completion_tokens": 56,
+          "estimated_cost_usd": 0.00026566
+        }
+      },
+      "standard_rate_openai_cost_usd": "0.00026566",
+      "citation_checks": {
+        "inline_refs_valid": true,
+        "expected_issue_cited": true,
+        "safe_output": true
+      },
+      "support_review": "PASS: saved issue-body excerpt supports minimal dependencies plus required extras."
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-618",
+      "body": {
+        "question": "What steps should I take if the automatic reload feature fails to work on Windows 10 when modifying main.py?",
+        "top_k": 5
+      },
+      "expected_issue": {
+        "repository": "tiangolo/fastapi",
+        "issue_number": 618
+      },
+      "outcome": "excluded_missing_inline_citations",
+      "usage_unknown": false,
+      "client_latency_ms": 3601.424299995415,
+      "http_status": 200,
+      "api_response": {
+        "answer": "If the automatic reload feature fails to work on Windows 10 when modifying `main.py`, you can consider the following steps based on reported issues:\n\n1. Ensure you are following the correct tutorial steps as outlined in the FastAPI README.md.\n2. Check if the issue is related to the `.iocp` (I/O Completion Ports) by reviewing any error messages that may appear when the server attempts to reload.\n3. If you encounter an `OSError` with a message like `[WinError 87] The parameter is incorrect`, this indicates a failure in the socket connection during the reload process. You may need to investigate socket configurations or permissions.\n4. Verify that your FastAPI and Python versions are compatible and up to date.\n5. Consider using a different method to run your FastAPI application, such as using a debugger configuration that includes the `--reload` parameter, and ensure that it is set up correctly.\n\nFor more specific troubleshooting, you may want to refer to related issues on GitHub, such as issues #618, #759, and #5244, which discuss similar problems with automatic reload on Windows 10.",
+        "citations": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 618,
+            "issue_url": "https://github.com/fastapi/fastapi/issues/618",
+            "source_url": "https://github.com/fastapi/fastapi/issues/618",
+            "chunk_type": "issue_body",
+            "similarity_score": 0.5999074307576097,
+            "retrieval_score": 0.5999074307576097,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 759,
+            "issue_url": "https://github.com/fastapi/fastapi/issues/759",
+            "source_url": "https://github.com/fastapi/fastapi/issues/759",
+            "chunk_type": "issue_body",
+            "similarity_score": 0.5751481586420297,
+            "retrieval_score": 0.5751481586420297,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5244,
+            "issue_url": "https://github.com/fastapi/fastapi/issues/5244",
+            "source_url": "https://github.com/fastapi/fastapi/issues/5244",
+            "chunk_type": "issue_body",
+            "similarity_score": 0.5190530397058003,
+            "retrieval_score": 0.5190530397058003,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5243,
+            "issue_url": "https://github.com/fastapi/fastapi/issues/5243",
+            "source_url": "https://github.com/fastapi/fastapi/issues/5243",
+            "chunk_type": "issue_body",
+            "similarity_score": 0.5186151497585247,
+            "retrieval_score": 0.5186151497585247,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5664,
+            "issue_url": "https://github.com/fastapi/fastapi/issues/5664",
+            "source_url": "https://github.com/fastapi/fastapi/issues/5664",
+            "chunk_type": "issue_body",
+            "similarity_score": 0.4866373891707221,
+            "retrieval_score": 0.4866373891707221,
+            "predicted_category": null,
+            "classification_confidence": null
+          }
+        ],
+        "retrieval_metadata": {
+          "top_k": 5,
+          "retrieved_count": 5,
+          "embedding_model": "text-embedding-3-small",
+          "generation_model": "gpt-4o-mini",
+          "retrieval_mode": "vector",
+          "confidence_threshold": 0.5370554072220923
+        },
+        "performance": {
+          "retrieval_latency_ms": 1119.343,
+          "llm_latency_ms": 2381.938,
+          "total_latency_ms": 3501.295,
+          "embedding_tokens": 22,
+          "generation_prompt_tokens": 3326,
+          "generation_completion_tokens": 229,
+          "estimated_cost_usd": 0.00063674
+        }
+      },
+      "standard_rate_openai_cost_usd": "0.00063674",
+      "citation_checks": {
+        "inline_refs_valid": false,
+        "expected_issue_cited": false,
+        "safe_output": true
+      },
+      "support_review": "Structured sources are present, but no inline citations link the advice to evidence."
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-4999",
+      "body": {
+        "question": "What unexpected behavior occurred when the reporter called `.parse_obj()` in an async loop?",
+        "top_k": 5
+      },
+      "expected_issue": {
+        "repository": "pydantic/pydantic",
+        "issue_number": 4999
+      },
+      "outcome": "successful_cited_answer",
+      "usage_unknown": false,
+      "client_latency_ms": 2146.3731000112602,
+      "http_status": 200,
+      "api_response": {
+        "answer": "The reporter experienced an issue where the entire for loop got hung up, and `.parse_obj()` never actually parsed the object nor raised an exception while being used in an async function. This behavior was noted when trying to load listings into `MasterListing` schemas from an API response [4].",
+        "citations": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1287,
+            "issue_url": "https://github.com/pydantic/pydantic/issues/1287",
+            "source_url": "https://github.com/pydantic/pydantic/issues/1287#issuecomment-594656343",
+            "chunk_type": "comment",
+            "similarity_score": 0.5861276949285644,
+            "retrieval_score": 0.5861276949285644,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 2160,
+            "issue_url": "https://github.com/pydantic/pydantic/issues/2160",
+            "source_url": "https://github.com/pydantic/pydantic/issues/2160#issuecomment-735801943",
+            "chunk_type": "comment",
+            "similarity_score": 0.54786864640384,
+            "retrieval_score": 0.54786864640384,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 647,
+            "issue_url": "https://github.com/pydantic/pydantic/issues/647",
+            "source_url": "https://github.com/pydantic/pydantic/issues/647#issuecomment-510524880",
+            "chunk_type": "comment",
+            "similarity_score": 0.5355304890422518,
+            "retrieval_score": 0.5355304890422518,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 4999,
+            "issue_url": "https://github.com/pydantic/pydantic/issues/4999",
+            "source_url": "https://github.com/pydantic/pydantic/issues/4999",
+            "chunk_type": "issue_body",
+            "similarity_score": 0.5316617196128118,
+            "retrieval_score": 0.5316617196128118,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 2601,
+            "issue_url": "https://github.com/pydantic/pydantic/issues/2601",
+            "source_url": "https://github.com/pydantic/pydantic/issues/2601",
+            "chunk_type": "issue_body",
+            "similarity_score": 0.5199550372618902,
+            "retrieval_score": 0.5199550372618902,
+            "predicted_category": null,
+            "classification_confidence": null
+          }
+        ],
+        "retrieval_metadata": {
+          "top_k": 5,
+          "retrieved_count": 5,
+          "embedding_model": "text-embedding-3-small",
+          "generation_model": "gpt-4o-mini",
+          "retrieval_mode": "vector",
+          "confidence_threshold": 0.5370554072220923
+        },
+        "performance": {
+          "retrieval_latency_ms": 978.854,
+          "llm_latency_ms": 1055.835,
+          "total_latency_ms": 2034.705,
+          "embedding_tokens": 17,
+          "generation_prompt_tokens": 2241,
+          "generation_completion_tokens": 58,
+          "estimated_cost_usd": 0.00037129
+        }
+      },
+      "standard_rate_openai_cost_usd": "0.00037129",
+      "citation_checks": {
+        "inline_refs_valid": true,
+        "expected_issue_cited": true,
+        "safe_output": true
+      },
+      "support_review": "PASS: saved issue-body excerpt supports the hanging loop with no parse or exception."
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-8499",
+      "body": {
+        "question": "What is the workaround for the RecursionError encountered when parsing graph-like data with Pydantic V2?",
+        "top_k": 5
+      },
+      "expected_issue": {
+        "repository": "pydantic/pydantic",
+        "issue_number": 8499
+      },
+      "outcome": "excluded_model_abstention",
+      "usage_unknown": false,
+      "client_latency_ms": 2646.2260999978753,
+      "http_status": 200,
+      "api_response": {
+        "answer": "The retrieved excerpts do not provide enough evidence to answer this question.",
+        "citations": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8499,
+            "issue_url": "https://github.com/pydantic/pydantic/issues/8499",
+            "source_url": "https://github.com/pydantic/pydantic/issues/8499#issuecomment-1910262831",
+            "chunk_type": "comment",
+            "similarity_score": 0.7680453710981265,
+            "retrieval_score": 0.7680453710981265,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 5108,
+            "issue_url": "https://github.com/pydantic/pydantic/issues/5108",
+            "source_url": "https://github.com/pydantic/pydantic/issues/5108#issuecomment-1445143455",
+            "chunk_type": "comment",
+            "similarity_score": 0.6964652400866566,
+            "retrieval_score": 0.6964652400866566,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1345,
+            "issue_url": "https://github.com/pydantic/pydantic/issues/1345",
+            "source_url": "https://github.com/pydantic/pydantic/issues/1345#issuecomment-680753109",
+            "chunk_type": "comment",
+            "similarity_score": 0.6416674234417018,
+            "retrieval_score": 0.6416674234417018,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 11320,
+            "issue_url": "https://github.com/pydantic/pydantic/issues/11320",
+            "source_url": "https://github.com/pydantic/pydantic/issues/11320#issuecomment-2631716727",
+            "chunk_type": "comment",
+            "similarity_score": 0.6354218101976357,
+            "retrieval_score": 0.6354218101976357,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 6708,
+            "issue_url": "https://github.com/pydantic/pydantic/issues/6708",
+            "source_url": "https://github.com/pydantic/pydantic/issues/6708#issuecomment-1637686076",
+            "chunk_type": "comment",
+            "similarity_score": 0.6298344542869301,
+            "retrieval_score": 0.6298344542869301,
+            "predicted_category": null,
+            "classification_confidence": null
+          }
+        ],
+        "retrieval_metadata": {
+          "top_k": 5,
+          "retrieved_count": 5,
+          "embedding_model": "text-embedding-3-small",
+          "generation_model": "gpt-4o-mini",
+          "retrieval_mode": "vector",
+          "confidence_threshold": 0.5370554072220923
+        },
+        "performance": {
+          "retrieval_latency_ms": 1332.821,
+          "llm_latency_ms": 1198.37,
+          "total_latency_ms": 2531.208,
+          "embedding_tokens": 22,
+          "generation_prompt_tokens": 1071,
+          "generation_completion_tokens": 9,
+          "estimated_cost_usd": 0.00016649
+        }
+      },
+      "standard_rate_openai_cost_usd": "0.00016649",
+      "citation_checks": {
+        "inline_refs_valid": false,
+        "expected_issue_cited": false,
+        "safe_output": true
+      },
+      "support_review": "Fixed insufficient-evidence answer."
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-1873",
+      "body": {
+        "question": "What testing limitation did the reporter describe for service logic that uses FastAPI dependency injection?",
+        "top_k": 5
+      },
+      "expected_issue": {
+        "repository": "tiangolo/fastapi",
+        "issue_number": 1873
+      },
+      "outcome": "excluded_off_target",
+      "usage_unknown": false,
+      "client_latency_ms": 2677.359699999215,
+      "http_status": 200,
+      "api_response": {
+        "answer": "The reporter described a limitation where dependencies are not taken into account for the documentation if they are included in the route instead of in the function parameters [1]. Additionally, it was noted that `Depends` only works in FastAPI endpoints, which restricts its use in other contexts, such as logging configuration [2]. This limitation was seen as a serious issue for scalability, as passing dependency references from the route method to other services undermines the purpose of dependency injection [3].",
+        "citations": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 656,
+            "issue_url": "https://github.com/fastapi/fastapi/issues/656",
+            "source_url": "https://github.com/fastapi/fastapi/issues/656#issuecomment-546822960",
+            "chunk_type": "comment",
+            "similarity_score": 0.6003465481622543,
+            "retrieval_score": 0.6003465481622543,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4893,
+            "issue_url": "https://github.com/fastapi/fastapi/issues/4893",
+            "source_url": "https://github.com/fastapi/fastapi/issues/4893#issuecomment-1133528312",
+            "chunk_type": "comment",
+            "similarity_score": 0.5956599184559337,
+            "retrieval_score": 0.5956599184559337,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1873,
+            "issue_url": "https://github.com/fastapi/fastapi/issues/1873",
+            "source_url": "https://github.com/fastapi/fastapi/issues/1873#issuecomment-1008309708",
+            "chunk_type": "comment",
+            "similarity_score": 0.5951910707113417,
+            "retrieval_score": 0.5951910707113417,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4183,
+            "issue_url": "https://github.com/fastapi/fastapi/issues/4183",
+            "source_url": "https://github.com/fastapi/fastapi/issues/4183#issuecomment-986014791",
+            "chunk_type": "comment",
+            "similarity_score": 0.5771529022279058,
+            "retrieval_score": 0.5771529022279058,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2800,
+            "issue_url": "https://github.com/fastapi/fastapi/issues/2800",
+            "source_url": "https://github.com/fastapi/fastapi/issues/2800",
+            "chunk_type": "heuristic_resolution",
+            "similarity_score": 0.5750662880607197,
+            "retrieval_score": 0.5750662880607197,
+            "predicted_category": null,
+            "classification_confidence": null
+          }
+        ],
+        "retrieval_metadata": {
+          "top_k": 5,
+          "retrieved_count": 5,
+          "embedding_model": "text-embedding-3-small",
+          "generation_model": "gpt-4o-mini",
+          "retrieval_mode": "vector",
+          "confidence_threshold": 0.5370554072220923
+        },
+        "performance": {
+          "retrieval_latency_ms": 1212.075,
+          "llm_latency_ms": 1368.41,
+          "total_latency_ms": 2580.501,
+          "embedding_tokens": 17,
+          "generation_prompt_tokens": 1190,
+          "generation_completion_tokens": 95,
+          "estimated_cost_usd": 0.00023584
+        }
+      },
+      "standard_rate_openai_cost_usd": "0.00023584",
+      "citation_checks": {
+        "inline_refs_valid": true,
+        "expected_issue_cited": true,
+        "safe_output": true
+      },
+      "support_review": "Cited comments support dependency-injection limitations, but the answer does not explain the requested service-logic testing limitation."
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-1060",
+      "body": {
+        "question": "What validation error occurs when subclassing `StrictStr` or `ConstrainedStr` in the reported Pydantic 1.2.0 example?",
+        "top_k": 5
+      },
+      "expected_issue": {
+        "repository": "pydantic/pydantic",
+        "issue_number": 1060
+      },
+      "outcome": "successful_cited_answer",
+      "usage_unknown": false,
+      "client_latency_ms": 2902.258100002655,
+      "http_status": 200,
+      "api_response": {
+        "answer": "In the reported Pydantic 1.2.0 example, subclassing `StrictStr` or `ConstrainedStr` results in a `ValidationError` indicating that the expected type is `unicode`, but it received the subclass type instead. Specifically, the error messages are:\n\n- For `connection_name`: \"Expected unicode, got ConnectionName (type=type_error)\"\n- For `connection_endpoint`: \"Expected unicode, got EndpointStr (type=type_error)\" [1].",
+        "citations": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1060,
+            "issue_url": "https://github.com/pydantic/pydantic/issues/1060",
+            "source_url": "https://github.com/pydantic/pydantic/issues/1060",
+            "chunk_type": "issue_body",
+            "similarity_score": 0.7464175458870883,
+            "retrieval_score": 0.7464175458870883,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 6261,
+            "issue_url": "https://github.com/pydantic/pydantic/issues/6261",
+            "source_url": "https://github.com/pydantic/pydantic/issues/6261#issuecomment-1637782831",
+            "chunk_type": "comment",
+            "similarity_score": 0.7105094650520346,
+            "retrieval_score": 0.7105094650520346,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 5377,
+            "issue_url": "https://github.com/pydantic/pydantic/issues/5377",
+            "source_url": "https://github.com/pydantic/pydantic/issues/5377#issuecomment-1497121411",
+            "chunk_type": "comment",
+            "similarity_score": 0.6766420362737144,
+            "retrieval_score": 0.6766420362737144,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 12054,
+            "issue_url": "https://github.com/pydantic/pydantic/issues/12054",
+            "source_url": "https://github.com/pydantic/pydantic/issues/12054",
+            "chunk_type": "issue_body",
+            "similarity_score": 0.6760260187337407,
+            "retrieval_score": 0.6760260187337407,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 6667,
+            "issue_url": "https://github.com/pydantic/pydantic/issues/6667",
+            "source_url": "https://github.com/pydantic/pydantic/issues/6667#issuecomment-1635337200",
+            "chunk_type": "comment",
+            "similarity_score": 0.6607423721856264,
+            "retrieval_score": 0.6607423721856264,
+            "predicted_category": null,
+            "classification_confidence": null
+          }
+        ],
+        "retrieval_metadata": {
+          "top_k": 5,
+          "retrieved_count": 5,
+          "embedding_model": "text-embedding-3-small",
+          "generation_model": "gpt-4o-mini",
+          "retrieval_mode": "vector",
+          "confidence_threshold": 0.5370554072220923
+        },
+        "performance": {
+          "retrieval_latency_ms": 1335.856,
+          "llm_latency_ms": 1463.698,
+          "total_latency_ms": 2799.569,
+          "embedding_tokens": 31,
+          "generation_prompt_tokens": 2762,
+          "generation_completion_tokens": 98,
+          "estimated_cost_usd": 0.00047372
+        }
+      },
+      "standard_rate_openai_cost_usd": "0.00047372",
+      "citation_checks": {
+        "inline_refs_valid": true,
+        "expected_issue_cited": true,
+        "safe_output": true
+      },
+      "support_review": "PASS: public cited issue body contains both reported validation errors."
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-10131",
+      "body": {
+        "question": "What is the reported bug regarding the discriminator field in schema generation with `by_alias=False` in Pydantic?",
+        "top_k": 5
+      },
+      "expected_issue": {
+        "repository": "pydantic/pydantic",
+        "issue_number": 10131
+      },
+      "outcome": "successful_cited_answer",
+      "usage_unknown": false,
+      "client_latency_ms": 2881.5168000000995,
+      "http_status": 200,
+      "api_response": {
+        "answer": "The reported bug regarding the discriminator field in schema generation with `by_alias=False` in Pydantic is that it causes the alias to be used instead of the field name. This issue has been fixed in a subsequent update, specifically referenced as fixed by #10146 [1].",
+        "citations": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10131,
+            "issue_url": "https://github.com/pydantic/pydantic/issues/10131",
+            "source_url": "https://github.com/pydantic/pydantic/issues/10131#issuecomment-2291264382",
+            "chunk_type": "comment",
+            "similarity_score": 0.8180497340847103,
+            "retrieval_score": 0.8180497340847103,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10386,
+            "issue_url": "https://github.com/pydantic/pydantic/issues/10386",
+            "source_url": "https://github.com/pydantic/pydantic/issues/10386#issuecomment-2343436582",
+            "chunk_type": "comment",
+            "similarity_score": 0.7079597577425998,
+            "retrieval_score": 0.7079597577425998,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 4370,
+            "issue_url": "https://github.com/pydantic/pydantic/issues/4370",
+            "source_url": "https://github.com/pydantic/pydantic/issues/4370",
+            "chunk_type": "issue_body",
+            "similarity_score": 0.6885925259326112,
+            "retrieval_score": 0.6885925259326112,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 11470,
+            "issue_url": "https://github.com/pydantic/pydantic/issues/11470",
+            "source_url": "https://github.com/pydantic/pydantic/issues/11470",
+            "chunk_type": "heuristic_resolution",
+            "similarity_score": 0.6713105574735629,
+            "retrieval_score": 0.6713105574735629,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8768,
+            "issue_url": "https://github.com/pydantic/pydantic/issues/8768",
+            "source_url": "https://github.com/pydantic/pydantic/issues/8768#issuecomment-1938687843",
+            "chunk_type": "comment",
+            "similarity_score": 0.6681762841837726,
+            "retrieval_score": 0.6681762841837726,
+            "predicted_category": null,
+            "classification_confidence": null
+          }
+        ],
+        "retrieval_metadata": {
+          "top_k": 5,
+          "retrieved_count": 5,
+          "embedding_model": "text-embedding-3-small",
+          "generation_model": "gpt-4o-mini",
+          "retrieval_mode": "vector",
+          "confidence_threshold": 0.5370554072220923
+        },
+        "performance": {
+          "retrieval_latency_ms": 1174.698,
+          "llm_latency_ms": 1602.951,
+          "total_latency_ms": 2777.665,
+          "embedding_tokens": 23,
+          "generation_prompt_tokens": 1342,
+          "generation_completion_tokens": 56,
+          "estimated_cost_usd": 0.00023536
+        }
+      },
+      "standard_rate_openai_cost_usd": "0.00023536",
+      "citation_checks": {
+        "inline_refs_valid": true,
+        "expected_issue_cited": true,
+        "safe_output": true
+      },
+      "support_review": "PASS: cited issue body describes alias/name bug; cited comment confirms fix #10146."
+    },
+    {
+      "case_id": "generated-encode-starlette-1454",
+      "body": {
+        "question": "What is the impact of Starlette lowercasing headers on the functionality of the pdf.js library when serving PDFs?",
+        "top_k": 5
+      },
+      "expected_issue": {
+        "repository": "encode/starlette",
+        "issue_number": 1454
+      },
+      "outcome": "successful_cited_answer",
+      "usage_unknown": false,
+      "client_latency_ms": 2065.232200009632,
+      "http_status": 200,
+      "api_response": {
+        "answer": "The impact of Starlette lowercasing headers on the functionality of the pdf.js library when serving PDFs is significant because pdf.js has a case-sensitive implementation of headers. This discrepancy causes failures when attempting to load PDFs in batches using range requests, as the headers required by pdf.js do not match the lowercased headers that Starlette provides by default. A user reported that manually disabling the lowercasing in the Response class resolved the issue, allowing pdf.js to function as expected with the correct headers [1].",
+        "citations": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1454,
+            "issue_url": "https://github.com/Kludex/starlette/issues/1454",
+            "source_url": "https://github.com/Kludex/starlette/issues/1454",
+            "chunk_type": "issue_body",
+            "similarity_score": 0.6094289137106259,
+            "retrieval_score": 0.6094289137106259,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1067,
+            "issue_url": "https://github.com/Kludex/starlette/issues/1067",
+            "source_url": "https://github.com/Kludex/starlette/issues/1067#issuecomment-705529752",
+            "chunk_type": "comment",
+            "similarity_score": 0.5501539193249396,
+            "retrieval_score": 0.5501539193249396,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 650,
+            "issue_url": "https://github.com/Kludex/starlette/issues/650",
+            "source_url": "https://github.com/Kludex/starlette/issues/650#issuecomment-1728981705",
+            "chunk_type": "comment",
+            "similarity_score": 0.51404918722036,
+            "retrieval_score": 0.51404918722036,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 275,
+            "issue_url": "https://github.com/Kludex/starlette/issues/275",
+            "source_url": "https://github.com/Kludex/starlette/issues/275#issuecomment-454877014",
+            "chunk_type": "comment",
+            "similarity_score": 0.5071101282940368,
+            "retrieval_score": 0.5071101282940368,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 2960,
+            "issue_url": "https://github.com/Kludex/starlette/issues/2960",
+            "source_url": "https://github.com/Kludex/starlette/issues/2960#issuecomment-3041441655",
+            "chunk_type": "comment",
+            "similarity_score": 0.49805901588953805,
+            "retrieval_score": 0.49805901588953805,
+            "predicted_category": "unknown",
+            "classification_confidence": "low"
+          }
+        ],
+        "retrieval_metadata": {
+          "top_k": 5,
+          "retrieved_count": 5,
+          "embedding_model": "text-embedding-3-small",
+          "generation_model": "gpt-4o-mini",
+          "retrieval_mode": "vector",
+          "confidence_threshold": 0.5370554072220923
+        },
+        "performance": {
+          "retrieval_latency_ms": 670.005,
+          "llm_latency_ms": 1290.938,
+          "total_latency_ms": 1960.956,
+          "embedding_tokens": 24,
+          "generation_prompt_tokens": 1289,
+          "generation_completion_tokens": 102,
+          "estimated_cost_usd": 0.00025503
+        }
+      },
+      "standard_rate_openai_cost_usd": "0.00025503",
+      "citation_checks": {
+        "inline_refs_valid": true,
+        "expected_issue_cited": true,
+        "safe_output": true
+      },
+      "support_review": "PASS: cited issue body supports case-sensitive pdf.js headers and the reported workaround."
+    },
+    {
+      "case_id": "generated-encode-starlette-818",
+      "body": {
+        "question": "Why did enabling `requests_mock.Mocker()` interfere with the HTTP adapters used by Starlette `TestClient`?",
+        "top_k": 5
+      },
+      "expected_issue": {
+        "repository": "encode/starlette",
+        "issue_number": 818
+      },
+      "outcome": "successful_cited_answer",
+      "usage_unknown": false,
+      "client_latency_ms": 2538.281500004814,
+      "http_status": 200,
+      "api_response": {
+        "answer": "Enabling `requests_mock.Mocker()` interfered with the HTTP adapters used by Starlette `TestClient` because when `TestClient` is created, it sets up four adapters for ws, wss, http, and https to handle requests. However, when `requests_mock.Mocker()` is used, it overwrites these adapters, leading to a situation where the requests made by the application do not match any of the adapters, resulting in a `NoMockAddressError` [1].",
+        "citations": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 818,
+            "issue_url": "https://github.com/Kludex/starlette/issues/818",
+            "source_url": "https://github.com/Kludex/starlette/issues/818",
+            "chunk_type": "issue_body",
+            "similarity_score": 0.7378720747895325,
+            "retrieval_score": 0.7378720747895325,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 2145,
+            "issue_url": "https://github.com/Kludex/starlette/issues/2145",
+            "source_url": "https://github.com/Kludex/starlette/issues/2145",
+            "chunk_type": "issue_body",
+            "similarity_score": 0.6192149688399533,
+            "retrieval_score": 0.6192149688399533,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1060,
+            "issue_url": "https://github.com/Kludex/starlette/issues/1060",
+            "source_url": "https://github.com/Kludex/starlette/issues/1060",
+            "chunk_type": "issue_body",
+            "similarity_score": 0.6074325328977485,
+            "retrieval_score": 0.6074325328977485,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 386,
+            "issue_url": "https://github.com/Kludex/starlette/issues/386",
+            "source_url": "https://github.com/Kludex/starlette/issues/386#issuecomment-2744542029",
+            "chunk_type": "comment",
+            "similarity_score": 0.6037701950852669,
+            "retrieval_score": 0.6037701950852669,
+            "predicted_category": null,
+            "classification_confidence": null
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4789,
+            "issue_url": "https://github.com/fastapi/fastapi/issues/4789",
+            "source_url": "https://github.com/fastapi/fastapi/issues/4789#issuecomment-1097540711",
+            "chunk_type": "comment",
+            "similarity_score": 0.5988579798268568,
+            "retrieval_score": 0.5988579798268568,
+            "predicted_category": null,
+            "classification_confidence": null
+          }
+        ],
+        "retrieval_metadata": {
+          "top_k": 5,
+          "retrieved_count": 5,
+          "embedding_model": "text-embedding-3-small",
+          "generation_model": "gpt-4o-mini",
+          "retrieval_mode": "vector",
+          "confidence_threshold": 0.5370554072220923
+        },
+        "performance": {
+          "retrieval_latency_ms": 602.756,
+          "llm_latency_ms": 1820.472,
+          "total_latency_ms": 2423.243,
+          "embedding_tokens": 23,
+          "generation_prompt_tokens": 2315,
+          "generation_completion_tokens": 99,
+          "estimated_cost_usd": 0.00040711
+        }
+      },
+      "standard_rate_openai_cost_usd": "0.00040711",
+      "citation_checks": {
+        "inline_refs_valid": true,
+        "expected_issue_cited": true,
+        "safe_output": true
+      },
+      "support_review": "PASS: cited issue body describes overwritten adapters and NoMockAddressError."
+    }
+  ],
+  "aws_changes": false,
+  "retries": 0,
+  "health": {
+    "method": "GET",
+    "path": "/health",
+    "http_status": 200,
+    "client_latency_ms": 2823.492700001225,
+    "body": "{\"status\":\"ok\",\"database\":\"reachable\"}"
+  },
+  "openai_calls": 20,
+  "known_openai_cost_usd": "0.00322565",
+  "answered_p50_ms": 2538.281500004814,
+  "answered_p95_ms": 4310.853399994083,
+  "finished_at_utc": "2026-10-16T18:44:12.316469+00:00",
+  "openai_usage_unknown": false,
+  "cost_note": "Reported API tokens at standard uncached rates; cached invoice breakdown and AWS billed costs unavailable.",
+  "successful_cited_answers": 7,
+  "answered_total_openai_cost_usd": "0.00218658",
+  "answered_average_openai_cost_usd": "0.0003123685714285714285714285714",
+  "percentile_method": "linear interpolation, (n-1)*p",
+  "support_review_by": "Codex; saved excerpts and public GitHub source reads; no paid judge",
+  "first_ask_included": true,
+  "cold_start_status": "unknown; health request preceded first ask, no forced cold start",
+  "summary": {
+    "approved_answerable_requests": 10,
+    "health_passed": true,
+    "http_200_answers": 10,
+    "successful_supported_cited_answers": 7,
+    "qualifying_p50_seconds": 2.538,
+    "qualifying_p95_seconds": 4.311,
+    "qualifying_average_openai_cost_usd": "0.00031237",
+    "qualifying_total_openai_cost_usd": "0.00218658",
+    "all_attempts_openai_cost_usd": "0.00322565",
+    "exclusions": {
+      "without_inline_citations": 1,
+      "abstention": 1,
+      "off_target": 1
+    },
+    "percentiles_descriptive_sample_size": 7,
+    "local_latency_included": false,
+    "cost_basis": "Reported API tokens at standard uncached rates; not reconciled invoices."
+  }
+}
