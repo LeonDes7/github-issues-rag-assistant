@@ -9,7 +9,7 @@ API Gateway, and Secrets Manager**, with FastAPI, OpenAI, and a Streamlit interf
 
 ![GitHub Issues Assistant question form](docs/images/streamlit-demo-home.png)
 
-**Demo video:** [link pending]
+**Demo video:** [Watch the walkthrough](docs/videos/github-issues-assistant-demo.mp4)
 
 ## Architecture
 
