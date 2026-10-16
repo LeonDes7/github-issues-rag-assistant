@@ -42,6 +42,7 @@ ABSTENTIONS = {
 def _choose_example(question: str) -> None:
     st.session_state["question"] = question
     st.session_state.pop("rag_result", None)
+    st.session_state.pop("rag_result_question", None)
 
 
 def _answer_state(result: dict[str, Any]) -> str:
@@ -183,7 +184,12 @@ h1 { letter-spacing: -0.035em; }
             top_k = st.slider("Sources to retrieve", min_value=1, max_value=20, value=5)
         submitted = st.form_submit_button("Search issues", type="primary", use_container_width=True)
 
+    # Replace the whole previous result, including source cards, as one unit.
+    result_area = st.empty()
     if submitted:
+        result_area.empty()
+        st.session_state.pop("rag_result", None)
+        st.session_state.pop("rag_result_question", None)
         if not question.strip():
             st.warning("Enter a question before selecting Search issues.")
             return
@@ -203,6 +209,7 @@ h1 { letter-spacing: -0.035em; }
                     question.strip(),
                     top_k,
                 )
+                st.session_state["rag_result_question"] = question.strip()
         except RagApiError as exc:
             if exc.status_code == 401:
                 st.error(
@@ -232,7 +239,11 @@ h1 { letter-spacing: -0.035em; }
 
     result: Any = st.session_state.get("rag_result")
     if isinstance(result, dict):
-        _show_result(result)
+        with result_area.container():
+            result_question = st.session_state.get("rag_result_question")
+            if result_question:
+                st.text(f"Results for: {result_question}")
+            _show_result(result)
 
     st.divider()
     st.markdown("**About this demo**")
