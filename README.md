@@ -4,7 +4,8 @@ An evidence-grounded assistant for closed **FastAPI, Starlette, and Pydantic**
 issues. Ask a question, retrieve relevant issue discussions, and get an answer
 with GitHub citations. When the evidence is insufficient, the assistant can abstain.
 
-Built with PostgreSQL/pgvector, FastAPI, OpenAI, AWS Lambda/API Gateway, and Streamlit.
+Deployed on **AWS** using **S3, RDS for PostgreSQL/pgvector, ECR, Lambda,
+API Gateway, and Secrets Manager**, with FastAPI, OpenAI, and a Streamlit interface.
 
 ![GitHub Issues Assistant question form](docs/images/streamlit-demo.png)
 
@@ -14,13 +15,17 @@ Built with PostgreSQL/pgvector, FastAPI, OpenAI, AWS Lambda/API Gateway, and Str
 
 ```mermaid
 flowchart LR
-    GitHub[Closed GitHub issues and comments] --> S3[S3 Bronze]
-    S3 --> Silver[PostgreSQL Silver: cleaned issues]
-    Silver --> Gold[pgvector Gold: chunks and embeddings]
-    UI[Streamlit] --> Gateway[API Gateway / Lambda / FastAPI]
-    Gateway --> Gold
-    Gateway --> OpenAI[OpenAI: embeddings and generation]
-    Gateway --> Answer[Answer with GitHub citations or abstention]
+    GitHub[Closed GitHub issues and comments] --> S3
+    UI[Streamlit] --> Gateway
+    subgraph AWS[AWS deployment]
+        S3[Amazon S3: Bronze data] --> RDS[Amazon RDS: Silver issues and Gold pgvector chunks]
+        Gateway[Amazon API Gateway] --> Lambda[AWS Lambda: FastAPI / Mangum]
+        ECR[Amazon ECR: container image] -. deployed to .-> Lambda
+        Secrets[AWS Secrets Manager] -. runtime secrets .-> Lambda
+        Lambda --> RDS
+    end
+    Lambda --> OpenAI[OpenAI: embeddings and generation]
+    Lambda --> Answer[Answer with GitHub citations or abstention]
     Answer --> UI
 ```
 
@@ -28,6 +33,32 @@ The pipeline stores raw issue discussions, cleans and chunks them, and builds
 embeddings for retrieval. The API retrieves 30 candidate chunks and selects up
 to five distinct issues before applying confidence and generation safeguards.
 The Streamlit client calls the authenticated API from server-side Python.
+
+### AWS implementation
+
+The development backend is deployed in **us-east-2 (Ohio)**. AWS provides both
+the data storage and the API runtime:
+
+| Service | Role in the project |
+|---|---|
+| **Amazon S3** | Stores raw GitHub issues and comments in the Bronze layer. |
+| **Amazon RDS for PostgreSQL** | Stores cleaned Silver records and Gold chunks with pgvector embeddings for similarity search. |
+| **Amazon ECR** | Stores the container images used to deploy the backend. |
+| **AWS Lambda + Amazon API Gateway** | Exposes FastAPI through Mangum as an HTTPS API, including authenticated `/ask` and public `/health` routes. |
+| **AWS Secrets Manager** | Supplies the OpenAI API key, database password, and API bearer token to the Lambda runtime. |
+| **Amazon VPC, security groups, and NAT gateway** | Place Lambda in private subnets, restrict database access, and provide outbound access for external API calls. |
+
+The deployment uses a Lambda execution role for AWS access. Database ingress is
+restricted to the Lambda security group and an existing administrator client rule.
+The single-NAT, single-AZ RDS setup is a development topology; infrastructure
+costs are separate from the per-query OpenAI costs reported below.
+
+The backend has been deployed and checked through its live API Gateway endpoint.
+The pipeline's rerun safety was also verified against the real database. New-issue
+incremental ingestion remains untested, and no ingestion schedule is deployed.
+See [AWS deployment and networking](docs/operations/deployment.md),
+[deployment verification](docs/deployment/live/remediation_deployment_live_report.md),
+and [database replay evidence](docs/deployment/live/idempotency_live_report.md).
 
 ## Results at a glance
 
