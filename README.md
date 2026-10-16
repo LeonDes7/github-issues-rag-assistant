@@ -98,7 +98,7 @@ python -m venv .venv
 .\.venv\Scripts\python.exe -m unittest discover -s tests -q
 ```
 
-**105 tests pass** at this checkpoint. Unit tests use mocks where external services
+**111 tests pass** at this checkpoint. Unit tests use mocks where external services
 would otherwise be required.
 
 Copy [.env.example](.env.example) to a private `.env` and configure PostgreSQL,
@@ -161,3 +161,5 @@ and evaluation can incur paid calls or write data; they are separate from unit t
 - [Real-database idempotency verification](docs/deployment/live/idempotency_live_report.md)
 - [Security review](docs/security/live_answer_secret_review.md)
 - [All reports and preflights](docs/README.md)
+
+- [AWS teardown and snapshot restore](docs/operations/teardown.md)

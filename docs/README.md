@@ -105,6 +105,8 @@ Public documentation now uses placeholders for AWS account IDs, ARNs and secret 
 
 ## operations
 
+- [teardown.md](operations/teardown.md)
+
 - [deployment.md](operations/deployment.md)
 - [evaluation.md](operations/evaluation.md)
 - [pipeline.md](operations/pipeline.md)
