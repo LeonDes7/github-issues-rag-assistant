@@ -1,0 +1,20 @@
+{
+  "checked_at": "2026-10-16T18:25:38.331095+00:00",
+  "status": "blocked",
+  "reason": "Existing RDS instance is stopped; infrastructure changes prohibited by user.",
+  "approved_answerable_cases": 44,
+  "unanswerable_cases_excluded_from_rescore": 15,
+  "completed_cases": 0,
+  "openai_calls": 0,
+  "openai_cost_usd": 0,
+  "new_metrics": null,
+  "database_writes": 0,
+  "aws_infrastructure_changes": 0,
+  "command": ".\\.venv\\Scripts\\python.exe scripts/rescore_reviewed_retrieval.py --execute",
+  "observations": [
+    "Sandbox database socket access denied; retried with approved network access.",
+    "Database connection timed out before the embedding request.",
+    "Read-only RDS describe_db_instances returned DBInstanceStatus=stopped."
+  ],
+  "local_tests_passed": 105
+}

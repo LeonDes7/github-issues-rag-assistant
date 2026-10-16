@@ -14,15 +14,18 @@ def retrieved(repository, issue_number, issue_url=None):
 
 
 class EvaluationTests(unittest.TestCase):
-    def test_generated_cases_distinguish_codex_checks_from_human_review(self):
+    def test_generated_cases_match_author_review(self):
         cases = evaluate.load_cases(Path("evaluation/evaluation_cases.generated.jsonl"))
-        checked = [case for case in cases if case["verification_status"] == "codex_checked"]
-        self.assertEqual(len(checked), 45)
-        self.assertFalse(any(case["verification_status"] == "manually_verified" for case in cases))
-        self.assertTrue(all(case["human_verified"] == "" for case in cases))
-        self.assertTrue(all(case["verification_note"] ==
-                            "Checked by Codex against the gold issue; not human-verified."
-                            for case in checked))
+        reviewed = evaluate.load_cases(Path("evaluation/evaluation_cases_reviewed.jsonl"))
+        self.assertEqual(cases, reviewed)
+        answerable = [case for case in cases if not case["expected_abstain"]]
+        self.assertEqual(len(answerable), 44)
+        self.assertEqual(len(cases) - len(answerable), 15)
+        self.assertTrue(all(case["verification_status"] == "manually_verified" for case in answerable))
+        self.assertTrue(all(case["human_verified"] == "yes" for case in cases))
+        self.assertNotIn("generated-tiangolo-fastapi-5108", {case["case_id"] for case in cases})
+        edited = next(case for case in cases if case["case_id"] == "generated-pydantic-pydantic-11491")
+        self.assertEqual(edited["question"], "What concern about the organization of the serialization documentation motivated a rewrite?")
 
     def test_initial_cases_are_small_and_provenance_labeled(self):
         cases = evaluate.load_cases(Path("evaluation/evaluation_cases.jsonl"))

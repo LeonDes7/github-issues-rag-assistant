@@ -22,17 +22,39 @@ python scripts/build_evaluation_set.py --seed 42
 ```
 
 This uses the configured Postgres corpus and generation model. It writes
-[evaluation_cases.generated.jsonl](../../evaluation/evaluation_cases.generated.jsonl) and [evaluation_cases.review.csv](../../evaluation/evaluation_cases.review.csv); review
-the issue IDs and questions against each source issue. The checked-in CSV and
-matching generated JSONL label the 45 answerable cases `codex_checked`, not
-human-verified, alongside 15 off-topic cases. The empty `human_verified` field
-is reserved for human review; Codex checks do not constitute human verification.
+[evaluation_cases.generated.jsonl](../../evaluation/evaluation_cases.generated.jsonl) and
+`evaluation/evaluation_cases.draft.csv`; review the issue IDs and questions against
+each source issue. The draft CSV filename keeps generation separate from the
+completed review. The original 60-case generated set is preserved as
+[evaluation_cases.original.jsonl](../../evaluation/evaluation_cases.original.jsonl)
+for historical provenance. The matching generated JSONL now contains the approved 59 cases.
 
-Run the generated set locally with top-5 retrieval:
+The replacement [evaluation_cases_reviewed.csv](../../evaluation/evaluation_cases_reviewed.csv)
+is the source of truth for the author-approved verdicts. Its `human_verified` column
+records 58 `yes` decisions, one `no`, and one `edit` with replacement question text.
+Notes and `manual_review_status` now reflect the author approval, edit, or rejection;
+the supplied decisions, questions, and gold issue identities are preserved.
+The derived [evaluation_cases_reviewed.jsonl](../../evaluation/evaluation_cases_reviewed.jsonl)
+contains 59 cases: 44 answerable and 15 unanswerable. It excludes FastAPI #5108,
+uses the supplied edited question for Pydantic #11491, and records human-review
+provenance. Answerable cases are `manually_verified`; unanswerable cases retain
+`unresolved` to preserve the evaluator's abstention convention.
+The separate 10-case suite and harder held-out unanswerable suite are unchanged.
+Historical metrics have not been rerun on this reviewed set. The retrieval-only
+rescore uses `scripts/rescore_reviewed_retrieval.py --execute` on only the 44 kept
+answerable cases, with production vector retrieval, ef_search=100, 30 candidates
+collapsed to five issues, the three configured repositories, and the unchanged cutoff.
+Run the script without `--execute` for an offline call/token/cost preflight. Execution
+was approved by the author on October 16, 2026, but the attempt was blocked because
+RDS is stopped. No OpenAI calls, database writes, or infrastructure changes occurred.
+See the [attempt report](../experiments/retrieval/author_reviewed_rescore_report.md).
+No generation or judge calls are part of this rescore.
+
+Run the reviewed set locally with top-5 retrieval:
 
 ```powershell
 python -m rag_assistant.evaluate `
-  --cases evaluation/evaluation_cases.generated.jsonl `
+  --cases evaluation/evaluation_cases_reviewed.jsonl `
   --top-k 5
 ```
 

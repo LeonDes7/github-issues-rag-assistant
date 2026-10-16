@@ -3,7 +3,7 @@
 ## Results at a glance
 
 - Corpus: **9,555 issues / 43,535 comments / 63,002 chunks**.
-- Development set (45 generated answerable cases, not human-verified): Hit@5 **0.8000 → 0.9333**; MRR **0.7526 → 0.8389**.
+- Historical development set (45 generated answerable cases, before author review): Hit@5 **0.8000 → 0.9333**; MRR **0.7526 → 0.8389**.
 - Harder unanswerables: cutoff refused only **1/15**; generation abstained on the other 14 in the original run, with one auxiliary citation misattribution.
 - Idempotent real-database replay verified on already loaded data; new-issue incremental ingestion untested; no schedule deployed.
 - Historical local answered-query p50/p95: **2.047 / 4.815 s**; mean token cost **$0.000257734/answered query**; predates deployed controls.
@@ -68,7 +68,7 @@ python -m pip install -e .
 python -m unittest discover -s tests -q
 ```
 
-The current local checkpoint has **104 passing tests**.
+The current local checkpoint has **105 passing tests**.
 Copy setting names from `.env.example` into a private local `.env` as needed.
 Do not commit credentials, connection strings or `.streamlit/secrets.toml`.
 Prefer IAM roles or an AWS profile to long-lived static access keys.
@@ -151,9 +151,16 @@ Setting-name references and masked examples are not proof of a credential leak.
 
 ## Retrieval and abstention evidence
 
-On the original 45 generated answerable cases, not yet human-verified, final retrieval
+On the original 45 generated answerable cases (before author review), final retrieval
 scored **Hit@5 0.9333, Recall@5 0.9333 and MRR 0.8389**.
 This is a small evaluation, not a general accuracy guarantee.
+The author-approved review CSV now has a matching 59-case generated/reviewed suite
+(**44 author-verified answerable cases**, 15 off-topic), excluding one rejected case and applying one
+question edit. Historical metrics below still refer to the original generated
+set. The approved 44-case rescore was blocked on October 16, 2026 because RDS
+is stopped; zero OpenAI calls were made and no new metrics are available. See the
+[rescore status](docs/experiments/retrieval/author_reviewed_rescore_report.md) and the
+[evaluation reference](docs/operations/evaluation.md) for files and usage.
 The earlier vector/hybrid baseline both scored 0.8000/0.8000/0.7526.
 Full case evidence is in [retrieval reports](docs/experiments/retrieval/issue_collapse_experiment.md).
 

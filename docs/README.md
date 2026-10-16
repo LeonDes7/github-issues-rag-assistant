@@ -72,6 +72,9 @@ Public documentation now uses placeholders for AWS account IDs, ARNs and secret 
 
 ## experiments/retrieval
 
+- [author_reviewed_rescore_report.md](experiments/retrieval/author_reviewed_rescore_report.md)
+- [author_reviewed_rescore_attempt.json](experiments/retrieval/author_reviewed_rescore_attempt.json)
+
 - [clean_scope_experiment.json](experiments/retrieval/clean_scope_experiment.json)
 - [clean_scope_experiment.md](experiments/retrieval/clean_scope_experiment.md)
 - [confidence_calibration_results.json](experiments/retrieval/confidence_calibration_results.json)
