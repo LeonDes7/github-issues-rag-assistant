@@ -30,9 +30,11 @@ class StreamlitResultTests(unittest.TestCase):
                 payload = {"answer": api.MODEL_ABSTENTION_ANSWER, "citations": [citation]}
                 module._show_result(payload)
                 self.assertEqual(streamlit.markdown.call_args_list[0].args, (api.MODEL_ABSTENTION_ANSWER,))
-                self.assertIn(source_url, streamlit.markdown.call_args_list[1].args[0])
+                self.assertIn(source_url, streamlit.markdown.call_args_list[2].args[0])
                 streamlit.subheader.assert_called_with("Retrieved GitHub sources")
                 self.assertIn("does not establish an answer", streamlit.caption.call_args.args[0])
+                streamlit.warning.assert_called_with("Insufficient evidence")
+                streamlit.success.assert_not_called()
                 streamlit.metric.assert_not_called()
                 streamlit.info.assert_not_called()
                 displayed = streamlit.json.call_args.args[0]["citations"][0]
