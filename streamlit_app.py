@@ -157,8 +157,8 @@ h1 { letter-spacing: -0.035em; }
 """, unsafe_allow_html=True)
     with st.sidebar:
         st.title("Demo guide")
-        st.markdown("**Scope**\n\nClosed FastAPI, Starlette, and Pydantic issues only.")
-        st.markdown("**Evidence first**\n\nAnswers require citations. Open the linked discussions to check the evidence.")
+        st.markdown("**Scope**\n\nSearches closed FastAPI, Starlette, and Pydantic issues only.")
+        st.markdown("**Evidence first**\n\nAnswers include GitHub citations. Open the linked discussions to review the evidence.")
         st.markdown("**May abstain**\n\nIf the indexed excerpts cannot support an answer, the assistant may decline.")
         st.divider()
         st.caption("Five questions per session. A shared daily demo limit also applies.")
