@@ -456,3 +456,11 @@ Detailed setup, commands, historical measurements and teardown guidance:
 The live Streamlit app was successfully checked with a cited answer, an off-topic
 refusal, and a safe settings response, as confirmed by the project author. These
 checks verify the observed cases; they do not establish general answer accuracy.
+
+
+### Optional Streamlit abstention diagnostics
+
+Insufficient-evidence responses hide source cards and debug information by default.
+For developer inspection, set `STREAMLIT_SHOW_DEBUG=true` in the private environment
+or Streamlit secrets to show the debug expander on those responses. This setting
+changes presentation only; it does not change API retrieval, cutoff, or abstention.

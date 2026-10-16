@@ -61,7 +61,7 @@ def _answer_state(result: dict[str, Any]) -> str:
     return "uncited"
 
 
-def _show_result(result: dict[str, Any]) -> None:
+def _show_result(result: dict[str, Any], *, show_debug: bool = False) -> None:
     result = safe_display_payload(result)
     answer = result.get("answer")
     state = _answer_state(result)
@@ -133,14 +133,15 @@ def _show_result(result: dict[str, Any]) -> None:
     else:
         st.info("No issue citations were retrieved for this answer.")
 
-    with st.expander("Retrieval details and debug information"):
-        st.json(
-            {
-                "retrieval_metadata": result.get("retrieval_metadata", {}),
-                "performance": result.get("performance", {}),
-                "citations": citations,
-            }
-        )
+    if state != "abstained" or show_debug:
+        with st.expander("Retrieval details and debug information"):
+            st.json(
+                {
+                    "retrieval_metadata": result.get("retrieval_metadata", {}),
+                    "performance": result.get("performance", {}),
+                    "citations": citations,
+                }
+            )
 
 
 def main() -> None:
@@ -252,7 +253,10 @@ h1 { letter-spacing: -0.035em; }
             result_question = st.session_state.get("rag_result_question")
             if result_question:
                 st.text(f"Results for: {result_question}")
-            _show_result(result)
+            _show_result(
+                result,
+                show_debug=_setting("STREAMLIT_SHOW_DEBUG", "false").lower() in {"true", "1", "yes"},
+            )
 
     st.divider()
     st.markdown("**About this demo**")
