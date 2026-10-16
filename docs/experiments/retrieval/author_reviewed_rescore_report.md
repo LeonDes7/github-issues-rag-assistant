@@ -1,4 +1,4 @@
-# Author-approved retrieval rescore: blocked
+# Author-approved retrieval rescore: complete
 
 The author personally reviewed and approved the CSV verdicts. The current
 generated and reviewed JSONL files contain **44 kept answerable cases** (43 yes,
@@ -8,18 +8,28 @@ documentation motivated a rewrite?" The CSV retains the rejected row as review
 evidence. `evaluation/evaluation_cases.original.jsonl` preserves the original
 60-case input for historical reports.
 
-## Attempt on October 16, 2026
+## Completed rescore on October 16, 2026
 
-The author approved the command below. Database connection timed out before
-the OpenAI embedding request. A read-only RDS status query confirmed the existing
-instance was **stopped at the time of that attempt**. The user prohibited AWS infrastructure changes, so it
-was not started. No database writes or AWS infrastructure changes occurred.
+All 44 kept answerable cases completed. Metrics use the top five distinct retrieved issues before cutoff refusal; false refusals are reported separately.
 
-**Zero cases scored; zero OpenAI calls; $0 OpenAI cost. No new retrieval metrics.**
-The historical 45-case scores are not scores for the approved 44-case set.
-Local verification: **105 tests pass**.
+| Scope | Cases | Hits | Hit@5 | Recall@5 | MRR | False refusals |
+|---|---:|---:|---:|---:|---:|---:|
+| Overall | 44 | 41 | 0.9318 | 0.9318 | 0.8504 | 2 |
+| encode/starlette | 15 | 14 | 0.9333 | 0.9333 | 0.9333 | 1 |
+| pydantic/pydantic | 15 | 14 | 0.9333 | 0.9333 | 0.8333 | 0 |
+| tiangolo/fastapi | 14 | 13 | 0.9286 | 0.9286 | 0.7798 | 1 |
 
-Recorded attempt: [author_reviewed_rescore_attempt.json](author_reviewed_rescore_attempt.json).
+Retrieval misses: Starlette #1119, Pydantic #4598, FastAPI #14502. False refusals: FastAPI #5988 and Starlette #1295.
+
+The run reused 43 cached embeddings and made exactly one text-embedding-3-small call for the edited Pydantic question. API-reported usage was **13 input / total tokens**, costing **$0.00000026** at $0.02 per million tokens. This is token-based cost, not invoice reconciliation. No generation, judge calls, retries, database writes, or AWS changes occurred.
+
+The 15 off-topic cases were excluded. Results describe retrieval on this small author-approved set; they do not establish general answer accuracy. Historical 45-case development scores and deployed ten-request latency measurements remain separate.
+
+[Raw completed results](author_reviewed_rescore_results.json) include per-case sources, scores, metrics, refusal decisions, configuration, fixture hash, usage, and timestamps.
+
+## Earlier blocked attempt
+
+An earlier attempt on October 16 timed out because RDS was stopped at the time. It scored zero cases and made zero OpenAI calls. No infrastructure changes were made. The [original attempt record](author_reviewed_rescore_attempt.json) is retained as historical evidence.
 
 ## Prepared command and scope
 
@@ -38,9 +48,7 @@ for the edited question: 13 input tokens, estimated $0.00000026 at the standard
 text-embedding-3-small rate of $0.02 per million tokens. The runner disables
 retries and refuses an unexpected cache miss or changed token estimate.
 
-Once database access is restored, this command will recompute Hit@5, Recall@5,
-MRR, retrieval hit counts, and answerable false refusals, overall and per
-repository. A completed run will write `author_reviewed_rescore_results.json`;
-that file does not exist for this blocked attempt. README headline metrics must
-only be updated from a completed run. This is a local production-config retrieval
-evaluation, not a deployed API latency or answer-quality test.
+The completed run is saved in `author_reviewed_rescore_results.json`. The runner
+refuses to overwrite that file or repeat the paid call when it exists. This is a
+local production-config retrieval evaluation, not a deployed API latency or
+answer-quality test. Local verification: **105 tests pass**.

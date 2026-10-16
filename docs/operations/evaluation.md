@@ -40,15 +40,22 @@ uses the supplied edited question for Pydantic #11491, and records human-review
 provenance. Answerable cases are `manually_verified`; unanswerable cases retain
 `unresolved` to preserve the evaluator's abstention convention.
 The separate 10-case suite and harder held-out unanswerable suite are unchanged.
-Historical metrics have not been rerun on this reviewed set. The retrieval-only
-rescore uses `scripts/rescore_reviewed_retrieval.py --execute` on only the 44 kept
-answerable cases, with production vector retrieval, ef_search=100, 30 candidates
-collapsed to five issues, the three configured repositories, and the unchanged cutoff.
-Run the script without `--execute` for an offline call/token/cost preflight. Execution
-was approved by the author on October 16, 2026, but the attempt was blocked because
-RDS was stopped at the time of that attempt. No OpenAI calls, database writes, or infrastructure changes occurred.
-See the [attempt report](../experiments/retrieval/author_reviewed_rescore_report.md).
-No generation or judge calls are part of this rescore.
+The author-approved 44-answerable-case rescore completed on October 16, 2026:
+**41/44 hits**, **Hit@5 0.9318**, **Recall@5 0.9318**, **MRR 0.8504**,
+and **2/44 answerable false refusals** at the unchanged cutoff. The 15 off-topic
+cases were excluded. This run uses the production retrieval configuration and
+a read-only repeatable-read database transaction; it does not measure generated
+answers or deployed API latency. The historical 45-case metrics remain separate.
+
+The command was `scripts/rescore_reviewed_retrieval.py --execute`: vector retrieval,
+ef_search=100, 30 candidates collapsed to five issues, three configured repositories,
+and cutoff 0.5370554072220923. Exactly one embedding call used 13 tokens, priced
+at $0.00000026; the other 43 embeddings were cached. No generation, judge calls,
+retries, database writes, or AWS infrastructure changes occurred. The earlier
+attempt was blocked when RDS was stopped; its record is retained as history.
+See the [completed report](../experiments/retrieval/author_reviewed_rescore_report.md)
+and [raw results](../experiments/retrieval/author_reviewed_rescore_results.json).
+The runner refuses to overwrite completed results or repeat a completed run.
 
 Run the reviewed set locally with top-5 retrieval:
 

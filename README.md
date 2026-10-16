@@ -68,7 +68,7 @@ three configured repositories. Pull requests are excluded.
 | Evidence | Scope and result |
 |---|---|
 | Historical retrieval development set | **45 generated answerable cases**, before author review. Hit@5 **0.8000 to 0.9333**; Recall@5 **0.9333** and MRR **0.7526 to 0.8389** for final retrieval. |
-| Author-approved retrieval set | **44 kept answerable cases** (43 approved + one edited), plus 15 off-topic cases. **44-case rescore pending; no new scores available.** |
+| Author-approved retrieval set | **44 kept answerable cases** (43 approved + one edited), plus 15 off-topic cases. Rescore: **41/44 hits**, Hit@5 / Recall@5 **0.9318**, MRR **0.8504**; **2/44** false refusals at the unchanged cutoff. |
 | Deployed API measurement, October 16, 2026 | Health passed; all **10 approved answerable requests** returned HTTP 200. **7/10** were successful, supported cited answers after Codex source-support review. |
 | Deployed latency, seven qualifying answers | End-to-end **p50 2.538 s / p95 4.311 s**. |
 | OpenAI cost, seven qualifying answers | Average **$0.00031237/answer**; total **$0.00218658**. Across all ten attempts: **$0.00322565**. |
@@ -79,12 +79,13 @@ are descriptive because the qualifying sample is seven. Costs use reported token
 at standard uncached rates, without invoice reconciliation. **No local latency is
 included in these deployed numbers.**
 
-The 44-case rescore attempt was blocked when RDS was stopped; the later deployed
-measurement passed health, but the retrieval rescore has not been rerun. Historical
-45-case scores must not be attributed to the 44 author-approved cases.
+The 44-case rescore completed on October 16, 2026 using read-only database retrieval
+and one 13-token embedding call ($0.00000026). It measures retrieval with the
+production configuration, not generated-answer quality or deployed latency.
+Historical 45-case scores use a different case set and remain separate.
 
 Evidence: [retrieval experiments](docs/experiments/retrieval/issue_collapse_experiment.md),
-[44-case rescore status](docs/experiments/retrieval/author_reviewed_rescore_report.md),
+[44-case rescore results](docs/experiments/retrieval/author_reviewed_rescore_report.md),
 and [deployed measurement with raw results](docs/measurements/deployed_latency_cost_report.md).
 
 ## Quick start
