@@ -1,5 +1,10 @@
 # Documentation index
 
+The live demo backend is **offline to save AWS costs** following the October 16,
+2026 teardown. View the [recorded demo video](videos/github-issues-assistant-demo.mp4)
+instead; GitHub may require downloading it. Live deployment and measurement reports
+below document historical checks, not current availability.
+
 The root README describes current verified behavior. Reports below retain historical
 results and limitations; preflights are not instructions to rerun paid operations.
 

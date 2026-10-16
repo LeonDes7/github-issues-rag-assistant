@@ -4,12 +4,18 @@ An evidence-grounded assistant for closed **FastAPI, Starlette, and Pydantic**
 issues. Ask a question, retrieve relevant issue discussions, and get an answer
 with GitHub citations. When the evidence is insufficient, the assistant can abstain.
 
-Deployed on **AWS** using **S3, RDS for PostgreSQL/pgvector, ECR, Lambda,
+Built and previously deployed on **AWS** using **S3, RDS for PostgreSQL/pgvector, ECR, Lambda,
 API Gateway, and Secrets Manager**, with FastAPI, OpenAI, and a Streamlit interface.
 
 ![GitHub Issues Assistant question form](docs/images/streamlit-demo-home.png)
 
-**Demo video:** [Watch the walkthrough](docs/videos/github-issues-assistant-demo.mp4)
+**Live demo backend: offline to save AWS costs.** On October 16, 2026, the RDS
+instance and NAT gateway were deleted and the NAT Elastic IP was released.
+The Streamlit page may still load, but live question answering is unavailable.
+Please use the **[recorded demo video](docs/videos/github-issues-assistant-demo.mp4)**
+to view the application. GitHub may require downloading the video to watch it.
+S3 Bronze and a verified manual RDS snapshot were preserved for restoration.
+Remaining stored resources can still incur costs.
 
 ## Architecture
 
@@ -36,7 +42,8 @@ The Streamlit client calls the authenticated API from server-side Python.
 
 ### AWS implementation
 
-The development backend is deployed in **us-east-2 (Ohio)**. AWS provides both
+The development backend was deployed in **us-east-2 (Ohio)**. The diagram and
+service table describe that deployment before its cost-saving teardown. AWS provided both
 the data storage and the API runtime:
 
 | Service | Role in the project |
@@ -53,7 +60,7 @@ restricted to the Lambda security group and an existing administrator client rul
 The single-NAT, single-AZ RDS setup is a development topology; infrastructure
 costs are separate from the per-query OpenAI costs reported below.
 
-The backend has been deployed and checked through its live API Gateway endpoint.
+The backend was checked through its live API Gateway endpoint before teardown.
 The pipeline's rerun safety was also verified against the real database. New-issue
 incremental ingestion remains untested, and no ingestion schedule is deployed.
 See [AWS deployment and networking](docs/operations/deployment.md),
@@ -137,8 +144,9 @@ and evaluation can incur paid calls or write data; they are separate from unit t
   are estimates rather than human ground truth.
 - Rerun safety is verified on already loaded data. Incremental ingestion with
   new issues remains untested, and no refresh schedule is deployed.
-- The development deployment uses single-AZ RDS and a single NAT gateway; it is
-  not highly available. Infrastructure and public API usage can incur ongoing costs.
+- The former development deployment used single-AZ RDS and a single NAT gateway;
+  it was not highly available. The backend is now offline. Preserved snapshots,
+  storage, and other retained services may still incur costs.
 - Live Streamlit checks passed for a cited answer, an off-topic refusal, and a
   safe settings response. These checks establish behavior for those individual cases.
 

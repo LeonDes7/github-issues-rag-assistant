@@ -1,4 +1,16 @@
-﻿# AWS teardown and recreation
+# AWS teardown and recreation
+
+## Completed teardown: October 16, 2026
+
+The approved teardown completed and was verified: RDS `github-rag-db` and the
+specified NAT gateway were deleted, and the NAT Elastic IP was released. The
+live demo backend is **offline to save AWS costs**. Use the
+[recorded demo video](../videos/github-issues-assistant-demo.mp4) instead.
+S3 Bronze and the verified manual snapshot were preserved. The private execution
+receipt records the actual snapshot identifier and final verification. Other
+services were retained and can still incur charges; this was not a zero-cost
+account cleanup. The commands below are reference instructions, not a request
+to repeat teardown against already deleted resources.
 
 Both scripts default to read-only previews. No script calls S3: the Bronze bucket
 and all its contents are preserved. Private plans/receipts belong in ignored

@@ -1,5 +1,15 @@
 # Deployment reference
 
+## Current availability
+
+The live demo backend is **offline to save AWS costs** as of October 16, 2026.
+RDS and the NAT gateway were deleted, and the NAT EIP was released. The Streamlit
+page and API Gateway endpoint may remain present, but live question answering is
+unavailable. Use the [recorded demo video](../videos/github-issues-assistant-demo.mp4)
+(GitHub may require downloading it). S3 Bronze and a verified manual snapshot were
+preserved; retained storage/services may still incur costs. See
+[teardown and restore instructions](teardown.md) before planning restoration.
+
 This reference preserves the original README chronology. Statements such as
 ?not yet verified? and old image digests describe earlier checkpoints, not current
 status. Model-selected abstention and supported answers are now live-verified;

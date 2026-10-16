@@ -1,5 +1,8 @@
 # Deployed API latency and OpenAI cost - October 16, 2026
 
+These measurements were recorded before teardown. The live backend is now offline
+to save AWS costs; use the [recorded demo video](../videos/github-issues-assistant-demo.mp4).
+
 One GET /health passed (HTTP 200, database reachable), followed by exactly ten approved answerable sequential POST /ask requests from the approved fixed plan. All ten returned HTTP 200. No retries, redirects, warmups, replacement requests, AWS changes, secret changes, or Streamlit changes. No additional OpenAI calls for review.
 
 ## Successful cited answers only
