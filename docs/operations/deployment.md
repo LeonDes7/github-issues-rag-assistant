@@ -3,7 +3,8 @@
 This reference preserves the original README chronology. Statements such as
 ?not yet verified? and old image digests describe earlier checkpoints, not current
 status. Model-selected abstention and supported answers are now live-verified;
-the current image is documented in [the root README](../../README.md).
+the remediation image is documented in the
+[remediation deployment report](../deployment/live/remediation_deployment_live_report.md).
 
 Historical commands below can call paid services, write data or change infrastructure.
 They are documentation, not authorization to execute. Historical checkpoints are dated;
@@ -338,3 +339,113 @@ inline policy, log group `/aws/lambda/github-rag-api`, and secret
 `<SECRET_NAME>` if they are no longer needed. Secret deletion
 uses Secrets Manager's recovery window unless force deletion is explicitly
 selected.
+
+
+## Detailed reference moved from the portfolio README (October 16, 2026)
+
+The following settings and smoke observations preserve the prior README detail.
+For the later ten-request deployed measurement, see the
+[deployed latency and cost report](../measurements/deployed_latency_cost_report.md).
+
+## API usage
+
+`GET /health` checks PostgreSQL connectivity.
+`POST /ask` takes a nonblank question of at most 4,000 characters.
+The default `top_k` is 5; valid values are 1 through 20.
+
+With the bearer token already set through a private environment mechanism:
+
+```powershell
+Invoke-RestMethod -Method Post `
+  -Uri http://127.0.0.1:8000/ask `
+  -Headers @{ Authorization = "Bearer $env:API_AUTH_TOKEN" } `
+  -ContentType 'application/json' `
+  -Body '{"question":"What problem did the reporter observe when sending larger base64-encoded video frames over a WebSocket?","top_k":5}'
+```
+
+PowerShell does not automatically load `.env`; do not echo the token.
+FastAPI and local Streamlit load `.env` themselves.
+The JSON response includes `answer`, structured `citations`,
+`retrieval_metadata` and `performance` with latency/token/cost information.
+Source URLs and metadata come from retrieved rows, not model-created URLs.
+The API still returns stored category predictions for the 200 of 9,555 issues that have them; the Streamlit UI does not display predictions or their confidence, including in debug details.
+API classification/confidence describes the retrieved issue, not the user's question.
+Heuristic classification and lexical grounding checks are estimates.
+
+
+## Production settings and safeguards
+
+| Control | Current setting |
+|---|---|
+| Repositories | `tiangolo/fastapi`, `encode/starlette`, `pydantic/pydantic` |
+| Embeddings | `text-embedding-3-small`, 1,536 dimensions |
+| Generation | `gpt-4o-mini` |
+| Retrieval | Vector, `ef_search=100`, fetch 30, collapse to five distinct issues |
+| Confidence cutoff | `0.5370554072220923` |
+| Generation input | `RAG_MAX_GENERATION_INPUT_TOKENS=12000` |
+| Generation output | `OPENAI_GENERATION_MAX_OUTPUT_TOKENS=512` |
+| OpenAI retries | `OPENAI_MAX_RETRIES=0` |
+
+Below the cutoff, no generation call is made. The fixed answer is:
+"There isn't enough evidence in the indexed issues to answer this question."
+A model insufficient-evidence decision returns only:
+"The retrieved excerpts do not provide enough evidence to answer this question."
+Model-written side claims and inline citations are discarded on that path.
+Retrieved sources remain separate; their presence does not prove the unavailable answer.
+
+The input budget counts system/user messages with the model tokenizer and a
+512-token framing reserve. Excerpts can be clipped while source IDs, ordering
+and metadata remain intact; clipped text is marked incomplete.
+If instructions/question/source metadata cannot fit, generation is skipped.
+Unsupported tokenizer mappings fail before generation.
+Output limits can truncate an answer; token limits are not an aggregate dollar budget.
+
+Recognizable literal credentials are redacted before generation and in answers.
+The known unsafe settings-dump pattern is removed from fenced evidence and
+withheld if generated. Source links and citation metadata remain available.
+This is pattern-based protection, not complete credential or unsafe-code detection.
+Setting-name references and masked examples are not proof of a credential leak.
+
+
+## Live verification
+
+Replaying the loader and embedding step twice on the real database produced 0 inserts, 0 updates and 0 embedding calls; issue/comment/chunk counts stayed 9,555 / 43,535 / 63,002 and embedding fingerprints were unchanged.
+This verifies rerun safety on already loaded data, not live incremental ingestion with new issues; no schedule is deployed.
+See the [idempotency report](../deployment/live/idempotency_live_report.md) and [recorded results](../deployment/live/idempotency_live_results.json).
+
+Current remediation image: **216,254,880 compressed bytes**.
+Digest: `sha256:3ee06641a7814eec96ed08c553ab7a15fdb82095e5f0ef983636d2c6f1855330`.
+Only the existing Ohio Lambda code image was updated; prior images were retained.
+
+| Check | Verified outcome | Client time | Token cost |
+|---|---|---:|---:|
+| Remediation `/health` | HTTP 200, database reachable | 3.919 s | $0 |
+| Settings-dump `/ask` | Fixed safe model abstention, five separate sources | 5.725 s | $0.00021760 |
+| Safe video-frame `/ask` | Supported disconnect answer citing FastAPI #2071 | 8.784 s | $0.00019041 |
+
+These are individual live smoke observations, not live p50/p95 or billed durations.
+Standard uncached usage costs exclude invoice/cache reconciliation; AWS billed costs
+are unavailable. No retries, infrastructure creation or database writes occurred.
+The earlier settings answer was an unsafe recommendation, not a literal credential.
+Historical failed/skipped checks and the prior $0.00025453 deployment remain recorded.
+See [remediation](../deployment/live/remediation_deployment_live_report.md),
+[supported answer](../deployment/live/safe_answer_live_report.md),
+and [security review](../security/live_answer_secret_review.md).
+
+
+## Operations and limitations
+
+The development deployment uses existing ECR/Lambda/API Gateway, Secrets Manager,
+a single NAT gateway and single-AZ RDS. This topology is not high availability.
+Retained ECR images, RDS, NAT and public IPv4 can accrue ongoing costs.
+A public UI protects its server-side token but visitors can incur paid API usage.
+Keep credentials private and monitor usage; don't infer an unlimited spending cap.
+The 10-case evaluation and 12-case classification fixtures are small samples.
+Optional judge scores and classification confidence are not human ground truth.
+
+Detailed setup, commands, historical measurements and teardown guidance:
+
+- [Pipeline and classification](../operations/pipeline.md)
+- [Evaluation methodology](../operations/evaluation.md)
+- [API, UI and deployment operations](../operations/deployment.md)
+- [All reports and preflights](../README.md)

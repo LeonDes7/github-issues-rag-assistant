@@ -105,3 +105,25 @@ checks passed; 276 duplicate Bronze rows were deduplicated, and 14 issues with
 no chunkable content were expected not to appear in Gold.
 
 The evaluator accepts `codex_checked` separately from `manually_verified`; Codex-checked cases do not enter the manually verified aggregate. New result tables accept the status; an existing database CHECK constraint may need an explicitly authorized update before persisting new runs. No database change or evaluation run was performed for this relabeling.
+
+
+## Historical local latency and cost
+
+The final local measurement used 60 requests: 12 queries over five serial rounds,
+read-only RDS, production models, no warmups and no retries.
+It predates deployed input/output controls and redaction remediation.
+
+| Outcome | Requests | Local p50 | Local p95 | Mean token cost/query |
+|---|---:|---:|---:|---:|
+| Answered | 25 | 2.047 s | 4.815 s | $0.000257734 |
+| Cutoff-refused | 30 | 0.399 s | 1.227 s | $0.000000217 |
+| Model-abstained | 5 | 1.301 s | 1.803 s | $0.000161840 |
+
+Total recorded token cost: **$0.00725905**, below the $0.03 approved cap.
+Costs use API usage and cached-input rates, not reconciled invoices.
+Small repeated samples give descriptive percentiles, especially five abstentions.
+Client totals include local test-client/checkpoint overhead; setup is separate.
+These are **local current-code measurements, not deployed Lambda latency**.
+The older 60-case run measured p50 1.896 s, p95 3.817 s,
+$0.000216/query and 19 refusals; it predates final distinct-issue retrieval.
+See [measurement report](../measurements/final_latency_cost_report.md).

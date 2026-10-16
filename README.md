@@ -1,262 +1,131 @@
-# Trustworthy RAG Assistant for GitHub Issues
+﻿# Trustworthy RAG Assistant for GitHub Issues
 
-## Results at a glance
+An evidence-grounded assistant for closed **FastAPI, Starlette, and Pydantic**
+issues. Ask a question, retrieve relevant issue discussions, and get an answer
+with GitHub citations. When the evidence is insufficient, the assistant can abstain.
 
-- Corpus: **9,555 issues / 43,535 comments / 63,002 chunks**.
-- Historical development set (45 generated answerable cases, before author review): Hit@5 **0.8000 → 0.9333**; MRR **0.7526 → 0.8389**.
-- Harder unanswerables: cutoff refused only **1/15**; generation abstained on the other 14 in the original run, with one auxiliary citation misattribution.
-- Idempotent real-database replay verified on already loaded data; new-issue incremental ingestion untested; no schedule deployed.
-- Historical local answered-query p50/p95: **2.047 / 4.815 s**; mean token cost **$0.000257734/answered query**; predates deployed controls.
-- Deployed measurement (2026-10-16): **7/10 supported cited answers**; qualifying end-to-end p50/p95 **2.538 / 4.311 s**; average OpenAI cost **$0.00031237/answer**. Seven-sample descriptive percentiles; reported tokens at standard uncached rates; no local latency included.
-- Stack: GitHub → S3 → PostgreSQL/pgvector → FastAPI/OpenAI → Lambda/API Gateway → Streamlit.
-- Demo video: **[link pending]**.
-
-An evidence-grounded assistant for closed FastAPI, Starlette and Pydantic issues.
-It retrieves PostgreSQL issue discussions, answers from the retrieved evidence,
-and returns GitHub source links. Unsupported questions can be refused.
+Built with PostgreSQL/pgvector, FastAPI, OpenAI, AWS Lambda/API Gateway, and Streamlit.
 
 ![GitHub Issues Assistant question form](docs/images/streamlit-demo.png)
 
-## Current status
-
-The existing `github-rag-api` Lambda in `us-east-2` is deployed and smoke-tested.
-Health, safe model abstention and a supported cited answer passed on 2026-10-08.
-These checks establish behavior for their individual cases, not general accuracy.
-
-The API endpoint is:
-`https://w3qqwb25w0.execute-api.us-east-2.amazonaws.com`
-`/ask` requires bearer authentication; `/health` is public.
-The Streamlit interface calls the API from server-side Python.
-The backend remediation is deployed. Streamlit safeguards are committed and pushed,
-but public rollout is not independently verified.
+**Demo video:** [link pending]
 
 ## Architecture
 
-1. GitHub closed issues and comments are stored unchanged in S3 Bronze.
-2. Clean issue records are upserted into PostgreSQL Silver.
-3. Issue/comment chunks and embeddings form the Gold retrieval corpus.
-4. FastAPI retrieves evidence, applies confidence/safety controls and generates answers.
-5. Mangum serves the API through Lambda and API Gateway; Streamlit displays results.
+```mermaid
+flowchart LR
+    GitHub[Closed GitHub issues and comments] --> S3[S3 Bronze]
+    S3 --> Silver[PostgreSQL Silver: cleaned issues]
+    Silver --> Gold[pgvector Gold: chunks and embeddings]
+    UI[Streamlit] --> Gateway[API Gateway / Lambda / FastAPI]
+    Gateway --> Gold
+    Gateway --> OpenAI[OpenAI: embeddings and generation]
+    Gateway --> Answer[Answer with GitHub citations or abstention]
+    Answer --> UI
+```
 
-Pull requests are excluded. Issues without comments are retained.
-Heuristic resolutions select eligible maintainer comments before closure.
-They are low-confidence clues, not verified ground truth.
+The pipeline stores raw issue discussions, cleans and chunks them, and builds
+embeddings for retrieval. The API retrieves 30 candidate chunks and selects up
+to five distinct issues before applying confidence and generation safeguards.
+The Streamlit client calls the authenticated API from server-side Python.
 
-The recorded corpus contains **9,555 issues, 43,535 comments and 63,002 chunks**.
-Data-quality checks passed; 276 duplicate Bronze rows were deduplicated.
-Fourteen issues without chunkable content were expected not to appear in Gold.
-Duplicate/alias auditing is complete; alias rows remain stored, without deletion.
-Retrieval is restricted to the three configured repository names.
+## Results at a glance
 
-## Repository layout
+Recorded corpus: **9,555 issues, 43,535 comments, and 63,002 chunks** across the
+three configured repositories. Pull requests are excluded.
 
-| Path | Purpose |
+| Evidence | Scope and result |
+|---|---|
+| Historical retrieval development set | **45 generated answerable cases**, before author review. Hit@5 **0.8000 to 0.9333**; Recall@5 **0.9333** and MRR **0.7526 to 0.8389** for final retrieval. |
+| Author-approved retrieval set | **44 kept answerable cases** (43 approved + one edited), plus 15 off-topic cases. **44-case rescore pending; no new scores available.** |
+| Deployed API measurement, October 16, 2026 | Health passed; all **10 approved answerable requests** returned HTTP 200. **7/10** were successful, supported cited answers after Codex source-support review. |
+| Deployed latency, seven qualifying answers | End-to-end **p50 2.538 s / p95 4.311 s**. |
+| OpenAI cost, seven qualifying answers | Average **$0.00031237/answer**; total **$0.00218658**. Across all ten attempts: **$0.00322565**. |
+
+The deployed summary excludes one answer without inline citations, one abstention,
+and one off-target answer; their costs remain in the all-attempt total. Percentiles
+are descriptive because the qualifying sample is seven. Costs use reported tokens
+at standard uncached rates, without invoice reconciliation. **No local latency is
+included in these deployed numbers.**
+
+The 44-case rescore attempt was blocked when RDS was stopped; the later deployed
+measurement passed health, but the retrieval rescore has not been rerun. Historical
+45-case scores must not be attributed to the 44 author-approved cases.
+
+Evidence: [retrieval experiments](docs/experiments/retrieval/issue_collapse_experiment.md),
+[44-case rescore status](docs/experiments/retrieval/author_reviewed_rescore_report.md),
+and [deployed measurement with raw results](docs/measurements/deployed_latency_cost_report.md).
+
+## Quick start
+
+Use Python 3.10 or newer. From the repository root in PowerShell:
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -e ".[ui]"
+.\.venv\Scripts\python.exe -m unittest discover -s tests -q
+```
+
+**105 tests pass** at this checkpoint. Unit tests use mocks where external services
+would otherwise be required.
+
+Copy [.env.example](.env.example) to a private `.env` and configure PostgreSQL,
+OpenAI access, and `API_AUTH_TOKEN`. Keep credentials and Streamlit secrets out of
+Git. The API and local Streamlit app load `.env`; PowerShell does not load it
+automatically.
+
+Start the API:
+
+```powershell
+.\.venv\Scripts\python.exe -m uvicorn rag_assistant.api:app --host 127.0.0.1 --port 8000
+```
+
+Start the UI in another terminal:
+
+```powershell
+.\.venv\Scripts\python.exe -m streamlit run streamlit_app.py
+```
+
+`GET /health` checks database connectivity. `POST /ask` requires bearer
+authentication and accepts `question` and `top_k` (default 5). Responses include
+an answer, structured citations, retrieval metadata, and latency/token/cost fields.
+See [API usage and configuration](docs/operations/deployment.md) for examples,
+deployed settings, safeguards, and deployment instructions. Ingestion, embeddings,
+and evaluation can incur paid calls or write data; they are separate from unit tests.
+
+## Limitations
+
+- Evaluation sets are small. Historical retrieval metrics and the deployed sample
+  do not establish general answer accuracy.
+- On 15 harder held-out unanswerables, the retrieval cutoff refused only **1/15**.
+  Generation abstained on the other 14 in the original run, with one auxiliary
+  citation misattribution. [Abstention review](docs/experiments/abstention/heldout_unanswerable_results_review.md).
+- Credential redaction and unsafe-pattern filtering are pattern-based protections.
+  Heuristic resolutions, classification confidence, and lexical grounding checks
+  are estimates rather than human ground truth.
+- Rerun safety is verified on already loaded data. Incremental ingestion with
+  new issues remains untested, and no refresh schedule is deployed.
+- The development deployment uses single-AZ RDS and a single NAT gateway; it is
+  not highly available. Infrastructure and public API usage can incur ongoing costs.
+- Streamlit safeguards are committed and pushed; their public rollout has not
+  been independently verified.
+
+## Project guide
+
+| Path | Contents |
 |---|---|
 | `src/rag_assistant/` | API, ingestion, cleaning, embeddings, evaluation, classification |
-| `streamlit_app.py` | Streamlit UI and source links |
-| `scripts/` | Explicitly invoked maintenance, experiment and verification tools |
-| `tests/` | Local unit tests using mocks where services would otherwise be required |
-| `evaluation/` | Reviewed evaluation fixtures and review CSV |
-| [docs/](docs/README.md) | Detailed reports, preflights, operations and historical evidence |
-| `artifacts/` | Ignored disposable outputs from future runs |
+| `streamlit_app.py` | Streamlit interface and source links |
+| `evaluation/` | Author-reviewed fixtures, original cases, and review CSV |
+| `tests/` | Local unit tests |
+| `scripts/` | Maintenance, experiments, and verification tools |
+| [docs/](docs/README.md) | Reports, operational references, and historical evidence |
 
-## Local setup and tests
-
-Create a virtual environment, then install from the repository root:
-
-```powershell
-python -m pip install -e .
-python -m unittest discover -s tests -q
-```
-
-The current local checkpoint has **105 passing tests**.
-Copy setting names from `.env.example` into a private local `.env` as needed.
-Do not commit credentials, connection strings or `.streamlit/secrets.toml`.
-Prefer IAM roles or an AWS profile to long-lived static access keys.
-
-Running the API requires authorized PostgreSQL and OpenAI access:
-
-```powershell
-python -m uvicorn rag_assistant.api:app --host 127.0.0.1 --port 8000
-```
-
-For the local UI, install the extra and use a separate terminal:
-
-```powershell
-python -m pip install -e ".[ui]"
-python -m streamlit run streamlit_app.py
-```
-
-Tests are local; ingestion, evaluation, embedding and deployment commands can
-make paid calls, write data or change infrastructure. Review their scope first.
-The database connection setup command creates the vector extension if missing;
-it is not a read-only health check.
-
-## API usage
-
-`GET /health` checks PostgreSQL connectivity.
-`POST /ask` takes a nonblank question of at most 4,000 characters.
-The default `top_k` is 5; valid values are 1 through 20.
-
-With the bearer token already set through a private environment mechanism:
-
-```powershell
-Invoke-RestMethod -Method Post `
-  -Uri http://127.0.0.1:8000/ask `
-  -Headers @{ Authorization = "Bearer $env:API_AUTH_TOKEN" } `
-  -ContentType 'application/json' `
-  -Body '{"question":"What problem did the reporter observe when sending larger base64-encoded video frames over a WebSocket?","top_k":5}'
-```
-
-PowerShell does not automatically load `.env`; do not echo the token.
-FastAPI and local Streamlit load `.env` themselves.
-The JSON response includes `answer`, structured `citations`,
-`retrieval_metadata` and `performance` with latency/token/cost information.
-Source URLs and metadata come from retrieved rows, not model-created URLs.
-The API still returns stored category predictions for the 200 of 9,555 issues that have them; the Streamlit UI does not display predictions or their confidence, including in debug details.
-API classification/confidence describes the retrieved issue, not the user's question.
-Heuristic classification and lexical grounding checks are estimates.
-
-## Production settings and safeguards
-
-| Control | Current setting |
-|---|---|
-| Repositories | `tiangolo/fastapi`, `encode/starlette`, `pydantic/pydantic` |
-| Embeddings | `text-embedding-3-small`, 1,536 dimensions |
-| Generation | `gpt-4o-mini` |
-| Retrieval | Vector, `ef_search=100`, fetch 30, collapse to five distinct issues |
-| Confidence cutoff | `0.5370554072220923` |
-| Generation input | `RAG_MAX_GENERATION_INPUT_TOKENS=12000` |
-| Generation output | `OPENAI_GENERATION_MAX_OUTPUT_TOKENS=512` |
-| OpenAI retries | `OPENAI_MAX_RETRIES=0` |
-
-Below the cutoff, no generation call is made. The fixed answer is:
-"There isn't enough evidence in the indexed issues to answer this question."
-A model insufficient-evidence decision returns only:
-"The retrieved excerpts do not provide enough evidence to answer this question."
-Model-written side claims and inline citations are discarded on that path.
-Retrieved sources remain separate; their presence does not prove the unavailable answer.
-
-The input budget counts system/user messages with the model tokenizer and a
-512-token framing reserve. Excerpts can be clipped while source IDs, ordering
-and metadata remain intact; clipped text is marked incomplete.
-If instructions/question/source metadata cannot fit, generation is skipped.
-Unsupported tokenizer mappings fail before generation.
-Output limits can truncate an answer; token limits are not an aggregate dollar budget.
-
-Recognizable literal credentials are redacted before generation and in answers.
-The known unsafe settings-dump pattern is removed from fenced evidence and
-withheld if generated. Source links and citation metadata remain available.
-This is pattern-based protection, not complete credential or unsafe-code detection.
-Setting-name references and masked examples are not proof of a credential leak.
-
-## Retrieval and abstention evidence
-
-On the original 45 generated answerable cases (before author review), final retrieval
-scored **Hit@5 0.9333, Recall@5 0.9333 and MRR 0.8389**.
-This is a small evaluation, not a general accuracy guarantee.
-The author-approved review CSV now has a matching 59-case generated/reviewed suite
-(**44 author-verified answerable cases**, 15 off-topic), excluding one rejected case and applying one
-question edit. Historical metrics below still refer to the original generated
-set. The approved 44-case rescore was blocked on October 16, 2026 because RDS
-is stopped; zero OpenAI calls were made and no new metrics are available. See the
-[rescore status](docs/experiments/retrieval/author_reviewed_rescore_report.md) and the
-[evaluation reference](docs/operations/evaluation.md) for files and usage.
-The earlier vector/hybrid baseline both scored 0.8000/0.8000/0.7526.
-Full case evidence is in [retrieval reports](docs/experiments/retrieval/issue_collapse_experiment.md).
-
-The small original calibration refused 15/15 unanswerables and wrongly refused
-4/45 answerables (41 passed). The harder held-out set refused only **1/15**
-at the fixed rounded 0.537 cutoff. Do not treat that cutoff as generally robust.
-Generation abstained on the remaining 14, with one auxiliary citation
-misattribution in the original run and no unsupported requested solution.
-A later 14-case frozen-context replay verified fixed abstentions and separate
-sources through the local API with mocked dependencies; it did not test live retrieval.
-See [held-out review](docs/experiments/abstention/heldout_unanswerable_results_review.md)
-and [final regression](docs/experiments/abstention/final_abstention_regression_comparison.md).
-
-## Deployed end-to-end latency and cost
-
-On October 16, 2026, `/health` passed and all **10 approved answerable requests**
-returned HTTP 200. **7/10 were successful, supported cited answers** after Codex
-source-support review.
-
-| Metric for the seven qualifying answers | Result |
-|---|---:|
-| Deployed end-to-end p50 | **2.538 s** |
-| Deployed end-to-end p95 | **4.311 s** |
-| Average OpenAI cost per answer | **$0.00031237** |
-| Total OpenAI cost | **$0.00218658** |
-
-Total OpenAI cost across all ten attempts was **$0.00322565**. One answer without
-inline citations, one abstention, and one off-target answer were excluded from
-the qualifying latency/cost summary; their costs remain in the all-attempt total.
-Percentiles are descriptive because the qualifying sample is seven. Costs use
-reported tokens at standard uncached rates, without invoice reconciliation.
-Timing covers the deployed HTTPS round trip; **no local latency is included**.
-No retries or AWS infrastructure changes occurred. See the
-[deployed measurement report](docs/measurements/deployed_latency_cost_report.md)
-and [raw results](docs/measurements/deployed_latency_cost_results.json).
-
-## Historical local latency and cost
-
-The final local measurement used 60 requests: 12 queries over five serial rounds,
-read-only RDS, production models, no warmups and no retries.
-It predates deployed input/output controls and redaction remediation.
-
-| Outcome | Requests | Local p50 | Local p95 | Mean token cost/query |
-|---|---:|---:|---:|---:|
-| Answered | 25 | 2.047 s | 4.815 s | $0.000257734 |
-| Cutoff-refused | 30 | 0.399 s | 1.227 s | $0.000000217 |
-| Model-abstained | 5 | 1.301 s | 1.803 s | $0.000161840 |
-
-Total recorded token cost: **$0.00725905**, below the $0.03 approved cap.
-Costs use API usage and cached-input rates, not reconciled invoices.
-Small repeated samples give descriptive percentiles, especially five abstentions.
-Client totals include local test-client/checkpoint overhead; setup is separate.
-These are **local current-code measurements, not deployed Lambda latency**.
-The older 60-case run measured p50 1.896 s, p95 3.817 s,
-$0.000216/query and 19 refusals; it predates final distinct-issue retrieval.
-See [measurement report](docs/measurements/final_latency_cost_report.md).
-
-## Live verification
-
-Replaying the loader and embedding step twice on the real database produced 0 inserts, 0 updates and 0 embedding calls; issue/comment/chunk counts stayed 9,555 / 43,535 / 63,002 and embedding fingerprints were unchanged.
-This verifies rerun safety on already loaded data, not live incremental ingestion with new issues; no schedule is deployed.
-See the [idempotency report](docs/deployment/live/idempotency_live_report.md) and [recorded results](docs/deployment/live/idempotency_live_results.json).
-
-Current remediation image: **216,254,880 compressed bytes**.
-Digest: `sha256:3ee06641a7814eec96ed08c553ab7a15fdb82095e5f0ef983636d2c6f1855330`.
-Only the existing Ohio Lambda code image was updated; prior images were retained.
-
-| Check | Verified outcome | Client time | Token cost |
-|---|---|---:|---:|
-| Remediation `/health` | HTTP 200, database reachable | 3.919 s | $0 |
-| Settings-dump `/ask` | Fixed safe model abstention, five separate sources | 5.725 s | $0.00021760 |
-| Safe video-frame `/ask` | Supported disconnect answer citing FastAPI #2071 | 8.784 s | $0.00019041 |
-
-These are individual live smoke observations, not live p50/p95 or billed durations.
-Standard uncached usage costs exclude invoice/cache reconciliation; AWS billed costs
-are unavailable. No retries, infrastructure creation or database writes occurred.
-The earlier settings answer was an unsafe recommendation, not a literal credential.
-Historical failed/skipped checks and the prior $0.00025453 deployment remain recorded.
-See [remediation](docs/deployment/live/remediation_deployment_live_report.md),
-[supported answer](docs/deployment/live/safe_answer_live_report.md),
-and [security review](docs/security/live_answer_secret_review.md).
-
-## Operations and limitations
-
-The development deployment uses existing ECR/Lambda/API Gateway, Secrets Manager,
-a single NAT gateway and single-AZ RDS. This topology is not high availability.
-Retained ECR images, RDS, NAT and public IPv4 can accrue ongoing costs.
-A public UI protects its server-side token but visitors can incur paid API usage.
-Keep credentials private and monitor usage; don't infer an unlimited spending cap.
-The 10-case evaluation and 12-case classification fixtures are small samples.
-Optional judge scores and classification confidence are not human ground truth.
-
-Detailed setup, commands, historical measurements and teardown guidance:
-
-- [Pipeline and classification](docs/operations/pipeline.md)
-- [Evaluation methodology](docs/operations/evaluation.md)
-- [API, UI and deployment operations](docs/operations/deployment.md)
+- [Evaluation methodology and reviewed fixtures](docs/operations/evaluation.md)
+- [Deployed latency and cost report](docs/measurements/deployed_latency_cost_report.md)
+- [Historical local measurements](docs/measurements/final_latency_cost_report.md)
+- [API, safeguards, deployment history, and operations](docs/operations/deployment.md)
+- [Data pipeline and classification](docs/operations/pipeline.md)
+- [Real-database idempotency verification](docs/deployment/live/idempotency_live_report.md)
+- [Security review](docs/security/live_answer_secret_review.md)
 - [All reports and preflights](docs/README.md)
