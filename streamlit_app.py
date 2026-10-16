@@ -1,6 +1,7 @@
 """Streamlit UI for the authenticated GitHub issues RAG API."""
 
 import os
+from contextlib import nullcontext
 import re
 from pathlib import Path
 from typing import Any
@@ -94,33 +95,41 @@ def _show_result(result: dict[str, Any]) -> None:
         if isinstance(citation, dict) else citation
         for citation in citations
     ]
-    if citations:
-        st.subheader("Retrieved GitHub sources")
-        st.caption(
-            "These sources were retrieved for your question. Their presence does "
-            "not establish an answer when the evidence is insufficient."
-        )
-        for index, citation in enumerate(citations, start=1):
-            if not isinstance(citation, dict):
-                continue
-            repository = citation.get("repository", "unknown repository")
-            issue_number = citation.get("issue_number", "unknown")
-            url = citation.get("source_url") or citation.get("issue_url")
-            chunk_type = citation.get("chunk_type", "evidence")
-            score = (
-                citation.get("retrieval_score")
-                if retrieval_mode == "hybrid"
-                else citation.get("similarity_score")
+    if state == "abstained":
+        st.caption("Try asking about closed FastAPI, Starlette, or Pydantic issues.")
+    elif citations:
+        if state == "blocked":
+            source_area = st.expander("Retrieved matches - response withheld", expanded=False)
+        else:
+            source_area = nullcontext()
+        with source_area:
+            if state not in {"abstained", "blocked"}:
+                st.subheader("Retrieved GitHub sources")
+            st.caption(
+                "These sources were retrieved for your question. Their presence does "
+                "not establish an answer when the evidence is insufficient."
             )
-            with st.container(border=True):
-                st.markdown(f"**[{index}] {repository} #{issue_number}**")
-                details = f"{chunk_type.replace('_', ' ')}"
-                if isinstance(score, (int, float)):
-                    score_label = "RRF" if retrieval_mode == "hybrid" else "Similarity"
-                    details += f" | {score_label}: {score:.3f}"
-                st.text(details)
-                if isinstance(url, str) and url.startswith("https://github.com/"):
-                    st.markdown(f"[Open on GitHub]({url})")
+            for index, citation in enumerate(citations, start=1):
+                if not isinstance(citation, dict):
+                    continue
+                repository = citation.get("repository", "unknown repository")
+                issue_number = citation.get("issue_number", "unknown")
+                url = citation.get("source_url") or citation.get("issue_url")
+                chunk_type = citation.get("chunk_type", "evidence")
+                score = (
+                    citation.get("retrieval_score")
+                    if retrieval_mode == "hybrid"
+                    else citation.get("similarity_score")
+                )
+                with st.container(border=True):
+                    st.markdown(f"**[{index}] {repository} #{issue_number}**")
+                    details = f"{chunk_type.replace('_', ' ')}"
+                    if isinstance(score, (int, float)):
+                        score_label = "RRF" if retrieval_mode == "hybrid" else "Similarity"
+                        details += f" | {score_label}: {score:.3f}"
+                    st.text(details)
+                    if isinstance(url, str) and url.startswith("https://github.com/"):
+                        st.markdown(f"[Open on GitHub]({url})")
     else:
         st.info("No issue citations were retrieved for this answer.")
 

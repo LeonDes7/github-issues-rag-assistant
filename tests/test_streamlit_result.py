@@ -9,7 +9,7 @@ from rag_assistant import api
 
 
 class StreamlitResultTests(unittest.TestCase):
-    def test_abstention_renders_separate_sources_with_evidence_limitation(self):
+    def test_abstention_hides_source_cards_but_preserves_debug_sources(self):
         streamlit = MagicMock()
         errors = ModuleType("streamlit.errors")
         errors.StreamlitSecretNotFoundError = type("StreamlitSecretNotFoundError", (Exception,), {})
@@ -30,9 +30,11 @@ class StreamlitResultTests(unittest.TestCase):
                 payload = {"answer": api.MODEL_ABSTENTION_ANSWER, "citations": [citation]}
                 module._show_result(payload)
                 self.assertEqual(streamlit.markdown.call_args_list[0].args, (api.MODEL_ABSTENTION_ANSWER,))
-                self.assertIn(source_url, streamlit.markdown.call_args_list[2].args[0])
-                streamlit.subheader.assert_called_with("Retrieved GitHub sources")
-                self.assertIn("does not establish an answer", streamlit.caption.call_args.args[0])
+                streamlit.markdown.assert_called_once_with(api.MODEL_ABSTENTION_ANSWER)
+                streamlit.subheader.assert_called_with("Answer")
+                streamlit.expander.assert_called_once_with("Retrieval details and debug information")
+                streamlit.caption.assert_called_once_with("Try asking about closed FastAPI, Starlette, or Pydantic issues.")
+                self.assertEqual(streamlit.json.call_args.args[0]["citations"][0]["source_url"], source_url)
                 streamlit.warning.assert_called_with("Insufficient evidence")
                 streamlit.success.assert_not_called()
                 streamlit.metric.assert_not_called()
