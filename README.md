@@ -7,7 +7,7 @@ with GitHub citations. When the evidence is insufficient, the assistant can abst
 Deployed on **AWS** using **S3, RDS for PostgreSQL/pgvector, ECR, Lambda,
 API Gateway, and Secrets Manager**, with FastAPI, OpenAI, and a Streamlit interface.
 
-![GitHub Issues Assistant question form](docs/images/streamlit-demo.png)
+![GitHub Issues Assistant question form](docs/images/streamlit-issues-assistant.png)
 
 **Demo video:** [link pending]
 
