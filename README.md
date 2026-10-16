@@ -1,4 +1,4 @@
-﻿# Trustworthy RAG Assistant for GitHub Issues
+# Trustworthy RAG Assistant for GitHub Issues
 
 An evidence-grounded assistant for closed **FastAPI, Starlette, and Pydantic**
 issues. Ask a question, retrieve relevant issue discussions, and get an answer
@@ -138,8 +138,8 @@ and evaluation can incur paid calls or write data; they are separate from unit t
   new issues remains untested, and no refresh schedule is deployed.
 - The development deployment uses single-AZ RDS and a single NAT gateway; it is
   not highly available. Infrastructure and public API usage can incur ongoing costs.
-- Streamlit safeguards are committed and pushed; their public rollout has not
-  been independently verified.
+- Live Streamlit checks passed for a cited answer, an off-topic refusal, and a
+  safe settings response. These checks establish behavior for those individual cases.
 
 ## Project guide
 

@@ -32,3 +32,29 @@ Timing starts immediately before sending the deployed HTTPS POST and ends after 
 Support checks used existing saved issue excerpts for #2071, #542 and #4999, and read-only public GitHub issue/comment reads for the other candidate answers. This is Codex review, not new human verification.
 
 Artifacts: [exact plan](deployed_latency_cost_plan.json), [raw results and support decisions](deployed_latency_cost_results.json).
+
+
+## Reproduction
+
+The committed runner previews the fixed plan offline by default:
+
+```powershell
+.\.venv\Scripts\python.exe scripts/measure_deployed_latency_cost.py
+```
+
+After reviewing the current endpoint, model settings, pricing, and receiving
+explicit approval for paid requests, run with a new output filename:
+
+```powershell
+.\.venv\Scripts\python.exe scripts/measure_deployed_latency_cost.py --execute --output artifacts/deployed_latency_cost_new_run.json
+```
+
+The output directory must exist. The runner refuses existing output files, checks
+health first, stops without `/ask` calls if health fails, and disables retries and
+redirects. It does not change AWS resources or settings. New responses may differ;
+the published measurement is preserved. Candidate cited answers require a separate
+source-support and relevance review before inclusion. The runner saves raw timing,
+usage, costs, and citation checks; it does not automatically reproduce the manual
+review decisions or publish final percentiles. Compute percentiles from qualifying
+`client_latency_ms` values using linear interpolation at `(n - 1) * p`; sum their
+`standard_rate_openai_cost_usd` values and divide by their count for average cost.

@@ -449,3 +449,10 @@ Detailed setup, commands, historical measurements and teardown guidance:
 - [Evaluation methodology](../operations/evaluation.md)
 - [API, UI and deployment operations](../operations/deployment.md)
 - [All reports and preflights](../README.md)
+
+
+## Live Streamlit verification
+
+The live Streamlit app was successfully checked with a cited answer, an off-topic
+refusal, and a safe settings response, as confirmed by the project author. These
+checks verify the observed cases; they do not establish general answer accuracy.

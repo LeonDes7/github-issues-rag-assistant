@@ -1,7 +1,7 @@
 {
   "checked_at": "2026-10-16T18:25:38.331095+00:00",
   "status": "blocked",
-  "reason": "Existing RDS instance is stopped; infrastructure changes prohibited by user.",
+  "reason": "Existing RDS instance was stopped at the time of the attempt; infrastructure changes prohibited by user.",
   "approved_answerable_cases": 44,
   "unanswerable_cases_excluded_from_rescore": 15,
   "completed_cases": 0,

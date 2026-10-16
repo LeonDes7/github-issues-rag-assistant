@@ -10,6 +10,8 @@ from scripts import build_evaluation_set
 
 class EvaluationSetBuilderTests(unittest.TestCase):
     def test_builds_runner_compatible_cases_and_review_csv(self):
+        self.assertEqual(build_evaluation_set.DEFAULT_JSONL.name, "evaluation_cases.draft.jsonl")
+        self.assertEqual(build_evaluation_set.DEFAULT_CSV.name, "evaluation_cases.draft.csv")
         issue = {
             "repository": "encode/starlette",
             "issue_number": 4321,

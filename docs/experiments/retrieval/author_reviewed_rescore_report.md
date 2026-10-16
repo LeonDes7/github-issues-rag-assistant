@@ -12,7 +12,7 @@ evidence. `evaluation/evaluation_cases.original.jsonl` preserves the original
 
 The author approved the command below. Database connection timed out before
 the OpenAI embedding request. A read-only RDS status query confirmed the existing
-instance is **stopped**. The user prohibited AWS infrastructure changes, so it
+instance was **stopped at the time of that attempt**. The user prohibited AWS infrastructure changes, so it
 was not started. No database writes or AWS infrastructure changes occurred.
 
 **Zero cases scored; zero OpenAI calls; $0 OpenAI cost. No new retrieval metrics.**

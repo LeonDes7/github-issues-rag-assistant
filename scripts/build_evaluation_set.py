@@ -15,7 +15,7 @@ from rag_assistant import api
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_JSONL = PROJECT_ROOT / "evaluation/evaluation_cases.generated.jsonl"
+DEFAULT_JSONL = PROJECT_ROOT / "evaluation/evaluation_cases.draft.jsonl"
 DEFAULT_CSV = PROJECT_ROOT / "evaluation/evaluation_cases.draft.csv"
 REPOSITORIES = ("tiangolo/fastapi", "encode/starlette", "pydantic/pydantic")
 UNANSWERABLE_CASES = (

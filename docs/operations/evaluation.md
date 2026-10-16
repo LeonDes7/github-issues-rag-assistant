@@ -22,7 +22,7 @@ python scripts/build_evaluation_set.py --seed 42
 ```
 
 This uses the configured Postgres corpus and generation model. It writes
-[evaluation_cases.generated.jsonl](../../evaluation/evaluation_cases.generated.jsonl) and
+`evaluation/evaluation_cases.draft.jsonl` and
 `evaluation/evaluation_cases.draft.csv`; review the issue IDs and questions against
 each source issue. The draft CSV filename keeps generation separate from the
 completed review. The original 60-case generated set is preserved as
@@ -46,7 +46,7 @@ answerable cases, with production vector retrieval, ef_search=100, 30 candidates
 collapsed to five issues, the three configured repositories, and the unchanged cutoff.
 Run the script without `--execute` for an offline call/token/cost preflight. Execution
 was approved by the author on October 16, 2026, but the attempt was blocked because
-RDS is stopped. No OpenAI calls, database writes, or infrastructure changes occurred.
+RDS was stopped at the time of that attempt. No OpenAI calls, database writes, or infrastructure changes occurred.
 See the [attempt report](../experiments/retrieval/author_reviewed_rescore_report.md).
 No generation or judge calls are part of this rescore.
 
