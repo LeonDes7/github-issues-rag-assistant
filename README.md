@@ -1,4 +1,4 @@
-# Trustworthy RAG Assistant for GitHub Issues
+# GitHub Issues RAG Assistant
 
 An evidence-grounded assistant for closed **FastAPI, Starlette, and Pydantic**
 issues. Ask a question, retrieve relevant issue discussions, and get an answer
@@ -16,6 +16,37 @@ Please use the **[recorded demo video](docs/videos/github-issues-assistant-demo.
 to view the application. GitHub may require downloading the video to watch it.
 S3 Bronze and a verified manual RDS snapshot were preserved for restoration.
 Remaining stored resources can still incur costs.
+
+## Results at a glance
+
+Recorded corpus: **9,555 issues, 43,535 comments, and 63,002 chunks** across the
+three configured repositories. Pull requests are excluded.
+
+| Evidence | Scope and result |
+|---|---|
+| Historical retrieval development set | **45 generated answerable cases**, before author review. Hit@5 **0.8000 to 0.9333**; Recall@5 **0.9333** and MRR **0.7526 to 0.8389** for final retrieval. |
+| Original vs final retrieval config[^43-case] | **43 author-reviewed cases**, excluding Pydantic #11491 because its question was edited. Original (ef_search=40, chunk-level top 5, no issue collapse) vs final (ef_search=100, issues mode): Hit@5 **0.8372 to 0.9302**, Recall@5 **0.8372 to 0.9302**, MRR **0.7876 to 0.8469**. [Saved results from commit 4f44bf6](https://github.com/LeonDes7/github-issues-rag-assistant/blob/4f44bf618bf3d31bda855b2f16cbd19b9890bf6f/docs/experiments/retrieval/unchanged_reviewed_config_comparison.json). |
+| Author-approved retrieval set | **44 kept answerable cases** (43 approved + one edited), plus 15 off-topic cases. Rescore: **41/44 hits**, Hit@5 / Recall@5 **0.9318**, MRR **0.8504**; **2/44** false refusals at the unchanged cutoff. |
+| Deployed API measurement, October 16, 2026 | Health passed; all **10 approved answerable requests** returned HTTP 200. **7/10** were successful, supported cited answers after Codex source-support review. |
+| Deployed latency, seven qualifying answers | End-to-end **p50 2.538 s / p95 4.311 s**. |
+| OpenAI cost, seven qualifying answers | Average **$0.00031237/answer**; total **$0.00218658**. Across all ten attempts: **$0.00322565**. |
+
+[^43-case]: Scored from saved per-case rankings across historical snapshots; this set was also used for tuning.
+
+The deployed summary excludes one answer without inline citations, one abstention,
+and one off-target answer; their costs remain in the all-attempt total. Percentiles
+are descriptive because the qualifying sample is seven. Costs use reported tokens
+at standard uncached rates, without invoice reconciliation. **No local latency is
+included in these deployed numbers.**
+
+The 44-case rescore completed on October 16, 2026 using read-only database retrieval
+and one 13-token embedding call ($0.00000026). It measures retrieval with the
+production configuration, not generated-answer quality or deployed latency.
+Historical 45-case scores use a different case set and remain separate.
+
+Evidence: [retrieval experiments](docs/experiments/retrieval/issue_collapse_experiment.md),
+[44-case rescore results](docs/experiments/retrieval/author_reviewed_rescore_report.md),
+and [deployed measurement with raw results](docs/measurements/deployed_latency_cost_report.md).
 
 ## Architecture
 
@@ -66,34 +97,6 @@ incremental ingestion remains untested, and no ingestion schedule is deployed.
 See [AWS deployment and networking](docs/operations/deployment.md),
 [deployment verification](docs/deployment/live/remediation_deployment_live_report.md),
 and [database replay evidence](docs/deployment/live/idempotency_live_report.md).
-
-## Results at a glance
-
-Recorded corpus: **9,555 issues, 43,535 comments, and 63,002 chunks** across the
-three configured repositories. Pull requests are excluded.
-
-| Evidence | Scope and result |
-|---|---|
-| Historical retrieval development set | **45 generated answerable cases**, before author review. Hit@5 **0.8000 to 0.9333**; Recall@5 **0.9333** and MRR **0.7526 to 0.8389** for final retrieval. |
-| Author-approved retrieval set | **44 kept answerable cases** (43 approved + one edited), plus 15 off-topic cases. Rescore: **41/44 hits**, Hit@5 / Recall@5 **0.9318**, MRR **0.8504**; **2/44** false refusals at the unchanged cutoff. |
-| Deployed API measurement, October 16, 2026 | Health passed; all **10 approved answerable requests** returned HTTP 200. **7/10** were successful, supported cited answers after Codex source-support review. |
-| Deployed latency, seven qualifying answers | End-to-end **p50 2.538 s / p95 4.311 s**. |
-| OpenAI cost, seven qualifying answers | Average **$0.00031237/answer**; total **$0.00218658**. Across all ten attempts: **$0.00322565**. |
-
-The deployed summary excludes one answer without inline citations, one abstention,
-and one off-target answer; their costs remain in the all-attempt total. Percentiles
-are descriptive because the qualifying sample is seven. Costs use reported tokens
-at standard uncached rates, without invoice reconciliation. **No local latency is
-included in these deployed numbers.**
-
-The 44-case rescore completed on October 16, 2026 using read-only database retrieval
-and one 13-token embedding call ($0.00000026). It measures retrieval with the
-production configuration, not generated-answer quality or deployed latency.
-Historical 45-case scores use a different case set and remain separate.
-
-Evidence: [retrieval experiments](docs/experiments/retrieval/issue_collapse_experiment.md),
-[44-case rescore results](docs/experiments/retrieval/author_reviewed_rescore_report.md),
-and [deployed measurement with raw results](docs/measurements/deployed_latency_cost_report.md).
 
 ## Quick start
 
@@ -169,5 +172,4 @@ and evaluation can incur paid calls or write data; they are separate from unit t
 - [Real-database idempotency verification](docs/deployment/live/idempotency_live_report.md)
 - [Security review](docs/security/live_answer_secret_review.md)
 - [All reports and preflights](docs/README.md)
-
 - [AWS teardown and snapshot restore](docs/operations/teardown.md)
