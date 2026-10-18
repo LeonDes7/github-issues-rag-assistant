@@ -1,0 +1,2965 @@
+{
+  "row_count": 43,
+  "excluded_case_id": "generated-pydantic-pydantic-11491",
+  "method": "Offline rescore of saved top-five rankings before refusal; preserve duplicate chunks and their rank positions for original. Same 43 manually verified, unchanged questions and gold labels. No tuning or network calls. Historical runs use different snapshots; this is a saved-ranking comparison, not a new controlled database experiment.",
+  "configs": {
+    "original": {
+      "ef_search": 40,
+      "context_mode": "chunks",
+      "top_k": 5,
+      "issue_collapse": false,
+      "source": "docs/experiments/retrieval/index_recall_experiment.json",
+      "setting": "HNSW ef_search=40"
+    },
+    "final": {
+      "ef_search": 100,
+      "context_mode": "issues",
+      "candidate_chunks": 30,
+      "top_k": 5,
+      "source": "docs/experiments/retrieval/author_reviewed_rescore_results.json"
+    }
+  },
+  "source_sha256": {
+    "evaluation/evaluation_cases_reviewed.jsonl": "846db8b5af3fff7e5537a1d3085c537eda2fea740186ac36e5dc902bbb4dd4a7",
+    "evaluation/evaluation_cases.original.jsonl": "dd6ffa710fe14b30b0a90a629b55530224e27c3539341ffc9c9721746d8e760e",
+    "docs/experiments/retrieval/index_recall_experiment.json": "f50abce3e70ac68ccd683df4d35f936194cd05b923b1f898d62491955a33e26a",
+    "docs/experiments/retrieval/author_reviewed_rescore_results.json": "cfdee8da00a3d8dd904d2aeeb048ac9bcc015d652b8a3c5bc5432d3e404bd079"
+  },
+  "summary": {
+    "original": {
+      "hit_at_5": 0.8372093023255814,
+      "recall_at_5": 0.8372093023255814,
+      "mrr": 0.7875968992248062
+    },
+    "final": {
+      "hit_at_5": 0.9302325581395349,
+      "recall_at_5": 0.9302325581395349,
+      "mrr": 0.8468992248062015
+    }
+  },
+  "case_results": [
+    {
+      "case_id": "generated-encode-starlette-1119",
+      "question": "What could be the reason for receiving a 405 Method Not Allowed error when trying to access the /predict endpoint?",
+      "expected_issues": [
+        {
+          "repository": "encode/starlette",
+          "issue_number": 1119
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4108
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 793
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5291
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 793
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 793
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 0,
+          "recall_at_5": 0.0,
+          "mrr": 0.0
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4108
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 793
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5291
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4825
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4577
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 0,
+          "recall_at_5": 0.0,
+          "mrr": 0.0
+        }
+      }
+    },
+    {
+      "case_id": "generated-encode-starlette-408",
+      "question": "What is the recommended way to dump settings in starlette.config without exposing sensitive information like JWT secrets?",
+      "expected_issues": [
+        {
+          "repository": "encode/starlette",
+          "issue_number": 408
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 408
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 408
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 671
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 671
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 763
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 408
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 671
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 763
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 391
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 914
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      }
+    },
+    {
+      "case_id": "generated-encode-starlette-542",
+      "question": "What is the recommended workaround for the dependency issue between graphene and aniso8601 when installing starlette[full]?",
+      "expected_issues": [
+        {
+          "repository": "encode/starlette",
+          "issue_number": 542
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 542
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 542
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 542
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 542
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1144
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 542
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1144
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 2791
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 619
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 450
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      }
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-2071",
+      "question": "What problem did the reporter observe when sending larger base64-encoded video frames over a WebSocket?",
+      "expected_issues": [
+        {
+          "repository": "tiangolo/fastapi",
+          "issue_number": 2071
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 407
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1369
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 940
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 407
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 940
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 0,
+          "recall_at_5": 0.0,
+          "mrr": 0.0
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2071
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 407
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1369
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2445
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 940
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      }
+    },
+    {
+      "case_id": "generated-encode-starlette-383",
+      "question": "What is the recommended workaround for the incorrect redirect location when using `url_path_for` in a mounted sub-application?",
+      "expected_issues": [
+        {
+          "repository": "encode/starlette",
+          "issue_number": 383
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 383
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 383
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 814
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 814
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 383
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 383
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 814
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2598
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4194
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 654
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      }
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-618",
+      "question": "What steps should I take if the automatic reload feature fails to work on Windows 10 when modifying main.py?",
+      "expected_issues": [
+        {
+          "repository": "tiangolo/fastapi",
+          "issue_number": 618
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 618
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 759
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 618
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 618
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 618
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 618
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 759
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5244
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5243
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5664
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      }
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-4598",
+      "question": "What workaround is suggested for enforcing non-empty strings in Pydantic models?",
+      "expected_issues": [
+        {
+          "repository": "pydantic/pydantic",
+          "issue_number": 4598
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1626
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 3295
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 3710
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1626
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1626
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 0,
+          "recall_at_5": 0.0,
+          "mrr": 0.0
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1626
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 3295
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 3710
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 11932
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 767
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 0,
+          "recall_at_5": 0.0,
+          "mrr": 0.0
+        }
+      }
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-7461",
+      "question": "What is the proposed workaround for the issue with hide_input_in_errors not working in error.json() and error.errors()?",
+      "expected_issues": [
+        {
+          "repository": "pydantic/pydantic",
+          "issue_number": 7461
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1909
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1909
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1175
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 227
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1116
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 0,
+          "recall_at_5": 0.0,
+          "mrr": 0.0
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 7461
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 12283
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1421
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 784
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1909
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      }
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-1873",
+      "question": "What testing limitation did the reporter describe for service logic that uses FastAPI dependency injection?",
+      "expected_issues": [
+        {
+          "repository": "tiangolo/fastapi",
+          "issue_number": 1873
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 656
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4893
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1873
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 656
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 656
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 0.3333333333333333
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 656
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4893
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1873
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4183
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2800
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 0.3333333333333333
+        }
+      }
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-11555",
+      "question": "What is the expected behavior of `model.model_json_schema()` regarding dictionary key types in Pydantic, and is there a workaround for this issue?",
+      "expected_issues": [
+        {
+          "repository": "pydantic/pydantic",
+          "issue_number": 11555
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 11555
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 11555
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8548
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10445
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 7042
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 11555
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8548
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10445
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 11847
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 7042
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      }
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-5370",
+      "question": "What should I do if Gunicorn keeps spinning up workers instead of failing when an exception is raised during the startup event in FastAPI?",
+      "expected_issues": [
+        {
+          "repository": "tiangolo/fastapi",
+          "issue_number": 5370
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5370
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5370
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5370
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5370
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 253
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5370
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 253
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4481
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 596
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2099
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      }
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-5946",
+      "question": "What changes were made to BaseModel.__getattr__ in Pydantic V2 that affect its use with private attributes, and is there a recommended workaround for this issue?",
+      "expected_issues": [
+        {
+          "repository": "pydantic/pydantic",
+          "issue_number": 5946
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 5946
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 5946
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 5946
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 5946
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 5946
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 5946
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 6594
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 7388
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 395
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 6360
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      }
+    },
+    {
+      "case_id": "generated-encode-starlette-953",
+      "question": "What is the recommended approach if I need to override the default GraphiQL HTML code due to network restrictions?",
+      "expected_issues": [
+        {
+          "repository": "encode/starlette",
+          "issue_number": 953
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 953
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 970
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 970
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 970
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 953
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 953
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 970
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2480
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 698
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1275
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      }
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-5988",
+      "question": "What mismatch did the reporter observe between the large integer in the example and the value displayed by the response model?",
+      "expected_issues": [
+        {
+          "repository": "tiangolo/fastapi",
+          "issue_number": 5988
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2349
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 782
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 3028
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 782
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5988
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 0.2
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2349
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 782
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 3028
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5988
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4485
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 0.25
+        }
+      }
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-8499",
+      "question": "What is the workaround for the RecursionError encountered when parsing graph-like data with Pydantic V2?",
+      "expected_issues": [
+        {
+          "repository": "pydantic/pydantic",
+          "issue_number": 8499
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8499
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8499
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8499
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8499
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8499
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8499
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 5108
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1345
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 11320
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 6708
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      }
+    },
+    {
+      "case_id": "generated-encode-starlette-1247",
+      "question": "What is the reason that the `http.disconnect` event is not received when using the TestClient, and is there a workaround for testing streaming behavior?",
+      "expected_issues": [
+        {
+          "repository": "encode/starlette",
+          "issue_number": 1247
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1247
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1247
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1247
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1247
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1247
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1247
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1342
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1273
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2006
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1108
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      }
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-10995",
+      "question": "Why does setting an attribute in a nested model not reflect as modified when using model_dump with exclude_unset set to true on the outer model?",
+      "expected_issues": [
+        {
+          "repository": "pydantic/pydantic",
+          "issue_number": 10995
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10995
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10995
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10995
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10995
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10995
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10995
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 13009
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 11680
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 9465
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 7326
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      }
+    },
+    {
+      "case_id": "generated-encode-starlette-494",
+      "question": "What is the recommended approach to reject a websocket connection without encountering an exception?",
+      "expected_issues": [
+        {
+          "repository": "encode/starlette",
+          "issue_number": 494
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 494
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 494
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 494
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 494
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 494
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 494
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 193
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 3934
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1560
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5922
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      }
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-9575",
+      "question": "What could be causing the deprecation warnings to not show up when using the deprecated fields in Pydantic, and is there a specific version of `typing_extensions` that needs to be used?",
+      "expected_issues": [
+        {
+          "repository": "pydantic/pydantic",
+          "issue_number": 9575
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 9575
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 9575
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 9575
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 7790
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8818
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 9575
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 7790
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8818
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 9613
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 11348
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      }
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-10999",
+      "question": "What is the reason the example for multipart/form-data is not showing up in the FastAPI documentation?",
+      "expected_issues": [
+        {
+          "repository": "tiangolo/fastapi",
+          "issue_number": 10999
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 10999
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 10999
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 10999
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 10999
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 10999
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 10999
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5748
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2387
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 3400
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4625
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      }
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-10131",
+      "question": "What is the reported bug regarding the discriminator field in schema generation with `by_alias=False` in Pydantic?",
+      "expected_issues": [
+        {
+          "repository": "pydantic/pydantic",
+          "issue_number": 10131
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10131
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10131
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10131
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10131
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10131
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10131
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10386
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 4370
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 11470
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8768
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      }
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-5997",
+      "question": "Why did the discussion say `ads_id` was reported as required after the upgrade to Pydantic V2?",
+      "expected_issues": [
+        {
+          "repository": "pydantic/pydantic",
+          "issue_number": 5997
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 5997
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 5997
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 5997
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 5997
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 5997
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 5997
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 6045
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8264
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 2041
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 9188
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      }
+    },
+    {
+      "case_id": "generated-encode-starlette-1295",
+      "question": "What is the expected behavior regarding the handling of headers during a websocket connection upgrade?",
+      "expected_issues": [
+        {
+          "repository": "encode/starlette",
+          "issue_number": 1295
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1295
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 58
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 166
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 166
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 166
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1295
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 58
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 166
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 641
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1541
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      }
+    },
+    {
+      "case_id": "generated-encode-starlette-127",
+      "question": "What are the potential benefits of moving routing keyword arguments to `request.kwargs` instead of using them in function signatures?",
+      "expected_issues": [
+        {
+          "repository": "encode/starlette",
+          "issue_number": 127
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 127
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 9614
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 9614
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1292
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2625
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 127
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 9614
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1292
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2625
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 268
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      }
+    },
+    {
+      "case_id": "generated-encode-starlette-94",
+      "question": "What are the potential benefits of implementing server-side CORS enforcement, and how might it affect developer testing and logging?",
+      "expected_issues": [
+        {
+          "repository": "encode/starlette",
+          "issue_number": 94
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 94
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 94
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 94
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 34
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 94
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 94
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 34
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1663
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1116
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 775
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      }
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-1060",
+      "question": "What validation error occurs when subclassing `StrictStr` or `ConstrainedStr` in the reported Pydantic 1.2.0 example?",
+      "expected_issues": [
+        {
+          "repository": "pydantic/pydantic",
+          "issue_number": 1060
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1060
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 6261
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 6261
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 6261
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 5377
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1060
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 6261
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 5377
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 12054
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 6667
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      }
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-4999",
+      "question": "What unexpected behavior occurred when the reporter called `.parse_obj()` in an async loop?",
+      "expected_issues": [
+        {
+          "repository": "pydantic/pydantic",
+          "issue_number": 4999
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1287
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1287
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1287
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1287
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 2160
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 0,
+          "recall_at_5": 0.0,
+          "mrr": 0.0
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1287
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 2160
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 647
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 4999
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 2601
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 0.25
+        }
+      }
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-33",
+      "question": "What potential confusion could arise for users regarding the use of synchronous request handlers in FastAPI, and how was this addressed in the documentation?",
+      "expected_issues": [
+        {
+          "repository": "tiangolo/fastapi",
+          "issue_number": 33
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1002
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1066
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 33
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2374
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1066
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 0.3333333333333333
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1002
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1066
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 33
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2374
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4590
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 0.3333333333333333
+        }
+      }
+    },
+    {
+      "case_id": "generated-encode-starlette-1004",
+      "question": "Was there any discussion on whether the `StaticFiles` app would support `os.PathLike` in future updates?",
+      "expected_issues": [
+        {
+          "repository": "encode/starlette",
+          "issue_number": 1004
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1004
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1265
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1083
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1004
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1265
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1004
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 2178
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 9706
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1265
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1254
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      }
+    },
+    {
+      "case_id": "generated-encode-starlette-1454",
+      "question": "What is the impact of Starlette lowercasing headers on the functionality of the pdf.js library when serving PDFs?",
+      "expected_issues": [
+        {
+          "repository": "encode/starlette",
+          "issue_number": 1454
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1454
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1067
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1067
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1067
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 650
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1454
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1067
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 650
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 275
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 2960
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      }
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-4108",
+      "question": "What should be the correct behavior for setting exclusiveMinimum and exclusiveMaximum in the model schema?",
+      "expected_issues": [
+        {
+          "repository": "pydantic/pydantic",
+          "issue_number": 4108
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1417
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1417
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1417
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1164
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1164
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 0,
+          "recall_at_5": 0.0,
+          "mrr": 0.0
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1417
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 1164
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 240
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 4108
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 0.25
+        }
+      }
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-1276",
+      "question": "How can I configure FastAPI to print logs to a file and change the log format?",
+      "expected_issues": [
+        {
+          "repository": "tiangolo/fastapi",
+          "issue_number": 1276
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1276
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1276
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1276
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1276
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1276
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1276
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4541
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1508
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 898
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1926
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      }
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-11865",
+      "question": "What is the rationale behind not wanting to expose `isinstance_python()` from `SchemaValidator` in the `BaseModel` namespace?",
+      "expected_issues": [
+        {
+          "repository": "pydantic/pydantic",
+          "issue_number": 11865
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 11865
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 11865
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 11746
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10160
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10160
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 11865
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 11746
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10160
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 11682
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 4669
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      }
+    },
+    {
+      "case_id": "generated-pydantic-pydantic-9866",
+      "question": "What is the issue with `model_fields_set` not updating when using the `append` method on a list in Pydantic, and is there a workaround for this behavior?",
+      "expected_issues": [
+        {
+          "repository": "pydantic/pydantic",
+          "issue_number": 9866
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 9866
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 9866
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 9866
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8575
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 9866
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 9866
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 8575
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 11134
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 6668
+          },
+          {
+            "repository": "pydantic/pydantic",
+            "issue_number": 10198
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      }
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-4268",
+      "question": "What is the issue with specifying parameters in openapi_extras, and how does it affect the existing query parameters?",
+      "expected_issues": [
+        {
+          "repository": "tiangolo/fastapi",
+          "issue_number": 4268
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4268
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4268
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4268
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4268
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4764
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4268
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4764
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 3552
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2859
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 406
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      }
+    },
+    {
+      "case_id": "generated-encode-starlette-726",
+      "question": "What are the recommended approaches for implementing a 'sink' feature to forward requests to a legacy Django app while using Starlette?",
+      "expected_issues": [
+        {
+          "repository": "encode/starlette",
+          "issue_number": 726
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 726
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 726
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 726
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 437
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 437
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 726
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 437
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 734
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 136
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 604
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      }
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-5724",
+      "question": "What are the recommended practices for structuring a FastAPI project to support multiple versions of the same API?",
+      "expected_issues": [
+        {
+          "repository": "tiangolo/fastapi",
+          "issue_number": 5724
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5724
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 381
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5724
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 381
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 381
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5724
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 381
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 386
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2670
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5721
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      }
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-14502",
+      "question": "What performance symptom does the issue report when the FastAPI application is under load?",
+      "expected_issues": [
+        {
+          "repository": "tiangolo/fastapi",
+          "issue_number": 14502
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "fastapi/fastapi",
+            "issue_number": 14496
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 14500
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 14499
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 14497
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 14501
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 0,
+          "recall_at_5": 0.0,
+          "mrr": 0.0
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 14500
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 14499
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 14497
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 14501
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 14503
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 0,
+          "recall_at_5": 0.0,
+          "mrr": 0.0
+        }
+      }
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-403",
+      "question": "What response behavior did the reporter expect from `asyncio.ensure_future()` inside a FastAPI endpoint, and how did it differ from Starlette?",
+      "expected_issues": [
+        {
+          "repository": "tiangolo/fastapi",
+          "issue_number": 403
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 403
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2574
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2574
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2574
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 483
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 403
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2574
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 483
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4988
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 863
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      }
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-261",
+      "question": "Is there a recommended workaround for handling the `detail` parameter in `HTTPException` before the fix was released?",
+      "expected_issues": [
+        {
+          "repository": "tiangolo/fastapi",
+          "issue_number": 261
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 261
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 261
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1785
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 261
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 512
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 261
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1785
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 512
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 1440
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4946
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      }
+    },
+    {
+      "case_id": "generated-encode-starlette-818",
+      "question": "Why did enabling `requests_mock.Mocker()` interfere with the HTTP adapters used by Starlette `TestClient`?",
+      "expected_issues": [
+        {
+          "repository": "encode/starlette",
+          "issue_number": 818
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 818
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 818
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 818
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 818
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 818
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 818
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 2145
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 1060
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 386
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4789
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      }
+    },
+    {
+      "case_id": "generated-encode-starlette-855",
+      "question": "Is there a way to expose certain session data, like a username, to the frontend without compromising encryption or using the backend's secret key?",
+      "expected_issues": [
+        {
+          "repository": "encode/starlette",
+          "issue_number": 855
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 855
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 801
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 855
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 583
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 754
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "encode/starlette",
+            "issue_number": 855
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 801
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 583
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 754
+          },
+          {
+            "repository": "encode/starlette",
+            "issue_number": 90
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      }
+    },
+    {
+      "case_id": "generated-tiangolo-fastapi-2776",
+      "question": "What can be done to make context variables set in an async dependency visible within threads spawned by a ThreadPoolExecutor in a synchronous route?",
+      "expected_issues": [
+        {
+          "repository": "tiangolo/fastapi",
+          "issue_number": 2776
+        }
+      ],
+      "original": {
+        "ranked_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2776
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2776
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2776
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2776
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2776
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      },
+      "final": {
+        "ranked_issues": [
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 2776
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 953
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4696
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 5891
+          },
+          {
+            "repository": "tiangolo/fastapi",
+            "issue_number": 4719
+          }
+        ],
+        "metrics": {
+          "hit_at_5": 1,
+          "recall_at_5": 1.0,
+          "mrr": 1.0
+        }
+      }
+    }
+  ],
+  "aws_calls": 0,
+  "database_calls": 0,
+  "paid_calls": 0
+}
